@@ -146,6 +146,9 @@ function manager:new(core)
         buildHelpers()
         buildAliases()
 
+        -- Apply Fast CS Hook.
+        core.api.hookFastCS()
+
     end
 
     return self

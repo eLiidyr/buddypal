@@ -122,13 +122,14 @@ local function lib(bp)
     end
 
     o.getList = function(n)
+        local unpack = table.unpack
 
-        if S{1,2,3}:contains(n) and party[n] then
+        if n and S{1,2,3}:contains(n) and party[n] then
             T(party[n]:keyset())
 
         else
 
-            return party[1]:keyset():extend(party[2]:keyset()):extend(party[3]:keyset())
+            return T(L(party[1]:keyset()):extend(L(party[2]:keyset())):extend(L(party[3]:keyset())))
 
         end
 

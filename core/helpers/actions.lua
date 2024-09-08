@@ -40,6 +40,10 @@ local function helper(bp, events)
         settings:update()
         bp.socket.sendSettings({['actions']=settings:get()})
 
+        -- Timer creation.
+        o.timer('auto-distance-timer',  0.3)
+        o.timer('auto-facing-timer',    1.0)
+
     end
 
     local function prerender()
@@ -47,6 +51,29 @@ local function helper(bp, events)
         -- Update players position.
         ismoving = not position:equals(bp.__player.position())
         position:update(bp.__player.position())
+
+        if settings.auto_distance_from_target and bp.__player.status() == 1 and bp.__player.get(true) and o.timer('auto-distance-timer'):ready() then
+            local target = bp.__target.get('t')
+
+            if bp.__target.inRange(target) then
+                bp.run(false)
+
+            elseif not bp.__target.inRange(target) then
+                bp.actions.move(target.x, target.y, target.z)
+
+            end                        
+
+        end
+
+        if settings.auto_face_target and bp.__player.status() == 1 and o.timer('auto-facing-timer'):ready() then
+            local target = bp.__target.get('t')
+
+            if target then
+                bp.actions.face(bp.__target.get(target))
+
+            end
+
+        end
 
     end
 

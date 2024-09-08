@@ -236,7 +236,7 @@ local function helper(bp, events)
         --end
 
         -- Handle skillup logic if enabled.
-        if bp.skillup.enabled() then
+        if bp.skillup.isEnabled() then
             automation:skillup()
             return
 
@@ -357,19 +357,16 @@ local function helper(bp, events)
     o.save = function (s, value)
         local keys = s:split(':')
 
-        print('saving:', s)
-
         if #keys > 1 then
             local setting = nil
 
             for i=1, #keys do
 
                 if type(settings[keys[i]]) == 'table' then
-                    print('table', keys[i])
                     setting = settings[keys[i]]
 
                 else
-                    print('else', keys[i])
+
                     if S{'!','#'}:contains(value) then
                         setting[keys[i]] = (value =='!')
 

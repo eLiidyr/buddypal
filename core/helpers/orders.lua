@@ -120,7 +120,7 @@ local function helper(bp, events)
     calls['r'] = function(orders)
         local order = {player=false, others={}}
         local delay = 0
-        
+
         for name in bp.__party.getList():it() do
             local target = bp.__target.get(name)
 
@@ -164,7 +164,7 @@ local function helper(bp, events)
         local delay = 0
     
         for name in bp.__party.getList():it() do
-            local target = bp.__target.get(character.name)
+            local target = bp.__target.get(name)
     
             if name ~= bp.__player.name() and bp.__distance.get(target) < 25 then
                 table.insert(order.others, string.format('||%s wait %s; %s', target.name, delay, orders))

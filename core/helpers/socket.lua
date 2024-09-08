@@ -23,10 +23,10 @@ local function helper(bp, events)
 
             if mid and mlevel then
                 jobdata = {mjob=bp.res.jobs[mid].ens, mlevel=mlevel, mfull=bp.res.jobs[mid].en, mid=mid, sjob=(bp.res.jobs[sid]) and bp.res.jobs[sid].ens or nil, slevel=slevel, sfull=(bp.res.jobs[sid]) and bp.res.jobs[sid].en or nil, sid=sid}
-                return {id=player.id, server=bp.__player.server(), name=player.name, skills=player.skills, job=jobdata, jobs=player.jobs, merits=player.merits, job_points=player.job_points, nation=player.nation, key_items=bp.keyitems(), abilities=bp.abilities()}
+                return {id=player.id, server=bp.__player.server(), name=player.name, linkshell=player.linkshell or "", skills=player.skills, job=jobdata, jobs=player.jobs, merits=player.merits, job_points=player.job_points, nation=player.nation, key_items=bp.keyitems(), abilities=bp.abilities()}
 
             end
-            return {id=player.id, server=bp.__player.server(), name=player.name, skills=player.skills, job={mjob=player.main_job, mlevel=player.main_job_level, mfull=player.main_job_full, mid=player.main_job_id, sjob=player.sub_job or nil, slevel=player.sub_job_level or nil, sfull=player.sub_job_full or nil, sid=player.sub_job_id or nil}, jobs=player.jobs, merits=player.merits, job_points=player.job_points, nation=player.nation, key_items=bp.keyitems(), abilities=bp.abilities()}
+            return {id=player.id, server=bp.__player.server(), name=player.name, linkshell=player.linkshell or "", skills=player.skills, job={mjob=player.main_job, mlevel=player.main_job_level, mfull=player.main_job_full, mid=player.main_job_id, sjob=player.sub_job or nil, slevel=player.sub_job_level or nil, sfull=player.sub_job_full or nil, sid=player.sub_job_id or nil}, jobs=player.jobs, merits=player.merits, job_points=player.job_points, nation=player.nation, key_items=bp.keyitems(), abilities=bp.abilities()}
 
         end
         return {}

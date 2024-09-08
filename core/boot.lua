@@ -168,10 +168,11 @@ core.register('addon command', function(...)
                     local item, quant = unpack(commands[i]:split(':'))
                     
                     if item then
-                        local index, count, id = core.__inventory.findByName(item)
+                        local index, count = core.__inventory.findByName(item)
 
-                        if index and count and id and count >= (num(quant) or 1) and core.res.items[id] then
-                            table.insert(items, {name=core.res.items[id].en, count=num(quant) or 1})
+                        if index and count and count >= (num(quant) or 1) then
+                            table.insert(items, {index, num(quant) or 1})
+
                         end
 
                     end
@@ -179,7 +180,7 @@ core.register('addon command', function(...)
                 end
                 
                 if #items > 0 then
-                    core.actions.trade(target, unpack(items))
+                    core.actions.tradeItems(target, unpack(items))
 
                 end
 
@@ -213,6 +214,9 @@ core.register('addon command', function(...)
         elseif command == 'hring' then
             local delay = core.actions.castItem("Dim. Ring (Holla)", 13)
             core.toChat("Attempting to use:", 170, "Dimensional Ring (Holla)", 217, "in", 170, tostring(delay), 217, "seconds.", 170)
+
+        elseif command == 'coords' then
+            print(core.__player.position())
 
         end
 
