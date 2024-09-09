@@ -2,10 +2,11 @@ local function helper(bp, events)
     local o = {events=events}
 
     -- Private Variables.
-    local settings    = bp.__settings.new('targets')
-    local display     = bp.__displays.new(settings)
-    local targets     = {player=false, luopan=false, entrust=false}
-    local template    = "<cs(200,200,200)${tdistance}cr>   {{ cs(200,200,200)${tspeed}cr }}   [ cs(200,200,200)0x${tindex}cr ]: cs(200,200,200)${tname}cr"
+    local settings      = bp.__settings.new('targets')
+    local display       = bp.__displays.new(settings)
+    local targets       = {player=false, luopan=false, entrust=false}
+    local template      = "<cs(200,200,200)${tdistance}cr>   {{ cs(200,200,200)${tspeed}cr }}   [ cs(200,200,200)0x${tindex}cr ]: cs(200,200,200)${tname}cr"
+    local current_speed = nil
 
     do -- Handle Settings.
         settings.display        = settings:default('display',         {x=1, y=1, font=10})
@@ -28,7 +29,7 @@ local function helper(bp, events)
     end
 
     local function getSpeed()
-        return string.format("%03d%%", (bp.__player.status() == 5 or bp.__player.status() == 85) and (100 * bp.__player.speed() / 2):round(2) or (100 * bp.__player.speed() / 5):round(2))
+        return string.format("%03d%%", (bp.__player.status() == 5 or bp.__player.status() == 85) and (100 * (current_speed or bp.__player.speed()) / 2):round(2) or (100 * (current_speed or bp.__player.speed()) / 5):round(2))
 
     end
 
@@ -75,7 +76,7 @@ local function helper(bp, events)
             display.tdistance = getDistance()
 
         end
-        display.speed = getSpeed()
+        display.tspeed = getSpeed()
 
     end
 
@@ -113,7 +114,10 @@ local function helper(bp, events)
     end
 
     local function update_targets(id, original)
-        if not S{0x015}:contains(id) then return false end
+        if not S{0x015}:contains(id) then
+            return false
+        end
+
         local t = bp.__target.get('t')
 
         if bp.__player.status() == 1 and not targets.player and t then
@@ -154,6 +158,11 @@ local function helper(bp, events)
             return onSet(false, sharing)
 
         end
+
+    end
+
+    o.setSpeed = function(speed)
+        current_speed = speed
 
     end
 
