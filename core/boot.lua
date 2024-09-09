@@ -134,6 +134,21 @@ core.toChat = function(...)
 
 end
 
+core.parse = function(s)
+    local t = loadstring(string.format('return %s', s))
+    
+    if t and type(t) == 'function' then
+        return t()
+    
+    end
+
+end
+
+core.stringify = function(t)
+    return T(t):tostring()
+
+end
+
 core.register('addon command', function(...)
     local commands = T{...}
     local command = commands[1] and table.remove(commands, 1):lower() or nil
