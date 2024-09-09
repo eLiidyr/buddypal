@@ -232,12 +232,12 @@ local function lib(bp)
     end
 
     o.speed = function()
-        local player = o.get(true)
-        if player then
-            return player.movement_speed or -999
+
+        if bp.api then
+            return bp.api.getPlayerSpeed(o.index())
 
         end
-        return -999
+        return -1
 
     end
 

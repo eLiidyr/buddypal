@@ -111,7 +111,7 @@ function manager:new(core)
     end
 
     local function buildAliases()
-        local keybinds = T{'@b / toggle', '@f / follow', '@s / follow stop-following', '@a / assist set', '@t / target set', '@p / interact', '@, / bubbles geomancy-target', '@. / bubbles entrust-target', '@[ / ord p / on', '@] / ord p / off'}
+        local keybinds = T{'@b / toggle', '@f / follow initiate-follow', '@s / follow stop-following', '@a / assist set', '@t / target set', '@p / interact', '@, / bubbles geomancy-target', '@. / bubbles entrust-target', '@[ / ord p / on', '@] / ord p / off'}
         local aliases = T{
             ["wring"]       = "/ wring",
             ["dring"]       = "/ dring",
