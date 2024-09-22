@@ -51,7 +51,7 @@ local function load(bp, settings)
 
     function self:buff()
 
-        if bp.core.get('buffing') then
+        if bp.core.get('auto_buffing') then
             local player = bp.__player.get()
 
             if player and player.status == 1 then
@@ -232,7 +232,7 @@ local function load(bp, settings)
     function self:enmity()
         local timer = bp.core.timer('enmity')
 
-        if bp.core.get('hate') and bp.core.get('hate').enabled and timer:ready() then
+        if bp.core.get('auto_enmity_generation') and bp.core.get('auto_enmity_generation').enabled and timer:ready() then
             local player = bp.__player.get()
 
             if player and player.status == 1 then

@@ -12,14 +12,14 @@ local function load(bp, settings)
         local player = bp.__player.get()
         local target = bp.targets.get('player')
 
-        if player and target and bp.core.get('one-hours') and bp.actions.canAct() then
+        if player and target and bp.core.get('auto_one_hours') and bp.actions.canAct() then
 
-            if bp.core.get('mighty-strikes') and bp.core.ready("Mighty Strikes", 44) then
+            if bp.core.get('auto_mighty_strikes') and bp.core.ready("Mighty Strikes", 44) then
                 bp.queue.add("Mighty Strikes", player)
 
             end
             
-            if bp.core.get('brazen-rush') and bp.core.ready("Brazen Rush", 490) then
+            if bp.core.get('auto_brazen_rush') and bp.core.ready("Brazen Rush", 490) then
                 bp.queue.add("Brazen Rush", player)
 
             end
@@ -33,7 +33,7 @@ local function load(bp, settings)
     function self:abilities()
 
         -- TOMAHAWK.
-        if bp.core.get('job-abilities') and bp.actions.canAct() and bp.core.get('tomahawk') and bp.core.ready("Tomahawk") and bp.__inventory.canEquip("Throwing Tomahawk") and bp.targets.get('player') then
+        if bp.core.get('auto_job_abilities') and bp.actions.canAct() and bp.core.get('tomahawk') and bp.core.ready("Tomahawk") and bp.__inventory.canEquip("Throwing Tomahawk") and bp.targets.get('player') then
             bp.queue.add("Tomahawk", bp.targets.get('player'))
         
         end
@@ -44,7 +44,7 @@ local function load(bp, settings)
 
     function self:buff()
 
-        if bp.core.get('buffing') then
+        if bp.core.get('auto_buffing') then
             local player = bp.__player.get()
 
             if player and player.status == 1 then
@@ -53,13 +53,13 @@ local function load(bp, settings)
                 if bp.actions.canAct() then
 
                     -- WARRIOR'S CHARGE.
-                    if bp.core.get('warriors-charge') and bp.core.ready("Warrior's Charge", 340) and bp.__player.tp() >= bp.core.get('melee-weaponskill').tp then
+                    if bp.core.get('auto_warriors_charge') and bp.core.ready("Warrior's Charge", 340) and bp.__player.tp() >= bp.core.get('auto_melee_weaponskill').tp then
                         bp.queue.add("Warrior's Charge", player)
 
                     end
 
                     -- BERSERK.
-                    if bp.core.get('berserk') and not bp.core.get('tank-mode') and bp.core.ready("Berserk", 56) then
+                    if bp.core.get('berserk') and not bp.core.get('auto_tank_mode') and bp.core.ready("Berserk", 56) then
                         bp.queue.add("Berserk", player)
 
                         if bp.__buffs.active(57) then
@@ -68,7 +68,7 @@ local function load(bp, settings)
                         end
 
                     -- DEFENDER.
-                    elseif bp.core.get('defender') and bp.core.get('tank-mode') and bp.core.ready("Defender", 57) then
+                    elseif bp.core.get('defender') and bp.core.get('auto_tank_mode') and bp.core.ready("Defender", 57) then
                         bp.queue.add("Defender", player)
 
                         if bp.__buffs.active(56) then
@@ -93,7 +93,7 @@ local function load(bp, settings)
                         bp.queue.add("Restraint", player)
 
                     -- BLOOD RAGE.
-                    elseif bp.core.get('blood-rage') and bp.core.ready("Blood Rage", {68,460}) then
+                    elseif bp.core.get('auto_blood_rage') and bp.core.ready("Blood Rage", {68,460}) then
                         bp.queue.add("Blood Rage", player)
 
                     end
@@ -119,7 +119,7 @@ local function load(bp, settings)
     function self:enmity()
         local timer = bp.core.timer('enmity')
 
-        if bp.core.get('hate') and bp.core.get('hate').enabled and timer:ready() then
+        if bp.core.get('auto_enmity_generation') and bp.core.get('auto_enmity_generation').enabled and timer:ready() then
             local player = bp.__player.get()
 
             if player and player.status == 1 then

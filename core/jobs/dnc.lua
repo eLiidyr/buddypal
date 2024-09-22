@@ -141,7 +141,7 @@ local function load(bp, settings)
 
     function self:buff()
 
-        if bp.core.get('buffing') then
+        if bp.core.get('auto_buffing') then
             local player = bp.__player.get()
 
             if player and player.status == 1 then
@@ -172,7 +172,7 @@ local function load(bp, settings)
 
                     if (bp.__buffs.getFinishingMoves() > 0 or bp.__buffs.active(507)) then
 
-                        if bp.core.get('melee-weaponskill') and bp.core.get('melee-weaponskill').enabled and bp.core.vitals.tp >= bp.core.get('melee-weaponskill').tp then
+                        if bp.core.get('auto_melee_weaponskill') and bp.core.get('auto_melee_weaponskill').enabled and bp.core.vitals.tp >= bp.core.get('auto_melee_weaponskill').tp then
 
                             -- CLIMACTIC FLOURISH.
                             if bp.core.get('climactic-flourish') and bp.core.ready("Climactic Flourish", 443) then
@@ -241,7 +241,7 @@ local function load(bp, settings)
 
                     if (bp.__buffs.getFinishingMoves() > 0 or bp.__buffs.active(507)) then
 
-                        if bp.core.get('melee-weaponskill') and bp.core.get('melee-weaponskill').enabled and bp.core.vitals.tp >= bp.core.get('melee-weaponskill').tp then
+                        if bp.core.get('auto_melee_weaponskill') and bp.core.get('auto_melee_weaponskill').enabled and bp.core.vitals.tp >= bp.core.get('auto_melee_weaponskill').tp then
 
                             -- CLIMACTIC FLOURISH.
                             if bp.core.get('climactic-flourish') and bp.core.ready("Climactic Flourish", 443) then
@@ -298,7 +298,7 @@ local function load(bp, settings)
     function self:enmity()
         local timer = bp.core.timer('enmity')
 
-        if bp.core.get('hate') and bp.core.get('hate').enabled and timer:ready() then
+        if bp.core.get('auto_enmity_generation') and bp.core.get('auto_enmity_generation').enabled and timer:ready() then
             local player = bp.__player.get()
 
             if player and player.status == 1 then

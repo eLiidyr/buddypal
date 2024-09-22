@@ -12,13 +12,13 @@ local function load(bp, settings)
         local player = bp.__player.get()
         local target = bp.targets.get('player')
 
-        if player and target and bp.core.get('job-abilities') and bp.core.get('one-hours') and bp.actions.canAct() then
+        if player and target and bp.core.get('auto_job_abilities') and bp.core.get('auto_one_hours') and bp.actions.canAct() then
             local pet = bp.__player.pet()
 
             if pet.status == 0 and target then
 
                 -- ASTRAL FLOW.
-                if bp.core.get('astral-flow') and bp.core.ready("Astral Flow", 55) and bp.core.get('bp-rage') and bp.core.get('bp-rage').enabled and not bp.core.get('assault') then
+                if bp.core.get('auto_astral_flow') and bp.core.ready("Astral Flow", 55) and bp.core.get('auto_bp_rage') and bp.core.get('auto_bp_rage').enabled and not bp.core.get('assault') then
                     bp.queue.add("Astral Flow", player)
                     
                 end
@@ -27,17 +27,17 @@ local function load(bp, settings)
                 if (not bp.core.get('apogee') or bp.core.get('apogee') and not bp.core.ready("Apogee", 583)) then
 
                     -- ASTRAL CONDUIT.
-                    if bp.core.get('astral-conduit') and bp.core.ready("Astral Conduit", 504) and (bp.core.get('bp-rage') and bp.core.get('bp-rage').enabled and not bp.core.get('assault')) or (bp.core.get('bp-ward') and bp.core.get('bp-ward').enabled and not bp.core.get('assault') and bp.core.get('bp-ward').pacts[pet.name] == "Mewing Lullaby") then
+                    if bp.core.get('auto_astral_conduit') and bp.core.ready("Astral Conduit", 504) and (bp.core.get('auto_bp_rage') and bp.core.get('auto_bp_rage').enabled and not bp.core.get('assault')) or (bp.core.get('auto_bp_ward') and bp.core.get('auto_bp_ward').enabled and not bp.core.get('assault') and bp.core.get('auto_bp_ward').pacts[pet.name] == "Mewing Lullaby") then
                         bp.queue.add("Astral Conduit", player)
 
                     end
 
                 end
 
-            elseif pet.status == 1 and bp.core.get('bp-rage') and bp.core.get('bp-rage').enabled and target then
+            elseif pet.status == 1 and bp.core.get('auto_bp_rage') and bp.core.get('auto_bp_rage').enabled and target then
 
                 -- ASTRAL FLOW.
-                if bp.core.get('astral-flow') and bp.core.ready("Astral Flow", 55) and bp.core.get('bp-rage') and bp.core.get('bp-rage').enabled then
+                if bp.core.get('auto_astral_flow') and bp.core.ready("Astral Flow", 55) and bp.core.get('auto_bp_rage') and bp.core.get('auto_bp_rage').enabled then
                     bp.queue.add("Astral Flow", player)
 
                 end
@@ -46,7 +46,7 @@ local function load(bp, settings)
                 if (not bp.core.get('apogee') or bp.core.get('apogee') and not bp.core.ready("Apogee", 583)) then
 
                     -- ASTRAL CONDUIT.
-                    if bp.core.get('astral-conduit') and bp.core.ready("Astral Conduit", 504) and (bp.core.get('bp-rage') and bp.core.get('bp-rage').enabled) or (bp.core.get('bp-ward') and bp.core.get('bp-ward').enabled and bp.core.get('bp-ward').pacts[pet.name] == "Mewing Lullaby") then
+                    if bp.core.get('auto_astral_conduit') and bp.core.ready("Astral Conduit", 504) and (bp.core.get('auto_bp_rage') and bp.core.get('auto_bp_rage').enabled) or (bp.core.get('auto_bp_ward') and bp.core.get('auto_bp_ward').enabled and bp.core.get('auto_bp_ward').pacts[pet.name] == "Mewing Lullaby") then
                         bp.queue.add("Astral Conduit", player)
 
                     end
@@ -63,7 +63,7 @@ local function load(bp, settings)
 
     function self:abilities()
 
-        if bp.core.get('job-abilities') and bp.actions.canAct() then
+        if bp.core.get('auto_job_abilities') and bp.actions.canAct() then
             local player = bp.__player.get()
             local pet = bp.__player.pet()
 
@@ -93,7 +93,7 @@ local function load(bp, settings)
                     if pet.status == 0 and target then
 
                         -- ASTRAL FLOW.
-                        if bp.core.get('astral-flow') and bp.core.ready("Astral Flow", 55) and bp.core.get('bp-rage') and bp.core.get('bp-rage').enabled and not bp.core.get('assault') then
+                        if bp.core.get('auto_astral_flow') and bp.core.ready("Astral Flow", 55) and bp.core.get('auto_bp_rage') and bp.core.get('auto_bp_rage').enabled and not bp.core.get('assault') then
                             bp.queue.add("Astral Flow", player)
 
                         end
@@ -102,7 +102,7 @@ local function load(bp, settings)
                         if (not bp.core.get('apogee') or bp.core.get('apogee') and not bp.core.ready("Apogee", 583)) then
 
                             -- ASTRAL CONDUIT.
-                            if bp.core.get('astral-conduit') and bp.core.ready("Astral Conduit", 504) and (bp.core.get('bp-rage') and bp.core.get('bp-rage').enabled and not bp.core.get('assault')) or (bp.core.get('bp-ward') and bp.core.get('bp-ward').enabled and not bp.core.get('assault') and bp.core.get('bp-ward').pacts[pet.name] == "Mewing Lullaby") then
+                            if bp.core.get('auto_astral_conduit') and bp.core.ready("Astral Conduit", 504) and (bp.core.get('auto_bp_rage') and bp.core.get('auto_bp_rage').enabled and not bp.core.get('assault')) or (bp.core.get('auto_bp_ward') and bp.core.get('auto_bp_ward').enabled and not bp.core.get('assault') and bp.core.get('auto_bp_ward').pacts[pet.name] == "Mewing Lullaby") then
                                 bp.queue.add("Astral Conduit", player)
 
                             end
@@ -110,8 +110,8 @@ local function load(bp, settings)
                         end
                         
                         -- BLOOD PACT: RAGES.
-                        if bp.core.get('bp-rage') and bp.core.get('bp-rage').enabled and not bp.core.get('assault') then
-                            local rage = bp.core.get('bp-rage').pacts[pet.name] or false
+                        if bp.core.get('auto_bp_rage') and bp.core.get('auto_bp_rage').enabled and not bp.core.get('assault') then
+                            local rage = bp.core.get('auto_bp_rage').pacts[pet.name] or false
 
                             if rage and bp.core.ready(rage) then
 
@@ -120,7 +120,7 @@ local function load(bp, settings)
                                     bp.queue.add("Apogee", player)
 
                                 -- MANA CEDE.
-                                elseif bp.core.get('mana-cede') and bp.core.ready("Mana Cede") then
+                                elseif bp.core.get('auto_mana_cede') and bp.core.ready("Mana Cede") then
                                     bp.queue.add("Mana Cede", player)
 
                                 else
@@ -133,8 +133,8 @@ local function load(bp, settings)
                         end
 
                         -- MEWING LULLABY.
-                        if bp.core.get('bp-ward') and bp.core.get('bp-ward').enabled and not bp.core.get('assault') then
-                            local ward = bp.core.get('bp-ward').pacts[pet.name] or false
+                        if bp.core.get('auto_bp_ward') and bp.core.get('auto_bp_ward').enabled and not bp.core.get('assault') then
+                            local ward = bp.core.get('auto_bp_ward').pacts[pet.name] or false
 
                             if ward and ward == "Mewing Lullaby" and bp.core.ready(ward) then
                                 bp.queue.add(ward, target)
@@ -143,10 +143,10 @@ local function load(bp, settings)
 
                         end
 
-                    elseif pet.status == 1 and bp.core.get('bp-rage') and bp.core.get('bp-rage').enabled and target then
+                    elseif pet.status == 1 and bp.core.get('auto_bp_rage') and bp.core.get('auto_bp_rage').enabled and target then
 
                         -- ASTRAL FLOW.
-                        if bp.core.get('astral-flow') and bp.core.ready("Astral Flow", 55) and bp.core.get('bp-rage') and bp.core.get('bp-rage').enabled then
+                        if bp.core.get('auto_astral_flow') and bp.core.ready("Astral Flow", 55) and bp.core.get('auto_bp_rage') and bp.core.get('auto_bp_rage').enabled then
                             bp.queue.add("Astral Flow", player)
 
                         end
@@ -155,7 +155,7 @@ local function load(bp, settings)
                         if (not bp.core.get('apogee') or bp.core.get('apogee') and not bp.core.ready("Apogee", 583)) then
 
                             -- ASTRAL CONDUIT.
-                            if bp.core.get('astral-conduit') and bp.core.ready("Astral Conduit", 504) and (bp.core.get('bp-rage') and bp.core.get('bp-rage').enabled) or (bp.core.get('bp-ward') and bp.core.get('bp-ward').enabled and bp.core.get('bp-ward').pacts[pet.name] == "Mewing Lullaby") then
+                            if bp.core.get('auto_astral_conduit') and bp.core.ready("Astral Conduit", 504) and (bp.core.get('auto_bp_rage') and bp.core.get('auto_bp_rage').enabled) or (bp.core.get('auto_bp_ward') and bp.core.get('auto_bp_ward').enabled and bp.core.get('auto_bp_ward').pacts[pet.name] == "Mewing Lullaby") then
                                 bp.queue.add("Astral Conduit", player)
 
                             end
@@ -163,8 +163,8 @@ local function load(bp, settings)
                         end
                         
                         -- BLOOD PACT: RAGES.
-                        if bp.core.get('bp-rage') and bp.core.get('bp-rage').enabled then
-                            local rage = bp.core.get('bp-rage').pacts[pet.name] or false
+                        if bp.core.get('auto_bp_rage') and bp.core.get('auto_bp_rage').enabled then
+                            local rage = bp.core.get('auto_bp_rage').pacts[pet.name] or false
 
                             if rage and bp.core.ready(rage) then
 
@@ -173,7 +173,7 @@ local function load(bp, settings)
                                     bp.queue.add("Apogee", player)
 
                                 -- MANA CEDE.
-                                elseif bp.core.get('mana-cede') and bp.core.ready("Mana Cede") then
+                                elseif bp.core.get('auto_mana_cede') and bp.core.ready("Mana Cede") then
                                     bp.queue.add("Mana Cede", player)
 
                                 else
@@ -186,8 +186,8 @@ local function load(bp, settings)
                         end
 
                         -- MEWING LULLABY.
-                        if bp.core.get('bp-ward') and bp.core.get('bp-ward').enabled and not bp.core.get('assault') then
-                            local ward = bp.core.get('bp-ward').pacts[pet.name] or false
+                        if bp.core.get('auto_bp_ward') and bp.core.get('auto_bp_ward').enabled and not bp.core.get('assault') then
+                            local ward = bp.core.get('auto_bp_ward').pacts[pet.name] or false
 
                             if ward and ward == "Mewing Lullaby" and bp.core.ready(ward) then
                                 bp.queue.add(ward, target)
@@ -235,7 +235,7 @@ local function load(bp, settings)
                     if pet.status == 0 and target then
 
                         -- ASTRAL FLOW.
-                        if bp.core.get('astral-flow') and bp.core.ready("Astral Flow", 55) and bp.core.get('bp-rage') and bp.core.get('bp-rage').enabled and not bp.core.get('assault') then
+                        if bp.core.get('auto_astral_flow') and bp.core.ready("Astral Flow", 55) and bp.core.get('auto_bp_rage') and bp.core.get('auto_bp_rage').enabled and not bp.core.get('assault') then
                             bp.queue.add("Astral Flow", player)
 
                         end
@@ -244,7 +244,7 @@ local function load(bp, settings)
                         if (not bp.core.get('apogee') or bp.core.get('apogee') and not bp.core.ready("Apogee", 583)) then
 
                             -- ASTRAL CONDUIT.
-                            if bp.core.get('astral-conduit') and bp.core.ready("Astral Conduit", 504) and (bp.core.get('bp-rage') and bp.core.get('bp-rage').enabled and not bp.core.get('assault')) or (bp.core.get('bp-ward') and bp.core.get('bp-ward').enabled and not bp.core.get('assault') and bp.core.get('bp-ward').pacts[pet.name] == "Mewing Lullaby") then
+                            if bp.core.get('auto_astral_conduit') and bp.core.ready("Astral Conduit", 504) and (bp.core.get('auto_bp_rage') and bp.core.get('auto_bp_rage').enabled and not bp.core.get('assault')) or (bp.core.get('auto_bp_ward') and bp.core.get('auto_bp_ward').enabled and not bp.core.get('assault') and bp.core.get('auto_bp_ward').pacts[pet.name] == "Mewing Lullaby") then
                                 bp.queue.add("Astral Conduit", player)
 
                             end
@@ -252,8 +252,8 @@ local function load(bp, settings)
                         end
                         
                         -- BLOOD PACT: RAGES.
-                        if bp.core.get('bp-rage') and bp.core.get('bp-rage').enabled and not bp.core.get('assault') then
-                            local rage = bp.core.get('bp-rage').pacts[pet.name] or false
+                        if bp.core.get('auto_bp_rage') and bp.core.get('auto_bp_rage').enabled and not bp.core.get('assault') then
+                            local rage = bp.core.get('auto_bp_rage').pacts[pet.name] or false
 
                             if rage and bp.core.ready(rage) then
 
@@ -262,7 +262,7 @@ local function load(bp, settings)
                                     bp.queue.add("Apogee", player)
 
                                 -- MANA CEDE.
-                                elseif bp.core.get('mana-cede') and bp.core.ready("Mana Cede") then
+                                elseif bp.core.get('auto_mana_cede') and bp.core.ready("Mana Cede") then
                                     bp.queue.add("Mana Cede", player)
 
                                 else
@@ -275,8 +275,8 @@ local function load(bp, settings)
                         end
 
                         -- MEWING LULLABY.
-                        if bp.core.get('bp-ward') and bp.core.get('bp-ward').enabled and not bp.core.get('assault') then
-                            local ward = bp.core.get('bp-ward').pacts[pet.name] or false
+                        if bp.core.get('auto_bp_ward') and bp.core.get('auto_bp_ward').enabled and not bp.core.get('assault') then
+                            local ward = bp.core.get('auto_bp_ward').pacts[pet.name] or false
 
                             if ward and ward == "Mewing Lullaby" and bp.core.ready(ward) then
                                 bp.queue.add(ward, target)
@@ -285,10 +285,10 @@ local function load(bp, settings)
 
                         end
 
-                    elseif pet.status == 1 and bp.core.get('bp-rage') and bp.core.get('bp-rage').enabled and target then
+                    elseif pet.status == 1 and bp.core.get('auto_bp_rage') and bp.core.get('auto_bp_rage').enabled and target then
 
                         -- ASTRAL FLOW.
-                        if bp.core.get('astral-flow') and bp.core.ready("Astral Flow", 55) and bp.core.get('bp-rage') and bp.core.get('bp-rage').enabled then
+                        if bp.core.get('auto_astral_flow') and bp.core.ready("Astral Flow", 55) and bp.core.get('auto_bp_rage') and bp.core.get('auto_bp_rage').enabled then
                             bp.queue.add("Astral Flow", player)
 
                         end
@@ -297,7 +297,7 @@ local function load(bp, settings)
                         if (not bp.core.get('apogee') or bp.core.get('apogee') and not bp.core.ready("Apogee", 583)) then
 
                             -- ASTRAL CONDUIT.
-                            if bp.core.get('astral-conduit') and bp.core.ready("Astral Conduit", 504) and (bp.core.get('bp-rage') and bp.core.get('bp-rage').enabled) or (bp.core.get('bp-ward') and bp.core.get('bp-ward').enabled and bp.core.get('bp-ward').pacts[pet.name] == "Mewing Lullaby") then
+                            if bp.core.get('auto_astral_conduit') and bp.core.ready("Astral Conduit", 504) and (bp.core.get('auto_bp_rage') and bp.core.get('auto_bp_rage').enabled) or (bp.core.get('auto_bp_ward') and bp.core.get('auto_bp_ward').enabled and bp.core.get('auto_bp_ward').pacts[pet.name] == "Mewing Lullaby") then
                                 bp.queue.add("Astral Conduit", player)
 
                             end
@@ -305,8 +305,8 @@ local function load(bp, settings)
                         end
                         
                         -- BLOOD PACT: RAGES.
-                        if bp.core.get('bp-rage') and bp.core.get('bp-rage').enabled then
-                            local rage = bp.core.get('bp-rage').pacts[pet.name] or false
+                        if bp.core.get('auto_bp_rage') and bp.core.get('auto_bp_rage').enabled then
+                            local rage = bp.core.get('auto_bp_rage').pacts[pet.name] or false
 
                             if rage and bp.core.ready(rage) then
 
@@ -315,7 +315,7 @@ local function load(bp, settings)
                                     bp.queue.add("Apogee", player)
 
                                 -- MANA CEDE.
-                                elseif bp.core.get('mana-cede') and bp.core.ready("Mana Cede") then
+                                elseif bp.core.get('auto_mana_cede') and bp.core.ready("Mana Cede") then
                                     bp.queue.add("Mana Cede", player)
 
                                 else
@@ -328,8 +328,8 @@ local function load(bp, settings)
                         end
 
                         -- MEWING LULLABY.
-                        if bp.core.get('bp-ward') and bp.core.get('bp-ward').enabled and not bp.core.get('assault') then
-                            local ward = bp.core.get('bp-ward').pacts[pet.name] or false
+                        if bp.core.get('auto_bp_ward') and bp.core.get('auto_bp_ward').enabled and not bp.core.get('assault') then
+                            local ward = bp.core.get('auto_bp_ward').pacts[pet.name] or false
 
                             if ward and ward == "Mewing Lullaby" and bp.core.ready(ward) then
                                 bp.queue.add(ward, target)
@@ -360,7 +360,7 @@ local function load(bp, settings)
 
     function self:buff()
 
-        if bp.core.get('buffing') then
+        if bp.core.get('auto_buffing') then
             local player = bp.__player.get()
 
             if player and player.status == 1 then
@@ -373,8 +373,8 @@ local function load(bp, settings)
                     if pet.status == 0 and not bp.__buffs.active(504) then
 
                         -- BLOOD PACT: WARDS.
-                        if bp.core.get('bp-ward') and bp.core.get('bp-ward').enabled and not bp.core.get('assault') then
-                            local ward = bp.core.get('bp-ward').pacts[pet.name] or false
+                        if bp.core.get('auto_bp_ward') and bp.core.get('auto_bp_ward').enabled and not bp.core.get('assault') then
+                            local ward = bp.core.get('auto_bp_ward').pacts[pet.name] or false
 
                             if ward and bp.JA[ward] and (bp.JA[ward].status and bp.core.ready(ward, bp.JA[ward].status) or not bp.JA[ward].status) then
                                 bp.queue.add(ward, player)
@@ -386,8 +386,8 @@ local function load(bp, settings)
                     elseif pet.status == 1 and not bp.__buffs.active(504) then
 
                         -- BLOOD PACT: WARDS.
-                        if bp.core.get('bp-ward') and bp.core.get('bp-ward').enabled then
-                            local ward = bp.core.get('bp-ward').pacts[pet.name] or false
+                        if bp.core.get('auto_bp_ward') and bp.core.get('auto_bp_ward').enabled then
+                            local ward = bp.core.get('auto_bp_ward').pacts[pet.name] or false
 
                             if ward and bp.JA[ward] and (bp.JA[ward].status and bp.core.ready(ward, bp.JA[ward].status) or not bp.JA[ward].status) then
                                 bp.queue.add(ward, player)
@@ -410,8 +410,8 @@ local function load(bp, settings)
                     if pet.status == 0 and not bp.__buffs.active(504) then
 
                         -- BLOOD PACT: WARDS.
-                        if bp.core.get('bp-ward') and bp.core.get('bp-ward').enabled and not bp.core.get('assault') then
-                            local ward = bp.core.get('bp-ward').pacts[pet.name] or false
+                        if bp.core.get('auto_bp_ward') and bp.core.get('auto_bp_ward').enabled and not bp.core.get('assault') then
+                            local ward = bp.core.get('auto_bp_ward').pacts[pet.name] or false
 
                             if ward and bp.JA[ward] and (bp.JA[ward].status and bp.core.ready(ward, bp.JA[ward].status) or not bp.JA[ward].status) then
                                 bp.queue.add(ward, player)
@@ -423,8 +423,8 @@ local function load(bp, settings)
                     elseif pet.status == 1 and not bp.__buffs.active(504) then
 
                         -- BLOOD PACT: WARDS.
-                        if bp.core.get('bp-ward') and bp.core.get('bp-ward').enabled then
-                            local ward = bp.core.get('bp-ward').pacts[pet.name] or false
+                        if bp.core.get('auto_bp_ward') and bp.core.get('auto_bp_ward').enabled then
+                            local ward = bp.core.get('auto_bp_ward').pacts[pet.name] or false
 
                             if ward and bp.JA[ward] and (bp.JA[ward].status and bp.core.ready(ward, bp.JA[ward].status) or not bp.JA[ward].status) then
                                 bp.queue.add(ward, player)
@@ -458,7 +458,7 @@ local function load(bp, settings)
     function self:nuke()
         local target = bp.targets.get('player')
 
-        if bp.core.get('nuke-mode') and target and bp.core.nukes:length() > 0 and bp.actions.canCast() then
+        if bp.core.get('auto_nuke_mode') and target and bp.core.nukes:length() > 0 and bp.actions.canCast() then
 
             for spell in bp.core.nukes:it() do
 

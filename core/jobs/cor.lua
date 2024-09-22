@@ -15,15 +15,15 @@ local function load(bp, settings)
 
     function self:abilities()
 
-        if bp.core.get('job-abilities') and bp.actions.canAct() then
+        if bp.core.get('auto_job_abilities') and bp.actions.canAct() then
             local player = bp.__player.get()
 
             if player and player.status == 1 then
                 local target = bp.__target.get('t')
 
                 -- QUICK DRAW.
-                if bp.core.get('quick-draw') and target then
-                    local qd = bp.core.get('quick-draw')
+                if bp.core.get('auto_quick_draw') and target then
+                    local qd = bp.core.get('auto_quick_draw')
                     
                     if qd.enabled and bp.core.ready("Quick Draw") and bp.__inventory.getCount("Trump Card") > 0 then
                         bp.queue.add(qd.name, target)
@@ -33,7 +33,7 @@ local function load(bp, settings)
                 end
 
                 -- RANDOM DEAL.
-                if bp.core.get('random-deal') and bp.core.ready("Random Deal") and target then
+                if bp.core.get('auto_random_deal') and bp.core.ready("Random Deal") and target then
                     bp.queue.add("Random Deal", bp.__player.get())
 
                 end
@@ -42,8 +42,8 @@ local function load(bp, settings)
                 local target = bp.targets.get('player')
 
                 -- QUICK DRAW.
-                if bp.core.get('quick-draw') and target then
-                    local qd = bp.core.get('quick-draw')
+                if bp.core.get('auto_quick_draw') and target then
+                    local qd = bp.core.get('auto_quick_draw')
                     
                     if qd.enabled and bp.core.ready("Quick Draw") and bp.__inventory.getCount("Trump Card") > 0 then
                         bp.queue.add(qd.name, target)
@@ -53,7 +53,7 @@ local function load(bp, settings)
                 end
 
                 -- RANDOM DEAL.
-                if bp.core.get('random-deal') and bp.core.ready("Random Deal") and target then
+                if bp.core.get('auto_random_deal') and bp.core.ready("Random Deal") and target then
                     bp.queue.add("Random Deal", bp.__player.get())
 
                 end
@@ -68,7 +68,7 @@ local function load(bp, settings)
 
     function self:buff()
 
-        if bp.core.get('buffing') then
+        if bp.core.get('auto_buffing') then
             local player = bp.__player.get()
 
             if player and player.status == 1 then
@@ -77,7 +77,7 @@ local function load(bp, settings)
                 if bp.actions.canAct() then
 
                     -- TRIPLE SHOT
-                    if bp.core.get('triple-shot') and bp.core.ready("Triple Shot", 467) and target then
+                    if bp.core.get('auto_triple_shot') and bp.core.ready("Triple Shot", 467) and target then
                         bp.queue.add("Triple Shot", player)
 
                     end
@@ -92,7 +92,7 @@ local function load(bp, settings)
                             
                             if bp.core.ready("Double-Up") and bp.__rolls.getMidroll() then
                                 local rolling = bp.__rolls.getRolling()
-                                local max = bp.core.get('double-up') and bp.core.get('double-up').max or 7
+                                local max = bp.core.get('auto_double_up') and bp.core.get('auto_double_up').max or 7
 
                                 if rolling then
 
@@ -115,7 +115,7 @@ local function load(bp, settings)
                                 if roll and bp.core.ready(roll) then
 
                                     -- CROOKED CARDS.
-                                    if bp.__rolls.active():length() == 0 and bp.core.get('crooked-cards') and bp.core.ready("Crooked Cards", 601) then
+                                    if bp.__rolls.active():length() == 0 and bp.core.get('auto_crooked_cards') and bp.core.ready("Crooked Cards", 601) then
                                         bp.queue.add("Crooked Cards", player)
 
                                     end
@@ -137,7 +137,7 @@ local function load(bp, settings)
                 if bp.actions.canAct() then
 
                     -- TRIPLE SHOT
-                    if bp.core.get('triple-shot') and bp.core.ready("Triple Shot", 467) and target then
+                    if bp.core.get('auto_triple_shot') and bp.core.ready("Triple Shot", 467) and target then
                         bp.queue.add("Triple Shot", player)
 
                     end
@@ -152,7 +152,7 @@ local function load(bp, settings)
                             
                             if bp.core.ready("Double-Up") and bp.__rolls.getMidroll() then
                                 local rolling = bp.__rolls.getRolling()
-                                local max = bp.core.get('double-up') and bp.core.get('double-up').max or 7
+                                local max = bp.core.get('auto_double_up') and bp.core.get('auto_double_up').max or 7
 
                                 if rolling then
 
@@ -175,7 +175,7 @@ local function load(bp, settings)
                                 if roll and bp.core.ready(roll) then
 
                                     -- CROOKED CARDS.
-                                    if bp.__rolls.active():length() == 0 and bp.core.get('crooked-cards') and bp.core.ready("Crooked Cards", 601) then
+                                    if bp.__rolls.active():length() == 0 and bp.core.get('auto_crooked_cards') and bp.core.ready("Crooked Cards", 601) then
                                         bp.queue.add("Crooked Cards", player)
 
                                     end

@@ -10,7 +10,7 @@ local function load(bp, settings)
     -- Public Methods.
     function self:specials()
 
-        if bp.core.get('job-abilities') and bp.core.get('one-hours') and bp.actions.canAct() then
+        if bp.core.get('auto_job_abilities') and bp.core.get('auto_one_hours') and bp.actions.canAct() then
 
         end
 
@@ -20,7 +20,7 @@ local function load(bp, settings)
 
     function self:abilities()
         
-        if bp.core.get('job-abilities') and bp.actions.canAct() then
+        if bp.core.get('auto_job_abilities') and bp.actions.canAct() then
             local player = bp.__player.get()
 
             if player and player.status == 1 then
@@ -44,7 +44,7 @@ local function load(bp, settings)
                 end
 
                 -- BLADE BASH.
-                if bp.core.get('blade-bash') and bp.core.ready("Blade Bash") and target then
+                if bp.core.get('auto_blade_bash') and bp.core.ready("Blade Bash") and target then
                     bp.queue.add("Blade Bash", target)
 
                 end
@@ -70,7 +70,7 @@ local function load(bp, settings)
                 end
 
                 -- BLADE BASH.
-                if bp.core.get('blade-bash') and bp.core.ready("Blade Bash") and target then
+                if bp.core.get('auto_blade_bash') and bp.core.ready("Blade Bash") and target then
                     bp.queue.add("Blade Bash", target)
                 
                 end
@@ -85,7 +85,7 @@ local function load(bp, settings)
 
     function self:buff()
 
-        if bp.core.get('buffing') then
+        if bp.core.get('auto_buffing') then
             local player = bp.__player.get()
 
             if player and player.status == 1 then
@@ -94,13 +94,13 @@ local function load(bp, settings)
                 if bp.actions.canAct() then
 
                     -- THIRD EYE.
-                    if bp.core.get('third-eye') and bp.core.ready("Third Eye", 67) then
+                    if bp.core.get('auto_third_eye') and bp.core.ready("Third Eye", 67) then
                         bp.queue.add("Third Eye", player)
 
                     end
 
                     -- HASSO.
-                    if bp.core.get('hasso') and not bp.core.get('tank-mode') and bp.core.ready("Hasso", 353) then
+                    if bp.core.get('hasso') and not bp.core.get('auto_tank_mode') and bp.core.ready("Hasso", 353) then
                         local main = bp.__equipment.get(0)
 
                         if main then
@@ -114,26 +114,26 @@ local function load(bp, settings)
                         end
 
                     -- SEIGAN.
-                    elseif bp.core.get('seigan') and bp.core.get('tank-mode') and bp.core.ready("Seigan", 354) then
+                    elseif bp.core.get('seigan') and bp.core.get('auto_tank_mode') and bp.core.ready("Seigan", 354) then
                         bp.queue.add("Seigan", player)
 
                     -- SEKKANOKI.
                     elseif bp.core.get('sekkanoki') and bp.core.ready("Sekkanoki", 408) then
 
-                        if bp.core.get('aftermath') and bp.core.get('aftermath').enabled then
+                        if bp.core.get('auto_aftermath') and bp.core.get('auto_aftermath').enabled then
 
                             if bp.__aftermath.active() then
                                 bp.queue.add("Sekkanoki", player)
 
                             end
 
-                        elseif (not bp.core.get('aftermath') or (bp.core.get('aftermath') and not bp.core.get('aftermath').enabled)) then
+                        elseif (not bp.core.get('auto_aftermath') or (bp.core.get('auto_aftermath') and not bp.core.get('auto_aftermath').enabled)) then
                             bp.queue.add("Sekkanoki", player)
 
                         end
 
                     -- KONZEN-ITTAI.
-                    elseif bp.core.get('konzen-ittai') and bp.core.ready("Konzen-Ittai") then
+                    elseif bp.core.get('auto_konzen_ittai') and bp.core.ready("Konzen-Ittai") then
                         bp.queue.add("Konzen-Ittai", player)
 
                     -- SENGIKORI.
@@ -158,13 +158,13 @@ local function load(bp, settings)
                 if bp.actions.canAct() then
 
                     -- THIRD EYE.
-                    if bp.core.get('third-eye') and bp.core.ready("Third Eye", 67) then
+                    if bp.core.get('auto_third_eye') and bp.core.ready("Third Eye", 67) then
                         bp.queue.add("Third Eye", player)
 
                     end
 
                     -- HASSO.
-                    if bp.core.get('hasso') and not bp.core.get('tank-mode') and bp.core.ready("Hasso", 353) then
+                    if bp.core.get('hasso') and not bp.core.get('auto_tank_mode') and bp.core.ready("Hasso", 353) then
                         local main = bp.__equipment.get(0)
 
                         if main then
@@ -178,7 +178,7 @@ local function load(bp, settings)
                         end
 
                     -- SEIGAN.
-                    elseif bp.core.get('seigan') and bp.core.get('tank-mode') and bp.core.ready("Seigan", 354) then
+                    elseif bp.core.get('seigan') and bp.core.get('auto_tank_mode') and bp.core.ready("Seigan", 354) then
                         bp.queue.add("Seigan", player)
 
                     end
@@ -201,7 +201,7 @@ local function load(bp, settings)
     function self:enmity()
         local timer = bp.core.timer('enmity')
 
-        if bp.core.get('hate') and bp.core.get('hate').enabled and timer:ready() then
+        if bp.core.get('auto_enmity_generation') and bp.core.get('auto_enmity_generation').enabled and timer:ready() then
             local player = bp.__player.get()
 
             if player and player.status == 1 then
@@ -221,7 +221,7 @@ local function load(bp, settings)
     function self:nuke()
         local target = bp.targets.get('player')
 
-        if bp.core.get('nuke-mode') and target and bp.core.nukes:length() > 0 and bp.actions.canCast() then
+        if bp.core.get('auto_nuke_mode') and target and bp.core.nukes:length() > 0 and bp.actions.canCast() then
 
             for spell in bp.core.nukes:it() do
 

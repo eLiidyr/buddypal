@@ -10,7 +10,7 @@ local function load(bp, settings)
     -- Public Methods.
     function self:specials()
 
-        if bp.core.get('job-abilities') and bp.core.get('one-hours') and bp.actions.canAct() then
+        if bp.core.get('auto_job_abilities') and bp.core.get('auto_one_hours') and bp.actions.canAct() then
             local target = bp.targets.get('player')
 
             if bp.core.get('invincible') and bp.core.ready("Invincible", 50) and target then
@@ -31,14 +31,14 @@ local function load(bp, settings)
 
     function self:abilities()
 
-        if bp.core.get('job-abilities') and bp.actions.canAct() then
+        if bp.core.get('auto_job_abilities') and bp.actions.canAct() then
             local player = bp.__player.get()
 
             if player and player.status == 1 then
                 local target = bp.__target.get('t')
 
                 -- SHIELD BASH.
-                if bp.core.get('shield-bash') and bp.core.ready("Shield Bash") then
+                if bp.core.get('auto_shield_bash') and bp.core.ready("Shield Bash") then
                     local shield = bp.__equipment.get(1)
 
                     if shield then
@@ -85,7 +85,7 @@ local function load(bp, settings)
 
     function self:buff()
 
-        if bp.core.get('buffing') then
+        if bp.core.get('auto_buffing') then
             local player = bp.__player.get()
 
             if player and player.status == 1 then
@@ -99,7 +99,7 @@ local function load(bp, settings)
 
                     end
 
-                    if target and bp.core.get('job-abilities') then
+                    if target and bp.core.get('auto_job_abilities') then
 
                         -- SENTINEL.
                         if bp.core.get('sentinel') and bp.core.ready("Sentinel", 62) then
@@ -135,7 +135,7 @@ local function load(bp, settings)
                         bp.queue.add("Reprisal", bp.__player.get())
 
                     -- PHALANX.
-                    elseif bp.core.get('phalanx') and bp.core.ready("Phalanx", 116) then
+                    elseif bp.core.get('auto_phalanx') and bp.core.ready("Phalanx", 116) then
                         bp.queue.add("Phalanx", bp.__player.get())
 
                     -- ENLIGHT.
@@ -173,7 +173,7 @@ local function load(bp, settings)
 
                     end
 
-                    if target and bp.core.get('job-abilities') then
+                    if target and bp.core.get('auto_job_abilities') then
 
                         -- SENTINEL.
                         if bp.core.get('sentinel') and bp.core.ready("Sentinel", 62) then
@@ -209,7 +209,7 @@ local function load(bp, settings)
                         bp.queue.add("Reprisal", bp.__player.get())
 
                     -- PHALANX.
-                    elseif bp.core.get('phalanx') and bp.core.ready("Phalanx", 116) then
+                    elseif bp.core.get('auto_phalanx') and bp.core.ready("Phalanx", 116) then
                         bp.queue.add("Phalanx", bp.__player.get())
 
                     -- ENLIGHT.
@@ -258,7 +258,7 @@ local function load(bp, settings)
     function self:enmity()
         local timer = bp.core.timer('enmity')
 
-        if bp.core.get('hate') and bp.core.get('hate').enabled and timer:ready() then
+        if bp.core.get('auto_enmity_generation') and bp.core.get('auto_enmity_generation').enabled and timer:ready() then
             local player = bp.__player.get()
 
             if player and player.status == 1 then
@@ -270,7 +270,7 @@ local function load(bp, settings)
                     if bp.core.get('flash') and bp.core.ready("Flash") then
 
                         -- DIVINE EMBLEM.
-                        if bp.core.get('divine-emblem') and bp.core.ready("Divine Emblem", 438) then
+                        if bp.core.get('auto_divine_emblem') and bp.core.ready("Divine Emblem", 438) then
                             bp.queue.add("Divine Emblem", target)
                         
                         end
@@ -290,7 +290,7 @@ local function load(bp, settings)
                     if bp.core.get('flash') and bp.core.ready("Flash") then
 
                         -- DIVINE EMBLEM.
-                        if bp.core.get('divine-emblem') and bp.core.ready("Divine Emblem", 438) then
+                        if bp.core.get('auto_divine_emblem') and bp.core.ready("Divine Emblem", 438) then
                             bp.queue.add("Divine Emblem", target)
                         
                         end
@@ -312,7 +312,7 @@ local function load(bp, settings)
     function self:nuke()
         local target = bp.targets.get('player')
 
-        if bp.core.get('nuke-mode') and target and bp.core.nukes:length() > 0 and bp.actions.canCast() then
+        if bp.core.get('auto_nuke_mode') and target and bp.core.nukes:length() > 0 and bp.actions.canCast() then
 
             for spell in bp.core.nukes:it() do
 

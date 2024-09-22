@@ -24,7 +24,7 @@ local function helper(bp, events)
     }
 
     do -- Setup default setting values.
-        settings.action_delay_on_death      = settings:default('action_delay_on_death',         10)
+        settings.action_after_death_delay   = settings:default('action_after_death_delay',         10)
         settings.auto_face_target           = settings:default('auto_face_target',              false)
         settings.auto_distance_from_target  = settings:default('auto_distance_from_target',     false)
         settings.prevent_spell_interruption = settings:default('prevent_spell_interruption',    false)
@@ -244,7 +244,7 @@ local function helper(bp, events)
 
         if not lastperform or ((os.time() - lastperform) >= 1) then
 
-            if target and action and actions[action] and not bp.__player.moghouse() and (os.clock() - lastdeath) >= settings.action_delay_on_death then
+            if target and action and actions[action] and not bp.__player.moghouse() and (os.clock() - lastdeath) >= settings.action_after_death_delay then
 
                 if protection[actions[action]] and protection[actions[action]]:contains(bp.__player.status()) then
                     bp.packets.inject(bp.packets.new('outgoing', 0x01A, {
@@ -774,7 +774,7 @@ local function helper(bp, events)
         local status = bp.__player.status()
 
         if target and status == 1 then
-            bp.queue.add(bp.core.get('melee-weaponskill').name, target, 100)
+            bp.queue.add(bp.core.get('auto_melee_weaponskill').name, target, 100)
             
         end        
 
@@ -931,9 +931,9 @@ local function helper(bp, events)
     o.events('outgoing chunk', oanchor)
     o.events('addon command', function(...)
         local commands  = T{...}
-        local command   = table.remove(commands, 1)
+        local command   = commands[1] and table.remove(commands, 1):lower()
 
-        if command and S{'act','actions'}:contains(command:lower()) then
+        if command and command == 'actions' then
             local command = commands[1] and table.remove(commands, 1):lower() or false
 
             if command then
@@ -945,8 +945,8 @@ local function helper(bp, events)
                 elseif ('switch'):startswith(command) and target then
                     bp.orders.send('r', string.format('/ act __switch %s', target.id))
 
-                elseif ('action_delay_on_death'):startswith(command) then
-                    settings.action_delay_on_death = (commands[1] and tonumber(commands[1]) or settings.action_delay_on_death)
+                elseif ('action_after_death_delay'):startswith(command) then
+                    settings.action_after_death_delay = (commands[1] and tonumber(commands[1]) or settings.action_after_death_delay)
                     settings:save()
 
                 elseif ('prevent_spell_interruption'):startswith(command) then

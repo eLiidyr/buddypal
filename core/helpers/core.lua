@@ -107,28 +107,28 @@ local function helper(bp, events)
             end
 
             -- Handle melee distance weapon skills.
-            if target and bp.core.get('melee-weaponskill') and bp.core.get('melee-weaponskill').enabled and bp.__target.inRange(target) and bp.core.canAct() then
-                local sanguine  = bp.core.get('sanguine-blade')
+            if target and bp.core.get('auto_melee_weaponskill') and bp.core.get('auto_melee_weaponskill').enabled and bp.__target.inRange(target) and bp.core.canAct() then
+                local sanguine  = bp.core.get('auto_sanguine_blade')
                 local myrkr     = bp.core.get('myrkr')
-                local moonlight = bp.core.get('moonlight')
+                local moonlight = bp.core.get('auto_moonlight')
 
                 if sanguine and sanguine.enabled and bp.__player.hpp() <= sanguine.hpp and bp.actions.isReady("Sanguine Blade") and bp.actions.inActionRange("Sanguine Blade", target) then
 
-                    if bp.__player.tp() >= bp.core.get('melee-weaponskill').tp or (bp.__player.tp() >= 1000 and bp.__buffs.active({168,189})) then
+                    if bp.__player.tp() >= bp.core.get('auto_melee_weaponskill').tp or (bp.__player.tp() >= 1000 and bp.__buffs.active({168,189})) then
                         bp.queue.add("Sanguine Blade", target)
 
                     end
 
                 elseif myrkr and myrkr.enabled and bp.__player.mpp() <= myrkr.mpp and bp.core.ready("Myrkr") and bp.actions.inActionRange("Myrkr", target) then
 
-                    if bp.__player.tp() >= bp.core.get('melee-weaponskill').tp or (bp.__player.tp() >= 1000 and bp.__buffs.active({168,189})) then
+                    if bp.__player.tp() >= bp.core.get('auto_melee_weaponskill').tp or (bp.__player.tp() >= 1000 and bp.__buffs.active({168,189})) then
                         bp.queue.add("Myrkr", bp.__player.get())
 
                     end
 
                 elseif moonlight and moonlight.enabled and bp.__player.mpp() <= moonlight.mpp and (bp.core.ready("Moonlight") or bp.core.ready("Starlight")) and (bp.actions.inActionRange("Moonlight", target) or bp.actions.inActionRange("Starlight", target)) then
 
-                    if bp.__player.tp() >= bp.core.get('melee-weaponskill').tp or (bp.__player.tp() >= 1000 and bp.__buffs.active({168,189})) then
+                    if bp.__player.tp() >= bp.core.get('auto_melee_weaponskill').tp or (bp.__player.tp() >= 1000 and bp.__buffs.active({168,189})) then
 
                         if bp.core.ready("Moonlight") then
                             bp.queue.add("Moonlight", bp.__player.get())
@@ -142,15 +142,15 @@ local function helper(bp, events)
 
                 else
                     local index, count, id, status, bag, resource = bp.__aftermath.getWeapon()
-                    local aml = (bp.core.get('aftermath') and bp.core.get('aftermath').enabled) and (bp.core.get('aftermath').level * 1000) or false
+                    local aml = (bp.core.get('auto_aftermath') and bp.core.get('auto_aftermath').enabled) and (bp.core.get('auto_aftermath').level * 1000) or false
                     
                     if index and resource and aml and bp.__player.tp() >= aml and not bp.__aftermath.active() and bp.__aftermath.weaponskill(resource.en) and bp.actions.inActionRange(bp.__aftermath.weaponskill(resource.en), target) then
                         bp.queue.add(bp.__aftermath.weaponskill(resource.en), target)
 
                     elseif (aml and bp.__aftermath.active()) or not aml or not bp.__aftermath.weaponskill(resource.en) or bp.__buffs.active({168,189}) then
 
-                        if bp.__player.tp() >= bp.core.get('melee-weaponskill').tp then
-                            bp.queue.add(bp.core.get('melee-weaponskill').name, target)
+                        if bp.__player.tp() >= bp.core.get('auto_melee_weaponskill').tp then
+                            bp.queue.add(bp.core.get('auto_melee_weaponskill').name, target)
 
                         end
 
@@ -159,21 +159,21 @@ local function helper(bp, events)
                 end
 
             -- Handle ranged distance weapon skills.
-            elseif target and bp.core.canAct() and bp.core.get('range-weaponskill') and bp.core.get('range-weaponskill').enabled then
-                local sanguine  = bp.core.get('sanguine-blade')
+            elseif target and bp.core.canAct() and bp.core.get('auto_range_weaponskill') and bp.core.get('auto_range_weaponskill').enabled then
+                local sanguine  = bp.core.get('auto_sanguine_blade')
                 local myrkr     = bp.core.get('myrkr')
-                local moonlight = bp.core.get('moonlight')
+                local moonlight = bp.core.get('auto_moonlight')
 
                 if myrkr and myrkr.enabled and bp.__player.mpp() <= myrkr.mpp and bp.core.ready("Myrkr") and bp.actions.inActionRange("Myrkr", target) then
                     
-                    if bp.__player.tp() >= bp.core.get('melee-weaponskill').tp or (bp.__player.tp() >= 1000 and bp.__buffs.active({168,189})) then
+                    if bp.__player.tp() >= bp.core.get('auto_melee_weaponskill').tp or (bp.__player.tp() >= 1000 and bp.__buffs.active({168,189})) then
                         bp.queue.add("Myrkr", bp.__player.get())
 
                     end
 
                 elseif moonlight and moonlight.enabled and bp.__player.mpp() <= moonlight.mpp and (bp.core.ready("Moonlight") or bp.core.ready("Starlight")) and (bp.actions.inActionRange("Moonlight", target) or bp.actions.inActionRange("Starlight", target)) then
 
-                    if bp.__player.tp() >= bp.core.get('melee-weaponskill').tp or (bp.__player.tp() >= 1000 and bp.__buffs.active({168,189})) then
+                    if bp.__player.tp() >= bp.core.get('auto_melee_weaponskill').tp or (bp.__player.tp() >= 1000 and bp.__buffs.active({168,189})) then
 
                         if bp.core.ready("Moonlight") then
                             bp.queue.add("Moonlight", bp.__player.get())
@@ -187,15 +187,15 @@ local function helper(bp, events)
 
                 else
                     local index, count, id, status, bag, resource = bp.__aftermath.getWeapon()
-                    local aml = (bp.core.get('aftermath') and bp.core.get('aftermath').enabled) and (bp.core.get('aftermath').level * 1000) or false
+                    local aml = (bp.core.get('auto_aftermath') and bp.core.get('auto_aftermath').enabled) and (bp.core.get('auto_aftermath').level * 1000) or false
                     
                     if index and resource and aml and bp.__player.tp() >= aml and not bp.__aftermath.active() and bp.__aftermath.weaponskill(resource.en) and bp.actions.inActionRange(resource.en, target) then
                         bp.queue.add(bp.__aftermath.weaponskill(resource.en), target)
 
                     elseif (aml and bp.__aftermath.active()) or not aml or not bp.__aftermath.weaponskill(resource.en) or bp.__buffs.active({168,189}) then
 
-                        if bp.__player.tp() >= bp.core.get('range-weaponskill').tp then
-                            bp.queue.add(bp.core.get('range-weaponskill').name, target)
+                        if bp.__player.tp() >= bp.core.get('auto_range_weaponskill').tp then
+                            bp.queue.add(bp.core.get('auto_range_weaponskill').name, target)
 
                         end
 
@@ -289,34 +289,56 @@ local function helper(bp, events)
 
     end
 
-    local function handle_commands(command, value)
-        if (not command or not value or not switches) then
-            return        
+    local function handle_commands(commands)
+        if (not commands or not switches) then
+            return
         end
 
-        if switches then
-            local split = command:split(':')
+        if #commands > 0 then
+            local key = commands:remove(1)
 
-            if #split > 1 then
-                local setting, key, option = o.get(command)
+            if key and settings[key] ~= nil then
 
-                if switches[key] and option then
-                    switches[key](bp, setting, option, value)
-                    settings:save()
+                if type(settings[key]) == 'table' then
+                    local subkey = commands:remove(1)
 
-                elseif setting[option] ~= nil then
+                    if settings[key][subkey] ~= nil then
+                        local value = commands:concat(' ')
+                        
+                        if S{'!','#'}:contains(value) then
+                            settings[key][subkey] = (value == '!')
+                            settings:save()
 
-                    if S{'!','#'}:contains(value) then
-                        setting[option] = (value == '!')
-                        settings:save()
+                        else
+
+                            if type(settings[key][subkey]) == 'number' then
+                                settings[key][subkey] = tonumber(value)
+                                settings:save()
+
+                            else
+                                settings[key][subkey] = value
+                                settings:save()
+
+                            end
+
+                        end
 
                     end
 
-                end
+                else
 
-            else
-                o.save(command, value)
-                settings:save()
+                    if S{'!','#'}:contains(commands[1]) then
+                        settings[key] = (commands[1] == '!')
+                        settings:save()
+
+                    else
+                        settings[key] = commands:concat(' ')
+                        settings:save()
+                    
+                    end
+                    
+                end
+                
 
             end
 
@@ -326,74 +348,7 @@ local function helper(bp, events)
 
     -- Public Methods.
     o.get = function(s)
-        local keys = s:split(':')
-
-        if #keys > 1 then
-            local setting = nil
-            local key = nil
-            local option = nil
-
-            for i=#keys, 1, -1 do
-
-                if type(settings[keys[i]]) == 'table' then
-                    setting = settings[keys[i]]
-                    key = keys[i]
-                    break
-
-                end
-                option = keys[i]
-
-            end
-            return setting, key, option
-            
-        elseif settings[s] ~= nil then
-            return settings[s], s
-
-        end
-        return nil
-
-    end
-
-    o.save = function (s, value)
-        local keys = s:split(':')
-
-        if #keys > 1 then
-            local setting = nil
-
-            for i=1, #keys do
-
-                if type(settings[keys[i]]) == 'table' then
-                    setting = settings[keys[i]]
-
-                else
-
-                    if S{'!','#'}:contains(value) then
-                        setting[keys[i]] = (value =='!')
-
-                    else
-                        setting[keys[i]] = value
-
-                    end
-                    return setting[keys[i]]
-
-                end
-
-            end
-            return setting
-            
-        elseif settings[s] ~= nil then
-
-            if S{'!','#'}:contains(value) then
-                settings[s] = (value == '!')
-
-            else
-                settings[s] = value
-
-            end
-            return settings[s]
-
-        end
-        return nil
+        return settings[s]
 
     end
 
@@ -403,7 +358,10 @@ local function helper(bp, events)
     end
 
     o.getAutomation = function(settings, mjob, sjob)
-        if not settings then return end
+        if not settings then
+            return
+        end
+
         local mjob = mjob or bp.__player.mjob(true)
         local sjob = sjob or bp.__player.sjob(true)
         local file = bp.files.new(string.format('core/jobs/%s.lua', mjob))
@@ -478,16 +436,10 @@ local function helper(bp, events)
     o.events('job change', job_change)
     o.events('addon command', function(...)
         local commands  = T{...}
-        local command   = commands[1] and table.remove(commands, 1) or nil
+        local command   = commands[1] and table.remove(commands, 1):lower()
     
-        if command and S{'core'}:contains(command) then
-            local command = commands[1] and table.remove(commands, 1) or false
-            local value = commands[1] and table.remove(commands, 1) or false
-
-            if command then
-                handle_commands(command, value)
-
-            end
+        if command and command == 'core' then
+            handle_commands(commands)
 
         end
 

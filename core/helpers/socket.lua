@@ -105,6 +105,11 @@ local function helper(bp, events)
 
     end
 
+    o.sendMessage = function(data)
+        o.sendStandard(0x1, {event=0x06, original=data})
+
+    end
+
     -- Private Events.
     o.events('prerender', receiveData)
     o.events('incoming', handleIncoming)

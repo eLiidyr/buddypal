@@ -12,14 +12,14 @@ local function load(bp, settings)
         local player = bp.__player.get()
         local target = bp.targets.get('player')
 
-        if player and target and bp.core.get('one-hours') and bp.actions.canAct() then
+        if player and target and bp.core.get('auto_one_hours') and bp.actions.canAct() then
 
-            if bp.core.get('elemental-sforzo') and bp.core.ready("Elemental Sforzo", 522) and target then
+            if bp.core.get('auto_elemental_sforzo') and bp.core.ready("Elemental Sforzo", 522) and target then
                 bp.queue.add("Elemental Sforzo", player)
 
             end
             
-            if bp.core.get('odyllic-subterfuge') and bp.core.ready("Odyllic Subterfuge", 509) and target then
+            if bp.core.get('auto_odyllic_subterfuge') and bp.core.ready("Odyllic Subterfuge", 509) and target then
                 bp.queue.add("Odyllic Subterfuge", target)
 
             end
@@ -32,24 +32,24 @@ local function load(bp, settings)
 
     function self:abilities()
 
-        if bp.core.get('job-abilities') and bp.actions.canAct() then
+        if bp.core.get('auto_job_abilities') and bp.actions.canAct() then
             local player = bp.__player.get()
 
             if player and player.status == 1 then
                 local target = bp.__target.get('t')
 
                 -- VIVACIOUS PULSE.
-                if bp.core.get('vivacious-pulse') and bp.core.get('vivacious-pulse').enabled and bp.core.ready("Vivacious Pulse") then
+                if bp.core.get('auto_vivacious_pulse') and bp.core.get('auto_vivacious_pulse').enabled and bp.core.ready("Vivacious Pulse") then
 
                     if bp.__runes.get():contains("Tenebrae") then
                                 
-                        if bp.__player.hpp() <= bp.core.get('vivacious-pulse').hpp and bp.__player.mpp() <= bp.core.get('vivacious-pulse').mpp then
+                        if bp.__player.hpp() <= bp.core.get('auto_vivacious_pulse').hpp and bp.__player.mpp() <= bp.core.get('auto_vivacious_pulse').mpp then
                             bp.queue.add("Vivacious Pulse", player)
                         end
 
                     else
 
-                        if bp.__player.hpp() <= bp.core.get('vivacious-pulse').hpp then
+                        if bp.__player.hpp() <= bp.core.get('auto_vivacious_pulse').hpp then
                             bp.queue.add("Vivacious Pulse", player)
                         end
 
@@ -81,17 +81,17 @@ local function load(bp, settings)
                 local target = bp.targets.get('player')
 
                 -- VIVACIOUS PULSE.
-                if bp.core.get('vivacious-pulse') and bp.core.get('vivacious-pulse').enabled and bp.core.ready("Vivacious Pulse") then
+                if bp.core.get('auto_vivacious_pulse') and bp.core.get('auto_vivacious_pulse').enabled and bp.core.ready("Vivacious Pulse") then
 
                     if bp.__runes.get():contains("Tenebrae") then
                                 
-                        if bp.__player.hpp() <= bp.core.get('vivacious-pulse').hpp and bp.__player.mpp() <= bp.core.get('vivacious-pulse').mpp then
+                        if bp.__player.hpp() <= bp.core.get('auto_vivacious_pulse').hpp and bp.__player.mpp() <= bp.core.get('auto_vivacious_pulse').mpp then
                             bp.queue.add("Vivacious Pulse", player)
                         end
 
                     else
 
-                        if bp.__player.hpp() <= bp.core.get('vivacious-pulse').hpp then
+                        if bp.__player.hpp() <= bp.core.get('auto_vivacious_pulse').hpp then
                             bp.queue.add("Vivacious Pulse", player)
                         end
 
@@ -130,7 +130,7 @@ local function load(bp, settings)
     function self:buff()
         local player = bp.__player.get()
 
-        if bp.core.get('buffing') then
+        if bp.core.get('auto_buffing') then
 
             if player and player.status == 1 then
                 local target = bp.__target.get('t')
@@ -212,15 +212,15 @@ local function load(bp, settings)
                     end
 
                     -- TEMPER.
-                    if bp.core.get('temper') and bp.core.ready("Temper", 432) and target then
+                    if bp.core.get('auto_temper') and bp.core.ready("Temper", 432) and target then
                         bp.queue.add("Temper", player)
                     
                     -- PHALANX.
-                    elseif bp.core.get('phalanx') and bp.core.ready("Phalanx", 116) then
+                    elseif bp.core.get('auto_phalanx') and bp.core.ready("Phalanx", 116) then
                         bp.queue.add("Phalanx", player)
                         
                     -- REFRESH.
-                    elseif bp.core.get('refresh') and bp.core.ready("Refresh", {43,187,188}) then
+                    elseif bp.core.get('auto_refresh') and bp.core.ready("Refresh", {43,187,188}) then
                         bp.queue.add("Refresh", player)
 
                     -- REGEN.
@@ -250,7 +250,7 @@ local function load(bp, settings)
                         end
                         
                     -- BLINK.
-                    elseif bp.core.get('blink') and bp.core.ready("Blink", 36) and not bp.__buffs.hasShadows() then
+                    elseif bp.core.get('auto_blink') and bp.core.ready("Blink", 36) and not bp.__buffs.hasShadows() then
                         bp.queue.add("Blink", player)
 
                     -- AQUAVEIL.
@@ -258,7 +258,7 @@ local function load(bp, settings)
                         bp.queue.add("Aquaveil", player)
 
                     -- STONESKIN.
-                    elseif bp.core.get('stoneskin') and bp.core.ready("Stoneskin", 37) then
+                    elseif bp.core.get('auto_stoneskin') and bp.core.ready("Stoneskin", 37) then
                         bp.queue.add("Stoneskin", player)
                         
                     end
@@ -345,15 +345,15 @@ local function load(bp, settings)
                     end
 
                     -- TEMPER.
-                    if bp.core.get('temper') and bp.core.ready("Temper", 432) and target then
+                    if bp.core.get('auto_temper') and bp.core.ready("Temper", 432) and target then
                         bp.queue.add("Temper", player)
                     
                     -- PHALANX.
-                    elseif bp.core.get('phalanx') and bp.core.ready("Phalanx", 116) then
+                    elseif bp.core.get('auto_phalanx') and bp.core.ready("Phalanx", 116) then
                         bp.queue.add("Phalanx", player)
                         
                     -- REFRESH.
-                    elseif bp.core.get('refresh') and bp.core.ready("Refresh", {43,187,188}) then
+                    elseif bp.core.get('auto_refresh') and bp.core.ready("Refresh", {43,187,188}) then
                         bp.queue.add("Refresh", player)
 
                     -- REGEN.
@@ -383,7 +383,7 @@ local function load(bp, settings)
                         end
                         
                     -- BLINK.
-                    elseif bp.core.get('blink') and bp.core.ready("Blink", 36) and not bp.__buffs.hasShadows() then
+                    elseif bp.core.get('auto_blink') and bp.core.ready("Blink", 36) and not bp.__buffs.hasShadows() then
                         bp.queue.add("Blink", player)
 
                     -- AQUAVEIL.
@@ -391,7 +391,7 @@ local function load(bp, settings)
                         bp.queue.add("Aquaveil", player)
 
                     -- STONESKIN.
-                    elseif bp.core.get('stoneskin') and bp.core.ready("Stoneskin", 37) then
+                    elseif bp.core.get('auto_stoneskin') and bp.core.ready("Stoneskin", 37) then
                         bp.queue.add("Stoneskin", player)
                         
                     end
@@ -414,7 +414,7 @@ local function load(bp, settings)
     function self:enmity()
         local timer = bp.core.timer('enmity')
 
-        if bp.core.get('hate') and bp.core.get('hate').enabled and timer:ready() then
+        if bp.core.get('auto_enmity_generation') and bp.core.get('auto_enmity_generation').enabled and timer:ready() then
             local player = bp.__player.get()
 
             if player and player.status == 1 then
@@ -466,7 +466,7 @@ local function load(bp, settings)
     function self:nuke()
         local target = bp.targets.get('player')
 
-        if bp.core.get('nuke-mode') and target and bp.core.nukes:length() > 0 and bp.actions.canCast() then
+        if bp.core.get('auto_nuke_mode') and target and bp.core.nukes:length() > 0 and bp.actions.canCast() then
 
             for spell in bp.core.nukes:it() do
 

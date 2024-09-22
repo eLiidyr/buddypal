@@ -12,7 +12,7 @@ local function load(bp, settings)
         local player = bp.__player.get()
         local target = bp.targets.get('player')
 
-        if player and target and bp.core.get('one-hours') and bp.actions.canAct() then
+        if player and target and bp.core.get('auto_one_hours') and bp.actions.canAct() then
 
             if bp.core.get("eagle-eye-shot") and bp.core.ready("Eagle Eye Shot") then
                 bp.queue.add("Eagle Eye Shot", target)
@@ -37,7 +37,7 @@ local function load(bp, settings)
 
     function self:buff()
 
-        if bp.core.get('buffing') then
+        if bp.core.get('auto_buffing') then
             local player = bp.__player.get()
 
             if player and player.status == 1 then
@@ -46,14 +46,14 @@ local function load(bp, settings)
                 if bp.actions.canAct() then
 
                     -- BOUNTY SHOT.
-                    if bp.core.get('bounty-shot') and bp.core.ready("Bounty Shot") then
+                    if bp.core.get('auto_bounty_shot') and bp.core.ready("Bounty Shot") then
                         bp.queue.add("Bounty Shot", player)
 
                     end
 
                     -- DECOY SHOT.
-                    if bp.core.get('decoy-shot') and bp.core.ready("Decoy Shot") then
-                        local decoy = bp.__target.get(bp.core.get('decoy-shot').target)
+                    if bp.core.get('auto_decoy_shot') and bp.core.ready("Decoy Shot") then
+                        local decoy = bp.__target.get(bp.core.get('auto_decoy_shot').target)
 
                         if decoy and bp__actions.isBehind(decoy) and bp.__distance.get(decoy) <= 20 then
                             bp.queue.add("Decoy Shot", player)

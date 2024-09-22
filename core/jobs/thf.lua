@@ -15,7 +15,7 @@ local function load(bp, settings)
 
     function self:abilities()
 
-        if bp.core.get('job-abilities') and bp.actions.canAct() then
+        if bp.core.get('auto_job_abilities') and bp.actions.canAct() then
             local player = bp.__player.get()
 
             if player and player.status == 1 then
@@ -80,7 +80,7 @@ local function load(bp, settings)
 
     function self:buff()
 
-        if bp.core.get('buffing') then
+        if bp.core.get('auto_buffing') then
             local player = bp.__player.get()
 
             if player and player.status == 1 then
@@ -101,15 +101,15 @@ local function load(bp, settings)
                     end
 
                     -- ASSASINS CHARGE.
-                    if bp.core.get('assassins-charge') and bp.core.ready("Assassin's Charge", 342) then
+                    if bp.core.get('auto_assassins_charge') and bp.core.ready("Assassin's Charge", 342) then
                         bp.queue.add("Assassin's Charge", player)
 
                     end
 
                     -- SNEAK ATTACK.
-                    if bp.core.get('sneak-attack') and bp.core.ready("Sneak Attack", 65) and bp.actions.isBehind(target) then
+                    if bp.core.get('auto_sneak_attack') and bp.core.ready("Sneak Attack", 65) and bp.actions.isBehind(target) then
 
-                        if bp.core.get('saws') and bp.core.vitals.tp >= bp.core.get('melee-weaponskill').tp then
+                        if bp.core.get('saws') and bp.core.vitals.tp >= bp.core.get('auto_melee_weaponskill').tp then
                             bp.queue.add("Sneak Attack", player)
                             
                         elseif not bp.core.get('saws') then
@@ -120,7 +120,7 @@ local function load(bp, settings)
                     end
 
                     -- TRICK ATTACK.
-                    if bp.core.get('trick-attack') and bp.core.ready("Trick Attack", 87) and bp.actions.isFacing(target) then
+                    if bp.core.get('auto_trick_attack') and bp.core.ready("Trick Attack", 87) and bp.actions.isFacing(target) then
                         bp.queue.add("Trick Attack", player)
 
                     end

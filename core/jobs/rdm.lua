@@ -12,7 +12,7 @@ local function load(bp, settings)
         local player = bp.__player.get()
         local target = bp.targets.get('player')
 
-        if player and target and bp.core.get('job-abilities') and bp.core.get('one-hours') and bp.actions.canAct() then
+        if player and target and bp.core.get('auto_job_abilities') and bp.core.get('auto_one_hours') and bp.actions.canAct() then
             local target = bp.targets.get('player')
 
             -- ONE-HOURS.
@@ -34,7 +34,7 @@ local function load(bp, settings)
 
     function self:abilities()
 
-        if bp.core.get('job-abilities') and bp.actions.canAct() then
+        if bp.core.get('auto_job_abilities') and bp.actions.canAct() then
             local player = bp.__player.get()
 
             if player and player.status == 1 then
@@ -73,7 +73,7 @@ local function load(bp, settings)
 
     function self:buff()
 
-        if bp.core.get('buffing') then
+        if bp.core.get('auto_buffing') then
             local player = bp.__player.get()
 
             if player and player.status == 1 then
@@ -95,7 +95,7 @@ local function load(bp, settings)
                     if ((composure and bp.__buffs.active(419)) or not composure) then
                     
                         -- HASTE.
-                        if bp.core.get('haste') and not bp.__buffs.active(33) and bp.__player.mlvl() >= 48 then
+                        if bp.core.get('auto_haste') and not bp.__buffs.active(33) and bp.__player.mlvl() >= 48 then
                             
                             if bp.__player.mlvl() >= 96 then
                                 
@@ -112,7 +112,7 @@ local function load(bp, settings)
                         end
 
                         -- TEMPER.
-                        if bp.core.get('temper') and not bp.__buffs.active(432) and bp.__player.mlvl() >= 95 and target then
+                        if bp.core.get('auto_temper') and not bp.__buffs.active(432) and bp.__player.mlvl() >= 95 and target then
                             local spent = bp.__player.jp().jp_spent
 
                             if spent >= 1200 and bp.core.ready("Temper II") then
@@ -132,13 +132,13 @@ local function load(bp, settings)
                         end
                         
                         -- PHALANX.
-                        if bp.core.get('phalanx') and bp.core.ready("Phalanx", 116) then
+                        if bp.core.get('auto_phalanx') and bp.core.ready("Phalanx", 116) then
                             bp.queue.add("Phalanx", player)
 
                         end
                             
                         -- REFRESH.
-                        if bp.core.get('refresh') and not bp.__buffs.active({43,187,188}) then
+                        if bp.core.get('auto_refresh') and not bp.__buffs.active({43,187,188}) then
                             local spent = bp.__player.jp().jp_spent
 
                             if spent >= 1200 and bp.core.ready("Refresh III") then
@@ -183,7 +183,7 @@ local function load(bp, settings)
                     if ((composure and bp.__buffs.active(419)) or not composure) then
                     
                         -- HASTE.
-                        if bp.core.get('haste') and not bp.__buffs.active(33) and bp.__player.mlvl() >= 48 then
+                        if bp.core.get('auto_haste') and not bp.__buffs.active(33) and bp.__player.mlvl() >= 48 then
                             
                             if bp.__player.mlvl() >= 96 then
                                 
@@ -203,7 +203,7 @@ local function load(bp, settings)
                         end
 
                         -- TEMPER.
-                        if bp.core.get('temper') and not bp.__buffs.active(432) and bp.__player.mlvl() >= 95 and target then
+                        if bp.core.get('auto_temper') and not bp.__buffs.active(432) and bp.__player.mlvl() >= 95 and target then
                             local spent = bp.__player.jp().jp_spent
 
                             if spent >= 1200 and bp.core.ready("Temper II") then
@@ -223,13 +223,13 @@ local function load(bp, settings)
                         end
                         
                         -- PHALANX.
-                        if bp.core.get('phalanx') and bp.core.ready("Phalanx", 116) then
+                        if bp.core.get('auto_phalanx') and bp.core.ready("Phalanx", 116) then
                             bp.queue.add("Phalanx", player)
 
                         end
                             
                         -- REFRESH.
-                        if bp.core.get('refresh') and not bp.__buffs.active({43,187,188}) then
+                        if bp.core.get('auto_refresh') and not bp.__buffs.active({43,187,188}) then
                             local spent = bp.__player.jp().jp_spent
 
                             if spent >= 1200 and bp.core.ready("Refresh III") then
@@ -260,7 +260,7 @@ local function load(bp, settings)
                             end
                             
                         -- BLINK.
-                        elseif bp.core.get('blink') and not bp.__buffs.hasShadows() and bp.core.ready("Blink", 36) then
+                        elseif bp.core.get('auto_blink') and not bp.__buffs.hasShadows() and bp.core.ready("Blink", 36) then
                             bp.queue.add("Blink", player)
 
                         -- AQUAVEIL.
@@ -268,7 +268,7 @@ local function load(bp, settings)
                             bp.queue.add("Aquaveil", player)
 
                         -- STONESKIN.
-                        elseif bp.core.get('stoneskin') and bp.core.ready("Stoneskin", 37) then
+                        elseif bp.core.get('auto_stoneskin') and bp.core.ready("Stoneskin", 37) then
                             bp.queue.add("Stoneskin", player)
                             
                         end
@@ -299,7 +299,7 @@ local function load(bp, settings)
     function self:enmity()
         local timer = bp.core.timer('enmity')
 
-        if bp.core.get('hate') and bp.core.get('hate').enabled and timer:ready() then
+        if bp.core.get('auto_enmity_generation') and bp.core.get('auto_enmity_generation').enabled and timer:ready() then
             local player = bp.__player.get()
 
             if player and player.status == 1 then
@@ -319,7 +319,7 @@ local function load(bp, settings)
     function self:nuke()
         local target = bp.targets.get('player')
 
-        if bp.core.get('nuke-mode') and target and bp.core.nukes:length() > 0 and bp.actions.canCast() then
+        if bp.core.get('auto_nuke_mode') and target and bp.core.nukes:length() > 0 and bp.actions.canCast() then
 
             for spell in bp.core.nukes:it() do
 

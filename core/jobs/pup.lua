@@ -14,14 +14,14 @@ local function load(bp, settings)
         local player = bp.__player.get()
         local target = bp.targets.get('player')
 
-        if player and target and bp.core.get('one-hours') and bp.actions.canAct() then
+        if player and target and bp.core.get('auto_one_hours') and bp.actions.canAct() then
 
             if bp.core.get('overdrive') and bp.core.ready("Overdrive", 166) then
                 bp.queue.add("Overdrive", player)
 
             end
             
-            if bp.core.get('heady-artifice') and bp.core.ready("Heady Artifice") then
+            if bp.core.get('auto_heady_artifice') and bp.core.ready("Heady Artifice") then
                 bp.queue.add("Heady Artifice", player)
 
             end
@@ -35,7 +35,7 @@ local function load(bp, settings)
     function self:abilities()
         local pet = bp.__player.pet()
 
-        if bp.core.get('job-abilities') and bp.actions.canAct() then
+        if bp.core.get('auto_job_abilities') and bp.actions.canAct() then
             local player = bp.__player.get()
 
             if player and player.status == 1 then
@@ -44,7 +44,7 @@ local function load(bp, settings)
                 if not pet then
 
                     -- ACTIVATE.
-                    if bp.core.get('activate') and not bp.queue.search({"Activate","Deus Ex"}) then
+                    if bp.core.get('auto_activate') and not bp.queue.search({"Activate","Deus Ex"}) then
 
                         if bp.core.ready("Activate") then
                             bp.queue.add("Activate", bp.__player.get())
@@ -98,7 +98,7 @@ local function load(bp, settings)
                     end
 
                     -- COOLDOWN.
-                    if bp.core.get('cooldown') and bp.core.ready("Cooldown") and bp.__maneuvers.active(true):length() == 3 then
+                    if bp.core.get('auto_cooldown') and bp.core.ready("Cooldown") and bp.__maneuvers.active(true):length() == 3 then
                         bp.queue.add("Cooldown", bp.__player.get())
 
                     end
@@ -106,7 +106,7 @@ local function load(bp, settings)
                     if pet.status == 0 then
 
                         -- DEPLOY.
-                        if bp.core.get('deploy') and bp.core.ready("Deploy") and target then
+                        if bp.core.get('auto_deploy') and bp.core.ready("Deploy") and target then
                             bp.queue.add("Deploy", target)
                             deploy_target = target.id
 
@@ -115,7 +115,7 @@ local function load(bp, settings)
                     elseif pet.status == 1 then
 
                         -- D.A.D. METHOD.
-                        if bp.core.get('dad-method') and bp.__player.petmpp() < 18 then
+                        if bp.core.get('auto_dad_method') and bp.__player.petmpp() < 18 then
                             bp.queue.add("Deactivate", bp.__player.get())
                             bp.queue.add("Activate", bp.__player.get())
                             bp.queue.add("Deploy", target)
@@ -123,13 +123,13 @@ local function load(bp, settings)
                         else
 
                             -- RETRIEVE.
-                            if not bp.core.get('deploy') and bp.core.ready("Retrieve") then
+                            if not bp.core.get('auto_deploy') and bp.core.ready("Retrieve") then
                                 bp.queue.add("Retrieve", bp.__player.get())
                                 
                             end
 
                             -- ASSIST-MASTER.
-                            if bp.core.get('deploy') and bp.core.ready("Deploy") and target and target.id ~= deploy_target then
+                            if bp.core.get('auto_deploy') and bp.core.ready("Deploy") and target and target.id ~= deploy_target then
                                 bp.queue.add("Deploy", target)
                                 deploy_target = target.id
 
@@ -147,7 +147,7 @@ local function load(bp, settings)
                 if not pet then
 
                     -- ACTIVATE.
-                    if bp.core.get('activate') and not bp.queue.search({"Activate","Deus Ex"}) then
+                    if bp.core.get('auto_activate') and not bp.queue.search({"Activate","Deus Ex"}) then
 
                         if bp.core.ready("Activate") then
                             bp.queue.add("Activate", bp.__player.get())
@@ -201,7 +201,7 @@ local function load(bp, settings)
                     end
 
                     -- COOLDOWN.
-                    if bp.core.get('cooldown') and bp.core.ready("Cooldown") and bp.__maneuvers.active(true):length() == 3 then
+                    if bp.core.get('auto_cooldown') and bp.core.ready("Cooldown") and bp.__maneuvers.active(true):length() == 3 then
                         bp.queue.add("Cooldown", bp.__player.get())
 
                     end
@@ -213,7 +213,7 @@ local function load(bp, settings)
                             local target = bp.__target.get(bp.__aggro.getAggro()[1])
                             
                             -- DEPLOY.
-                            if bp.core.get('deploy') and bp.core.ready("Deploy") and target then
+                            if bp.core.get('auto_deploy') and bp.core.ready("Deploy") and target then
                                 bp.queue.add("Deploy", target)
                                 deploy_target = target.id
 
@@ -228,7 +228,7 @@ local function load(bp, settings)
                         elseif target then
 
                             -- DEPLOY.
-                            if bp.core.get('deploy') and bp.core.ready("Deploy") then
+                            if bp.core.get('auto_deploy') and bp.core.ready("Deploy") then
                                 bp.queue.add("Deploy", target)
                                 deploy_target = target.id
 
@@ -239,7 +239,7 @@ local function load(bp, settings)
                     elseif pet.status == 1 then
 
                         -- D.A.D. METHOD.
-                        if bp.core.get('dad-method') and bp.__player.petmpp() < 18 then
+                        if bp.core.get('auto_dad_method') and bp.__player.petmpp() < 18 then
                             bp.queue.add("Deactivate", bp.__player.get())
                             bp.queue.add("Activate", bp.__player.get())
                             bp.queue.add("Deploy", target)
@@ -247,13 +247,13 @@ local function load(bp, settings)
                         else
 
                             -- RETRIEVE.
-                            if not bp.core.get('deploy') and bp.core.ready("Retrieve") then
+                            if not bp.core.get('auto_deploy') and bp.core.ready("Retrieve") then
                                 bp.queue.add("Retrieve", bp.__player.get())
                                 
                             end
 
                             -- ASSIST-MASTER.
-                            if bp.core.get('deploy') and bp.core.ready("Deploy") and target and target.id ~= deploy_target then
+                            if bp.core.get('auto_deploy') and bp.core.ready("Deploy") and target and target.id ~= deploy_target then
                                 bp.queue.add("Deploy", target)
                                 deploy_target = target.id
 

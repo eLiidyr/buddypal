@@ -101,7 +101,7 @@ local function load(bp, settings)
 
     function self:buff()
 
-        if bp.core.get('buffing') then
+        if bp.core.get('auto_buffing') then
             local player = bp.__player.get()
 
             if player and player.status == 1 then
@@ -183,7 +183,7 @@ local function load(bp, settings)
                         bp.queue.add("Auspice", player)
                         
                     -- BLINK.
-                    elseif bp.core.get('blink') and bp.core.ready("Blink", 36) and not bp.__buffs.hasShadows() then
+                    elseif bp.core.get('auto_blink') and bp.core.ready("Blink", 36) and not bp.__buffs.hasShadows() then
                         bp.queue.add("Blink", player)
 
                     -- AQUAVEIL.
@@ -191,7 +191,7 @@ local function load(bp, settings)
                         bp.queue.add("Aquaveil", player)
 
                     -- STONESKIN.
-                    elseif bp.core.get('stoneskin') and bp.core.ready("Stoneskin", 37) then
+                    elseif bp.core.get('auto_stoneskin') and bp.core.ready("Stoneskin", 37) then
                         bp.queue.add("Stoneskin", player)
                         
                     end
@@ -278,7 +278,7 @@ local function load(bp, settings)
                         bp.queue.add("Auspice", player)
                         
                     -- BLINK.
-                    elseif bp.core.get('blink') and bp.core.ready("Blink", 36) and not bp.__buffs.hasShadows() then
+                    elseif bp.core.get('auto_blink') and bp.core.ready("Blink", 36) and not bp.__buffs.hasShadows() then
                         bp.queue.add("Blink", player)
 
                     -- AQUAVEIL.
@@ -286,7 +286,7 @@ local function load(bp, settings)
                         bp.queue.add("Aquaveil", player)
 
                     -- STONESKIN.
-                    elseif bp.core.get('stoneskin') and bp.core.ready("Stoneskin", 37) then
+                    elseif bp.core.get('auto_stoneskin') and bp.core.ready("Stoneskin", 37) then
                         bp.queue.add("Stoneskin", player)
                         
                     end
@@ -315,7 +315,7 @@ local function load(bp, settings)
     function self:enmity()
         local timer = bp.core.timer('enmity')
 
-        if bp.core.get('hate') and bp.core.get('hate').enabled and timer:ready() then
+        if bp.core.get('auto_enmity_generation') and bp.core.get('auto_enmity_generation').enabled and timer:ready() then
             local player = bp.__player.get()
 
             if player and player.status == 1 then

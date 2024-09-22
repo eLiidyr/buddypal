@@ -11,16 +11,16 @@ local function load(bp, settings)
     function self:specials()
         local player = bp.__player.get()
 
-        if player and player.status == 1 and bp.core.get('one-hours') and bp.actions.canAct() and bp.targets.get('player') then
+        if player and player.status == 1 and bp.core.get('auto_one_hours') and bp.actions.canAct() and bp.targets.get('player') then
 
             -- HUNDRED FISTS.
-            if bp.core.get('hundred-fists') and bp.core.ready("Hundred Fists", 46) then
+            if bp.core.get('auto_hundred_fists') and bp.core.ready("Hundred Fists", 46) then
                 bp.queue.add("Hundred Fists", player)
 
             end
             
             -- INNER STRENGTH.
-            if bp.core.get('inner-strength') and bp.core.ready("Inner Strength", 491) then
+            if bp.core.get('auto_inner_strength') and bp.core.ready("Inner Strength", 491) then
                 bp.queue.add("Inner Strength", player)
 
             end
@@ -33,7 +33,7 @@ local function load(bp, settings)
 
     function self:abilities()
 
-        if bp.core.get('job-abilities') and bp.actions.canAct() then
+        if bp.core.get('auto_job_abilities') and bp.actions.canAct() then
             local player = bp.__player.get()
 
             if player and player.status == 1 then
@@ -55,7 +55,7 @@ local function load(bp, settings)
 
     function self:buff()
 
-        if bp.core.get('buffing') then
+        if bp.core.get('auto_buffing') then
             local player = bp.__player.get()
 
             if player and player.status == 1 then
@@ -80,7 +80,7 @@ local function load(bp, settings)
                         bp.queue.add("Footwork", player)
 
                     -- FORMLESS STRIKES.
-                    elseif bp.core.get('formless-strikes') and bp.core.ready("Formless Strikes", 341) then
+                    elseif bp.core.get('auto_formless_strikes') and bp.core.ready("Formless Strikes", 341) then
                         bp.queue.add("Formless Strikes", player)
 
                     -- COUNTERSTANCE.
@@ -88,7 +88,7 @@ local function load(bp, settings)
                         bp.queue.add("Counterstance", player)
 
                     -- PERFECT COUNTER.
-                    elseif bp.core.get('perfect-counter') and bp.core.ready("Perfect Counter", 436) then
+                    elseif bp.core.get('auto_perfect_counter') and bp.core.ready("Perfect Counter", 436) then
                         bp.queue.add("Perfect Counter", player)
 
                     end
@@ -106,7 +106,7 @@ local function load(bp, settings)
     function self:debuff()
 
         -- CHI BLAST.
-        if bp.core.get('job-abilities') and bp.actions.canAct() and bp.core.get('chi-blast') and bp.core.ready("Chi Blast") and bp.targets.get('player') then
+        if bp.core.get('auto_job_abilities') and bp.actions.canAct() and bp.core.get('auto_chi_blast') and bp.core.ready("Chi Blast") and bp.targets.get('player') then
             bp.queue.add("Chi Blast", bp.targets.get('player'))
 
         end

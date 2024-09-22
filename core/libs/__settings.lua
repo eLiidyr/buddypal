@@ -96,7 +96,7 @@ local function lib(bp)
         end
 
         -- Metatable Functions.
-        mt.__index = function(t, k)            
+        mt.__index = function(t, k)
 
             if rawget(data, k) ~= nil then
                 return rawget(data, k)

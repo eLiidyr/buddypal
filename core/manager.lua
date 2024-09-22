@@ -147,7 +147,10 @@ function manager:new(core)
         buildAliases()
 
         -- Apply Fast CS Hook.
-        core.api.hookFastCS()
+        --core.api.hookFastCS()
+
+        -- Send a message.
+        core.socket.sendMessage({id=0, contents="Welcome to buddypal!"})
 
     end
 

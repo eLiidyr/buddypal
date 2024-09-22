@@ -1,5 +1,4 @@
 return {
-    ["auto_medicine"]                = {enabled=false, items={['Antidote']=false,['Eye Drops']=false,['Echo Drops']=false,['Holy Water']=false,['Hallowed Water']=false,['Remedy']=false,['Panacea']=false}},
     ["auto_aftermath"]               = {enabled=false, level=3},
     ["auto_range_weaponskill"]       = {enabled=false, tp=1000, name="Hot Shot"},
     ["auto_melee_weaponskill"]       = {enabled=false, tp=1000, name="Combo"},
@@ -14,6 +13,7 @@ return {
     ["auto_debuffing"]               = false,
     ["tank_mode"]                    = false,
     ["nuke_mode"]                    = false,
+    ["set_max_buff_limit"]           = 0,
 
     ["WAR"] = {
         ["auto_sanguine_blade"]      = {enabled=false, hpp=45},
@@ -53,6 +53,7 @@ return {
         ["auto_devotion"]            = {enabled=false, mpp=45, target=""},
         ["auto_boost"]               = {enabled=false, name="Boost-STR"},
         ["auto_moonlight"]           = {enabled=false, mpp=45},
+        ["auto_haste"]               = false,
         ["auto_status"]              = false,
         ["auto_divine_seal"]         = false,
         ["auto_solace"]              = false,
@@ -118,8 +119,8 @@ return {
         ["auto_despoil"]             = false,
         ["auto_conspirator"]         = false,
         ["auto_bully"]               = false,
-        ["auto_saws"]                = false,
-        ["auto_taws"]                = false,
+        ["force_sneak_attack_ws"]    = false,
+        ["force_trick_attack_ws"]    = false,
         ["auto_perfect_dodge"]       = false,
         ["auto_larceny"]             = false,
     },
@@ -290,7 +291,7 @@ return {
     },
 
     ["COR"] = {
-        ["auto_rolls"]               = {enabled=false, max=2, list={"Chaos Roll","Samurai Roll"}},
+        ["auto_rolls"]               = {enabled=false, max=2, roll_1="Chaos Roll", roll_2="Samurai Roll"},
         ["auto_quick_draw"]          = {enabled=false, name="Light Shot"},
         ["auto_double_up"]           = {enabled=false, max=7},
         ["auto_crooked_cards"]       = false,
@@ -301,8 +302,8 @@ return {
     },
 
     ["PUP"] = {
-        ["auto_maneuvers"]           = {enabled=false, list={"Fire Maneuver","Light Maneuver","Wind Maneuver"}},
-        ["auto_secondary_maneuvers"] = {enabled=false, list={"Fire Maneuver","Light Maneuver","Wind Maneuver"}, hpp=40},
+        ["auto_maneuvers"]           = {enabled=false, maneuver_1="Fire Maneuver", maneuver_2="Light Maneuver", maneuver_3="Wind Maneuver"},
+        ["auto_secondary_maneuvers"] = {enabled=false, maneuver_1="Fire Maneuver", maneuver_2="Light Maneuver", maneuver_3="Wind Maneuver", hpp=40},
         ["auto_repair"]              = {enabled=false, hpp=55},
         ["auto_activate"]            = false,
         ["auto_cooldown"]            = false,
@@ -336,7 +337,7 @@ return {
     },
 
     ["SCH"] = {
-        ["auto_stratagems"]          = {enabled=false, list={penury={}, celerity={}, accession={}, rapture={}, perpetuance={}, parsimony={}, alacrity={}, manifestation={}, ebullience={}}},
+        ["auto_stratagems"]          = {enabled=false, penury={}, celerity={}, accession={}, rapture={}, perpetuance={}, parsimony={}, alacrity={}, manifestation={}, ebullience={}},
         ["auto_embrava"]             = {enabled=false, target=""},
         ["auto_spikes"]              = {enabled=false, name="Blaze Spikes"},
         ["auto_storms"]              = {enabled=false, name="Firestorm"},
@@ -359,7 +360,7 @@ return {
     },
 
     ["GEO"] = {
-        ["auto_bubbles"]             = {enabled=false, list={"Indi-Fury","Geo-Frailty","Indi-Haste"}},
+        ["auto_bubbles"]             = {enabled=false, indicolure="Indi-Fury", geocolure="Geo-Frailty", entrust="Indi-Haste"},
         ["auto_full_circle"]         = {enabled=false, distance=22},
         ["auto_drain"]               = {enabled=false, hpp=55},
         ["auto_aspir"]               = {enabled=false, mpp=55},
@@ -382,7 +383,7 @@ return {
 
     ["RUN"] = {
         ["auto_spikes"]              = {enabled=false, name="Blaze Spikes"},
-        ["auto_runes"]               = {enabled=false, list={"Ignis","Ignis","Ignis"}},
+        ["auto_runes"]               = {enabled=false, rune_1="Ignis", rune_2="Ignis", rune_3="Ignis"},
         ["auto_vivacious_pulse"]     = {enabled=false, hpp=55, mpp=55},
         ["auto_embolden"]            = {enabled=false, name="Temper"},
         ["auto_sanguine_blade"]      = {enabled=false, hpp=55},

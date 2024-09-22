@@ -12,7 +12,7 @@ local function load(bp, settings)
         local player = bp.__player.get()
         local target = bp.targets.get('player')
 
-        if player and target and bp.core.get('one-hours') and bp.actions.canAct() then
+        if player and target and bp.core.get('auto_one_hours') and bp.actions.canAct() then
 
         end
 
@@ -27,14 +27,14 @@ local function load(bp, settings)
 
     function self:buff()
 
-        if bp.core.get('buffing') and bp.actions.canCast() then
+        if bp.core.get('auto_buffing') and bp.actions.canCast() then
             local player = bp.__player.get()
 
             if player and player.status == 1 then
                 local target = bp.__target.get('t')
 
                 if bp.actions.canAct() then
-                    local diffusion = bp.core.get('diffusion')
+                    local diffusion = bp.core.get('auto_diffusion')
 
                     -- DIFFUSION.
                     if diffusion and diffusion.enabled and bp.core.ready("Diffusion") then
@@ -46,7 +46,7 @@ local function load(bp, settings)
 
                             if unbridled:contains(spell.en) then
 
-                                if bp.core.get('unbridled-learning') and bp.core.ready("Unbridled Learning", 485) then
+                                if bp.core.get('auto_unbridled_learning') and bp.core.ready("Unbridled Learning", 485) then
                                     bp.queue.add("Unbridled Learning", player)
                                     bp.queue.add("Diffusion", player)
                                     bp.queue.add(spell, player)
@@ -69,7 +69,7 @@ local function load(bp, settings)
                 local target = bp.targets.get('player')
 
                 if bp.actions.canAct() then
-                    local diffusion = bp.core.get('diffusion')
+                    local diffusion = bp.core.get('auto_diffusion')
 
                     -- DIFFUSION.
                     if diffusion and diffusion.enabled and bp.core.ready("Diffusion") then
@@ -81,7 +81,7 @@ local function load(bp, settings)
 
                             if unbridled:contains(spell.en) then
 
-                                if bp.core.get('unbridled-learning') and bp.core.ready("Unbridled Learning", 485) then
+                                if bp.core.get('auto_unbridled_learning') and bp.core.ready("Unbridled Learning", 485) then
                                     bp.queue.add("Unbridled Learning", player)
                                     bp.queue.add("Diffusion", player)
                                     bp.queue.add(spell, player)
@@ -122,7 +122,7 @@ local function load(bp, settings)
     function self:enmity()
         local timer = bp.core.timer('enmity')
 
-        if bp.core.get('hate') and bp.core.get('hate').enabled and timer:ready() then
+        if bp.core.get('auto_enmity_generation') and bp.core.get('auto_enmity_generation').enabled and timer:ready() then
             local player = bp.__player.get()
 
             if player and player.status == 1 then
@@ -134,7 +134,7 @@ local function load(bp, settings)
                 if bp.__blu.hasHateSpells({"Blank Gaze"}) and bp.core.ready("Blank Gaze") then
                     bp.queue.add("Blank Gaze", target)
 
-                elseif bp.core.get('hate').aoe and bp.__blu.hasHateSpells({"Geist Wall","Jettatura","Soporific","Sheep Song"}) then
+                elseif bp.core.get('auto_enmity_generation').aoe and bp.__blu.hasHateSpells({"Geist Wall","Jettatura","Soporific","Sheep Song"}) then
 
                     for spell in T{"Geist Wall","Jettatura","Soporific","Sheep Song"}:it() do
 
@@ -160,30 +160,9 @@ local function load(bp, settings)
         local spells = bp.__blu.getSpells()
 
         -- MAGIC HAMMER.
-        if bp.core.get('magic-hammer') and bp.core.get('magic-hammer').enabled and spells:contains("Magic Hammer") and bp.core.ready("Magic Hammer") and bp.__player.mpp() < bp.core.get('magic-hammer').mpp and target then
+        if bp.core.get('auto_magic_hammer') and bp.core.get('auto_magic_hammer').enabled and spells:contains("Magic Hammer") and bp.core.ready("Magic Hammer") and bp.__player.mpp() < bp.core.get('auto_magic_hammer').mpp and target then
             bp.queue.add("Magic Hammer", target)
         
-        end
-
-        if bp.core.get('nuke-mode') and bp.actions.canCast() and target then
-            local nukes = bp.core.get('nukes')
-
-            for i=1, #nukes do
-                local spell = bp.__res.get(nukes[i])
-
-                if spell and bp.core.ready(spell) then
-
-                    -- CONVERGENCE.
-                    if bp.core.get('convergence') and bp.core.ready("Convergence", 355) then
-                        bp.queue.add("Convergence", bp.__player.get())
-
-                    end
-                    bp.queue.add(spell, target)
-
-                end
-
-            end
-
         end
 
         return self

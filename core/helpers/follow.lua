@@ -12,12 +12,12 @@ local function helper(bp, events)
     local follow_target = false
 
     do -- Setup default setting values.
-        settings.follow_speed           = settings:default('follow_speed',          1.50)   -- .
+        settings.follow_speed           = settings:default('follow_speed',          1.50)   -- Set the enhanced follow speed value.
         settings.follow_distance        = settings:default('follow_distance',       2)      -- Minimum distance before it will attempt to walk towards it's target.
         settings.minimum_zone_range     = settings:default('minimum_zone_range',    7)      -- Minimum range a player must be to trigger an injected zoneline.
         settings.follow_zone_delay      = settings:default('follow_zone_delay',     7)      -- Minimum delay after zoning before triggering auto-follow.
         settings.continuous_following   = settings:default('continuous_following',  true)   -- Continue to follow even after status changes, and zoning.
-        settings.enhanced_follow_speed  = settings:default('enhanced_follow_speed', true)   -- .
+        settings.enhanced_follow_speed  = settings:default('enhanced_following',    true)   -- Makes followers have enhanced speed regardless of their base speed.
 
     end
 
