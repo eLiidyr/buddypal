@@ -1,7 +1,7 @@
-local function load(bp, settings)
+local function load(bp)
     local self = {}
 
-    if not bp or not settings then
+    if not bp then
         print(string.format('\\cs(%s)ERROR INITIALIZING JOB! PLEASE POST AN ISSUE ON GITHUB!\\cr', "20, 200, 125"))
         return false
 
@@ -12,7 +12,7 @@ local function load(bp, settings)
         local player = bp.__player.get()
         local target = bp.targets.get('player')
 
-        if player and target and bp.core.get('auto_one_hours') and bp.actions.canAct() then
+        if player and target and bp.combat.get('auto_one_hours') and bp.actions.canAct() then
 
             if bp.core.get("eagle-eye-shot") and bp.core.ready("Eagle Eye Shot") then
                 bp.queue.add("Eagle Eye Shot", target)
@@ -37,7 +37,7 @@ local function load(bp, settings)
 
     function self:buff()
 
-        if bp.core.get('auto_buffing') then
+        if bp.combat.get('auto_buffing') then
             local player = bp.__player.get()
 
             if player and player.status == 1 then

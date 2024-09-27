@@ -1,7 +1,7 @@
-local function load(bp, settings)
+local function load(bp)
     local self = {}
 
-    if not bp or not settings then
+    if not bp then
         print(string.format('\\cs(%s)ERROR INITIALIZING JOB! PLEASE POST AN ISSUE ON GITHUB!\\cr', "20, 200, 125"))
         return false
 
@@ -10,7 +10,7 @@ local function load(bp, settings)
     -- Public Methods.
     function self:specials()
 
-        if bp.core.get('auto_job_abilities') and bp.core.get('auto_one_hours') and bp.actions.canAct() then
+        if bp.combat.get('auto_job_abilities') and bp.combat.get('auto_one_hours') and bp.actions.canAct() then
             local target = bp.targets.get('player')
 
             if bp.core.get('invincible') and bp.core.ready("Invincible", 50) and target then
@@ -31,7 +31,7 @@ local function load(bp, settings)
 
     function self:abilities()
 
-        if bp.core.get('auto_job_abilities') and bp.actions.canAct() then
+        if bp.combat.get('auto_job_abilities') and bp.actions.canAct() then
             local player = bp.__player.get()
 
             if player and player.status == 1 then
@@ -85,7 +85,7 @@ local function load(bp, settings)
 
     function self:buff()
 
-        if bp.core.get('auto_buffing') then
+        if bp.combat.get('auto_buffing') then
             local player = bp.__player.get()
 
             if player and player.status == 1 then
@@ -99,7 +99,7 @@ local function load(bp, settings)
 
                     end
 
-                    if target and bp.core.get('auto_job_abilities') then
+                    if target and bp.combat.get('auto_job_abilities') then
 
                         -- SENTINEL.
                         if bp.core.get('sentinel') and bp.core.ready("Sentinel", 62) then
@@ -173,7 +173,7 @@ local function load(bp, settings)
 
                     end
 
-                    if target and bp.core.get('auto_job_abilities') then
+                    if target and bp.combat.get('auto_job_abilities') then
 
                         -- SENTINEL.
                         if bp.core.get('sentinel') and bp.core.ready("Sentinel", 62) then

@@ -38,7 +38,6 @@ local function helper(bp, events)
     local function onload()
         settings:save()
         settings:update()
-        bp.socket.sendSettings({['actions']=settings:get()})
 
         -- Timer creation.
         o.timer('auto-distance-timer',  0.3)
@@ -934,43 +933,49 @@ local function helper(bp, events)
         local command   = commands[1] and table.remove(commands, 1):lower()
 
         if command and command == 'actions' then
-            local command = commands[1] and table.remove(commands, 1):lower() or false
 
-            if command then
+            if settings[commands[1]] ~= nil then
+                local key, data, value = settings:fetch(commands)
+
+                if data[key] ~= nil then
+
+                    if S{'true','false'}:contains(value) then
+                        data[key] = (value == 'true')
+                        settings:save()
+
+                    elseif tonumber(value) then
+                        data[key] = tonumber(value)
+                        settings:save()
+
+                    elseif type(value) == 'string' then
+                        data[key] = value
+                        settings:save()
+
+                    end
+
+                end
+
+            else
+
+                local command = commands[1] and table.remove(commands, 1):lower()
                 local target = bp.targets.get('player')
 
-                if ('weaponskill'):startswith(command) and target then
-                    bp.orders.send('r', string.format('/ act __weaponskill %s', target.id))
+                if command then
 
-                elseif ('switch'):startswith(command) and target then
-                    bp.orders.send('r', string.format('/ act __switch %s', target.id))
+                    if command == 'weaponskill' and target then
+                        bp.orders.send('r', string.format('/ act __weaponskill %s', target.id))
+    
+                    elseif command == 'switch' and target then
+                        bp.orders.send('r', string.format('/ act __switch %s', target.id))
 
-                elseif ('action_after_death_delay'):startswith(command) then
-                    settings.action_after_death_delay = (commands[1] and tonumber(commands[1]) or settings.action_after_death_delay)
-                    settings:save()
+                    elseif command == '__weaponskill' and commands[1] then
+                        bp.__actions.weaponskill(commands[1])
+    
+                    elseif command == '__switch' and commands[1] then
+                        bp.__actions.switchTarget(commands[1])
+                        
+                    end
 
-                elseif ('prevent_spell_interruption'):startswith(command) then
-                    settings.prevent_spell_interruption = (commands[1] and T{'!','#'}:contains(commands[1])) and (commands[1] == '!')
-                    settings:save()
-
-                elseif ('prevent_player_knockback'):startswith(command) then
-                    settings.prevent_player_knockback = (commands[1] and T{'!','#'}:contains(commands[1])) and (commands[1] == '!')
-                    settings:save()
-
-                elseif ('auto_distance_from_target'):startswith(command) then
-                    settings.auto_distance_from_target = (commands[1] and T{'!','#'}:contains(commands[1])) and (commands[1] == '!')
-                    settings:save()
-
-                elseif ('auto_face_target'):startswith(command) then
-                    settings.auto_face_target = (commands[1] and T{'!','#'}:contains(commands[1])) and (commands[1] == '!')
-                    settings:save()
-
-                elseif command == '__weaponskill' and commands[1] then
-                    bp.__actions.weaponskill(commands[1])
-
-                elseif command == '__switch' and commands[1] then
-                    bp.__actions.switchTarget(commands[1])
-                    
                 end
 
             end

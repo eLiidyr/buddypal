@@ -1,7 +1,7 @@
-local function load(bp, settings)
+local function load(bp)
     local self = {}
 
-    if not bp or not settings then
+    if not bp then
         print(string.format('\\cs(%s)ERROR INITIALIZING JOB! PLEASE POST AN ISSUE ON GITHUB!\\cr', "20, 200, 125"))
         return false
 
@@ -9,8 +9,20 @@ local function load(bp, settings)
 
     -- Public Methods.
     function self:specials()
+        local player = bp.__player.get()
+        local target = bp.targets.get('player')
 
-        if bp.core.get('auto_job_abilities') and bp.core.get('auto_one_hours') and bp.actions.canAct() then
+        if player and target and bp.combat.get('auto_one_hours') and bp.combat.get('auto_job_abilities') and bp.actions.canAct() then
+
+            if bp.abilities.get('auto_meikyo_shisui') and bp.core.ready("Meikyo Shisui", 44) then
+                bp.queue.add("Meikyo Shisui", player)
+
+            end
+            
+            if bp.abilities.get('auto_yaegasumi') and bp.core.ready("Yaegasumi", 490) then
+                bp.queue.add("Yaegasumi", player)
+
+            end
 
         end
 
@@ -20,31 +32,36 @@ local function load(bp, settings)
 
     function self:abilities()
         
-        if bp.core.get('auto_job_abilities') and bp.actions.canAct() then
+        if bp.combat.get('auto_job_abilities') and bp.actions.canAct() then
             local player = bp.__player.get()
 
             if player and player.status == 1 then
                 local target = bp.__target.get('t')
 
                 -- SHIKIKOYO.
-                if bp.core.get('shikikoyo') and bp.core.get('shikikoyo').enabled and bp.core.ready("Shikikoyo") then
-                    local target = bp.__target.get(bp.core.get('shikikoyo').target)
+                if bp.abilities.get('auto_shikikoyo') then
+                    local shikikoyo = bp.abilities.get('shikikoyo')
+                    
+                    if shikikoyo.enabled and bp.core.ready("Shikikoyo") then
+                        local target = bp.__target.get(shikikoyo.target)
 
-                    if target and bp.__player.tp() >= bp.core.get('shikikoyo').tp and bp.__distance.get(target) <= bp.actions.getRange("Shikikoyo") then
-                        bp.queue.add("Shikikoyo", target)
+                        if target and bp.__player.tp() >= shikikoyo.tp and bp.__distance.get(target) <= bp.actions.getRange("Shikikoyo") then
+                            bp.queue.add("Shikikoyo", target)
+
+                        end
 
                     end
 
                 end
 
                 -- MEDITATE.
-                if bp.core.get('meditate') and bp.core.ready("Meditate") and bp.__player.tp() < 1500 then
+                if bp.abilities.get('auto_meditate') and bp.core.ready("Meditate") and bp.__player.tp() < 1500 then
                     bp.queue.add("Meditate", player)
 
                 end
 
                 -- BLADE BASH.
-                if bp.core.get('auto_blade_bash') and bp.core.ready("Blade Bash") and target then
+                if bp.abilities.get('auto_blade_bash') and bp.core.ready("Blade Bash") and target then
                     bp.queue.add("Blade Bash", target)
 
                 end
@@ -52,27 +69,16 @@ local function load(bp, settings)
             elseif player and player.status == 0 then
                 local target = bp.targets.get('player')
 
-                -- SHIKIKOYO.
-                if bp.core.get('shikikoyo') and bp.core.get('shikikoyo').enabled and bp.core.ready("Shikikoyo") then
-                    local target = bp.__target.get(bp.core.get('shikikoyo').target)
-
-                    if target and bp.__player.tp() >= bp.core.get('shikikoyo').tp and bp.__distance.get(target) <= bp.actions.getRange("Shikikoyo") then
-                        bp.queue.add("Shikikoyo", target)
-
-                    end
-
-                end
-
                 -- MEDITATE.
-                if bp.core.get('meditate') and bp.core.ready("Meditate") and bp.__player.tp() < 1500 then
+                if bp.abilities.get('auto_meditate') and bp.core.ready("Meditate") and bp.__player.tp() < 1500 then
                     bp.queue.add("Meditate", player)
-                
+
                 end
 
                 -- BLADE BASH.
-                if bp.core.get('auto_blade_bash') and bp.core.ready("Blade Bash") and target then
+                if bp.abilities.get('auto_blade_bash') and bp.core.ready("Blade Bash") and target then
                     bp.queue.add("Blade Bash", target)
-                
+
                 end
 
             end
@@ -85,22 +91,23 @@ local function load(bp, settings)
 
     function self:buff()
 
-        if bp.core.get('auto_buffing') then
+        if bp.combat.get('auto_buffing') then
             local player = bp.__player.get()
 
             if player and player.status == 1 then
                 local target = bp.__target.get('t')
 
                 if bp.actions.canAct() then
+                    local aftermath = bp.core.get('auto_aftermath')
 
                     -- THIRD EYE.
-                    if bp.core.get('auto_third_eye') and bp.core.ready("Third Eye", 67) then
+                    if bp.abilities.get('auto_third_eye') and bp.core.ready("Third Eye", 67) then
                         bp.queue.add("Third Eye", player)
 
                     end
 
                     -- HASSO.
-                    if bp.core.get('hasso') and not bp.core.get('auto_tank_mode') and bp.core.ready("Hasso", 353) then
+                    if bp.abilities.get('auto_hasso') and not bp.combat.get('auto_tank_mode') and bp.core.ready("Hasso", 353) then
                         local main = bp.__equipment.get(0)
 
                         if main then
@@ -114,38 +121,38 @@ local function load(bp, settings)
                         end
 
                     -- SEIGAN.
-                    elseif bp.core.get('seigan') and bp.core.get('auto_tank_mode') and bp.core.ready("Seigan", 354) then
+                    elseif bp.abilities.get('auto_seigan') and bp.combat.get('auto_tank_mode') and bp.core.ready("Seigan", 354) then
                         bp.queue.add("Seigan", player)
 
                     -- SEKKANOKI.
-                    elseif bp.core.get('sekkanoki') and bp.core.ready("Sekkanoki", 408) then
+                    elseif bp.abilities.get('auto_sekkanoki') and bp.core.ready("Sekkanoki", 408) then
 
-                        if bp.core.get('auto_aftermath') and bp.core.get('auto_aftermath').enabled then
+                        if aftermath and aftermath.enabled then
 
                             if bp.__aftermath.active() then
                                 bp.queue.add("Sekkanoki", player)
 
                             end
 
-                        elseif (not bp.core.get('auto_aftermath') or (bp.core.get('auto_aftermath') and not bp.core.get('auto_aftermath').enabled)) then
+                        elseif (not aftermath or (aftermath and not aftermath.enabled)) then
                             bp.queue.add("Sekkanoki", player)
 
                         end
 
                     -- KONZEN-ITTAI.
-                    elseif bp.core.get('auto_konzen_ittai') and bp.core.ready("Konzen-Ittai") then
+                    elseif bp.abilities.get('auto_konzen_ittai') and bp.core.ready("Konzen-Ittai") then
                         bp.queue.add("Konzen-Ittai", player)
 
                     -- SENGIKORI.
-                    elseif bp.core.get('sengikori') and bp.core.ready("Sengikori", 440) then
+                    elseif bp.abilities.get('auto_sengikori') and bp.core.ready("Sengikori", 440) then
                         bp.queue.add("Sengikori", player)
 
                     -- HAMANOHA.
-                    elseif bp.core.get('hamanoha') and bp.core.ready("Hamanoha", 465) then
+                    elseif bp.abilities.get('auto_hamanoha') and bp.core.ready("Hamanoha", 465) then
                         bp.queue.add("Hamanoha", player)
 
                     -- HAGAKURE.
-                    elseif bp.core.get('hagakure') and bp.core.ready("Hagakure", 483) then
+                    elseif bp.abilities.get('auto_hagakure') and bp.core.ready("Hagakure", 483) then
                         bp.queue.add("Hagakure", player)
 
                     end
@@ -158,13 +165,13 @@ local function load(bp, settings)
                 if bp.actions.canAct() then
 
                     -- THIRD EYE.
-                    if bp.core.get('auto_third_eye') and bp.core.ready("Third Eye", 67) then
+                    if bp.abilities.get('auto_third_eye') and bp.core.ready("Third Eye", 67) then
                         bp.queue.add("Third Eye", player)
 
                     end
 
                     -- HASSO.
-                    if bp.core.get('hasso') and not bp.core.get('auto_tank_mode') and bp.core.ready("Hasso", 353) then
+                    if bp.abilities.get('auto_hasso') and not bp.combat.get('auto_tank_mode') and bp.core.ready("Hasso", 353) then
                         local main = bp.__equipment.get(0)
 
                         if main then
@@ -178,7 +185,7 @@ local function load(bp, settings)
                         end
 
                     -- SEIGAN.
-                    elseif bp.core.get('seigan') and bp.core.get('auto_tank_mode') and bp.core.ready("Seigan", 354) then
+                    elseif bp.abilities.get('auto_seigan') and bp.combat.get('auto_tank_mode') and bp.core.ready("Seigan", 354) then
                         bp.queue.add("Seigan", player)
 
                     end
@@ -199,41 +206,11 @@ local function load(bp, settings)
     end
 
     function self:enmity()
-        local timer = bp.core.timer('enmity')
-
-        if bp.core.get('auto_enmity_generation') and bp.core.get('auto_enmity_generation').enabled and timer:ready() then
-            local player = bp.__player.get()
-
-            if player and player.status == 1 then
-                local target = bp.__target.get('t')
-
-            elseif player and player.status == 0 then
-                local target = bp.targets.get('player')
-
-            end
-
-        end
-
         return self
 
     end
 
     function self:nuke()
-        local target = bp.targets.get('player')
-
-        if bp.core.get('auto_nuke_mode') and target and bp.core.nukes:length() > 0 and bp.actions.canCast() then
-
-            for spell in bp.core.nukes:it() do
-
-                if bp.core.isReady(spell) and not bp.core.inQueue(spell) then
-                    bp.queue.add(spell, target)
-
-                end
-
-            end
-
-        end
-
         return self
 
     end

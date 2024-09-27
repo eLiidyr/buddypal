@@ -16,7 +16,7 @@ local function helper(bp, events)
     -- Private Methods.
     local function onload()
         settings:save()
-        bp.socket.sendSettings({['debuffs']=settings:get()})
+        settings:update()
 
     end
 

@@ -22,14 +22,24 @@ local function lib(bp)
         settings.isNew = data and T(data):length() == 0 and true or false
 
         -- Public Object Methods.
-        function settings:get()
-            return data:copy()
+        function settings:get(key)
+            if not key then
+                return data
+
+            end
+            return data[key]
         
         end
         
         function settings:length()
             return T(data):length()
         
+        end
+
+        function settings:empty()
+            data = {}
+            return data
+            
         end
         
         function settings:save(callback, ...)
@@ -44,7 +54,7 @@ local function lib(bp)
         end
 
         function settings:update()
-            bp.socket.sendStandard(0x1, {event=0xFF, original={ name=name, data=data }})
+            bp.socket.sendSettings({ [name]=data })
 
         end
 
@@ -67,6 +77,41 @@ local function lib(bp)
             
             end
             return false
+
+        end
+
+        function settings:fetch(keys)
+            local final = nil
+            local match = nil
+            local index = nil
+
+            for i, key in ipairs(keys) do
+
+                if i == 1 and data[key] ~= nil then
+                    final = key
+                    index = i
+
+                    if type(data[key]) == 'table' then
+                        match = data[key]
+
+                    else
+                        match = data
+
+                    end
+
+                elseif i > 1 and match[key] ~= nil then
+                    final = key
+                    index = i
+
+                    if type(match[key]) == 'table' then
+                        match = match[key]
+                        
+                    end
+
+                end           
+
+            end
+            return final, match, T(keys):slice(index+1, #keys):concat(' ')
 
         end
 

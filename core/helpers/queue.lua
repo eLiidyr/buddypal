@@ -111,11 +111,12 @@ local function helper(bp, events)
 
     local function attempt(prefix, action, target, callback)
         if queue:empty() then return end
-        local timer = o.timer('attempt-protect')
+        local timer = o.timer('actions-protect')
 
         if prefix and action and target and timer:ready() then
             local top = queue:first()
             
+            timer:update(0.75)
             if action.en == 'Ranged' then
                 bp.cmd(('input %s'):format(prefix))
                 top.attempts = (o.attempts() + 1)
@@ -129,7 +130,6 @@ local function helper(bp, events)
                 top.attempts = (o.attempts() + 1)
 
             end
-            timer:update()
 
         end
 
@@ -159,6 +159,17 @@ local function helper(bp, events)
 
                     if action.en == 'Pianissimo' then
                         return attempt(action.prefix, action, player)
+
+                    elseif action.en == 'Double-Up' then
+
+                        if bp.__rolls.isMidroll() and bp.__rolls.active(true) > 0 then
+                            return attempt(action.prefix, action, target)
+
+                        else
+                            queue:remove(1)
+                            o.updateDisplay()
+
+                        end
 
                     elseif action.type == 'Scholar' then
 
@@ -434,32 +445,36 @@ local function helper(bp, events)
 
     local function trigger(action)
         if queue:empty() then return end
-        local timer = o.timer('actions-protect')
 
         if S{'/jobability','/pet'}:contains(action.prefix) then
-            timer:update(1.25)
+            o.timer('actions-protect'):update(1.25)
+            print('make: 1.25')
 
         elseif S{'/magic','/ninjutsu','/song'}:contains(action.prefix) then
-            timer:update(2.75)
+            o.timer('actions-protect'):update(2.75)
+            print('make: 2.75')
 
         elseif S{'/weaponskill'}:contains(action.prefix) then
-            timer:update(1.25)
+            o.timer('actions-protect'):update(1.25)
+            print('make: 1.25')
 
         elseif S{'/ra'}:contains(action.prefix) then
-            timer:update(2.00)
+            o.timer('actions-protect'):update(2.00)
+            print('make: 2.00')
 
         elseif action.flags and action.flags:contains('Usable') then
-            timer:update(action.cast_delay or 2.50)
+            o.timer('actions-protect'):update(action.cast_delay or 2.50)
+            print('make: x.xx')
 
         else
-            timer:update(2.00)
+            o.timer('actions-protect'):update(2.00)
+            print('make: 2.00')
 
         end
     
     end
 
     local function onload()
-        o.timer('attempt-protect', 0.50)
         o.timer('actions-protect', 0.50)
         handle:loop(0.50)
         settings:save()
@@ -888,6 +903,7 @@ local function helper(bp, events)
     o.remove = function(action, target, index)
         local action = type(action) == 'table' and action or bp.__res.get(action)
 
+        print('removing...')
         if index and index == 1 then
 
             if queue[1] then
@@ -905,7 +921,6 @@ local function helper(bp, events)
                     for act, index in queue:it() do
 
                         if action.en == act.action.en then
-                            bp.logger.log(string.format('Queue → Removing action @%d: "%s"', index, action.en))
                             trigger(action)
                             queue:remove(index)
                             break
@@ -919,7 +934,6 @@ local function helper(bp, events)
                     for act, index in queue:it() do
                         
                         if action.en == act.action.en and target.id == act.target.id then
-                            bp.logger.log(string.format('Queue → Removing action from target @%d: "%s"', index, action.en))
                             trigger(action)
                             queue:remove(index)
                             break
@@ -931,7 +945,6 @@ local function helper(bp, events)
                 end
 
             elseif action and index and queue[index] then
-                bp.logger.log(string.format('Queue → Removing action: "%d|%s"', index, action.en))
                 trigger(queue[index].action)
                 queue:remove(index)
 

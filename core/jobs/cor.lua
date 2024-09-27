@@ -1,7 +1,7 @@
-local function load(bp, settings)
+local function load(bp)
     local self = {}
 
-    if not bp or not settings then
+    if not bp then
         print(string.format('\\cs(%s)ERROR INITIALIZING JOB! PLEASE POST AN ISSUE ON GITHUB!\\cr', "20, 200, 125"))
         return false
 
@@ -15,7 +15,7 @@ local function load(bp, settings)
 
     function self:abilities()
 
-        if bp.core.get('auto_job_abilities') and bp.actions.canAct() then
+        if bp.combat.get('auto_job_abilities') and bp.actions.canAct() then
             local player = bp.__player.get()
 
             if player and player.status == 1 then
@@ -23,10 +23,10 @@ local function load(bp, settings)
 
                 -- QUICK DRAW.
                 if bp.core.get('auto_quick_draw') and target then
-                    local qd = bp.core.get('auto_quick_draw')
+                    local quick = bp.core.get('auto_quick_draw')
                     
-                    if qd.enabled and bp.core.ready("Quick Draw") and bp.__inventory.getCount("Trump Card") > 0 then
-                        bp.queue.add(qd.name, target)
+                    if quick.enabled and bp.core.ready("Quick Draw") and bp.__inventory.getCount("Trump Card") > 0 then
+                        bp.queue.add(quick.name, target)
 
                     end
 
@@ -34,7 +34,7 @@ local function load(bp, settings)
 
                 -- RANDOM DEAL.
                 if bp.core.get('auto_random_deal') and bp.core.ready("Random Deal") and target then
-                    bp.queue.add("Random Deal", bp.__player.get())
+                    bp.queue.add("Random Deal", player)
 
                 end
 
@@ -43,10 +43,10 @@ local function load(bp, settings)
 
                 -- QUICK DRAW.
                 if bp.core.get('auto_quick_draw') and target then
-                    local qd = bp.core.get('auto_quick_draw')
+                    local quick = bp.core.get('auto_quick_draw')
                     
-                    if qd.enabled and bp.core.ready("Quick Draw") and bp.__inventory.getCount("Trump Card") > 0 then
-                        bp.queue.add(qd.name, target)
+                    if quick.enabled and bp.core.ready("Quick Draw") and bp.__inventory.getCount("Trump Card") > 0 then
+                        bp.queue.add(quick.name, target)
 
                     end
 
@@ -54,7 +54,7 @@ local function load(bp, settings)
 
                 -- RANDOM DEAL.
                 if bp.core.get('auto_random_deal') and bp.core.ready("Random Deal") and target then
-                    bp.queue.add("Random Deal", bp.__player.get())
+                    bp.queue.add("Random Deal", player)
 
                 end
 
@@ -68,7 +68,7 @@ local function load(bp, settings)
 
     function self:buff()
 
-        if bp.core.get('auto_buffing') then
+        if bp.combat.get('auto_buffing') then
             local player = bp.__player.get()
 
             if player and player.status == 1 then
@@ -83,20 +83,21 @@ local function load(bp, settings)
                     end
 
                     -- ROLLS.
-                    if bp.core.get('rolls') and bp.core.get('rolls').enabled then
+                    if bp.core.get('auto_rolls') then
+                        local cor_rolls = bp.core.get('auto_rolls')
 
                         if bp.__buffs.active(309) and bp.core.ready("Fold") then
                             bp.queue.add("Fold", player)
 
                         else
-                            
-                            if bp.core.ready("Double-Up") and bp.__rolls.getMidroll() then
+
+                            if bp.core.ready("Double-Up") and bp.__rolls.isMidroll() then
                                 local rolling = bp.__rolls.getRolling()
-                                local max = bp.core.get('auto_double_up') and bp.core.get('auto_double_up').max or 7
+                                local doubleup = bp.core.get('auto_double_up')
 
                                 if rolling then
 
-                                    if rolling.number < max then
+                                    if rolling.number < (doubleup.max or 7) then
                                         bp.queue.add("Double-Up", player)
 
                                     elseif bp.core.ready("Snake Eye", 357) and rolling.number >= 7 and rolling.number < 11 then
@@ -109,7 +110,7 @@ local function load(bp, settings)
 
                                 end
 
-                            elseif bp.core.ready("Phantom Roll") and bp.__rolls.active():length() < bp.core.get('rolls').max then
+                            elseif bp.core.ready("Phantom Roll") and bp.__rolls.active():length() < cor_rolls.max then
                                 local roll = bp.__rolls.getMissing()[1]
 
                                 if roll and bp.core.ready(roll) then
@@ -143,20 +144,21 @@ local function load(bp, settings)
                     end
 
                     -- ROLLS.
-                    if bp.core.get('rolls') and bp.core.get('rolls').enabled then
+                    if bp.core.get('auto_rolls') then
+                        local cor_rolls = bp.core.get('auto_rolls')
 
                         if bp.__buffs.active(309) and bp.core.ready("Fold") then
                             bp.queue.add("Fold", player)
 
                         else
                             
-                            if bp.core.ready("Double-Up") and bp.__rolls.getMidroll() then
+                            if bp.core.ready("Double-Up") and bp.__rolls.isMidroll() then
                                 local rolling = bp.__rolls.getRolling()
-                                local max = bp.core.get('auto_double_up') and bp.core.get('auto_double_up').max or 7
+                                local doubleup = bp.core.get('auto_double_up')
 
                                 if rolling then
 
-                                    if rolling.number < max then
+                                    if rolling.number < (doubleup.max or 7) then
                                         bp.queue.add("Double-Up", player)
 
                                     elseif bp.core.ready("Snake Eye", 357) and rolling.number >= 7 and rolling.number < 11 then
@@ -169,7 +171,7 @@ local function load(bp, settings)
 
                                 end
 
-                            elseif bp.core.ready("Phantom Roll") and bp.__rolls.active():length() < 2 then
+                            elseif bp.core.ready("Phantom Roll") and bp.__rolls.active():length() < cor_rolls.max then
                                 local roll = bp.__rolls.getMissing()[1]
 
                                 if roll and bp.core.ready(roll) then

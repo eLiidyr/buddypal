@@ -1,9 +1,9 @@
-local function load(bp, settings)
+local function load(bp)
     local self = {}
 
     local deploy_target = false
 
-    if not bp or not settings then
+    if not bp then
         print(string.format('\\cs(%s)ERROR INITIALIZING JOB! PLEASE POST AN ISSUE ON GITHUB!\\cr', "20, 200, 125"))
         return false
 
@@ -14,7 +14,7 @@ local function load(bp, settings)
         local player = bp.__player.get()
         local target = bp.targets.get('player')
 
-        if player and target and bp.core.get('auto_one_hours') and bp.actions.canAct() then
+        if player and target and bp.combat.get('auto_one_hours') and bp.actions.canAct() then
 
             if bp.core.get('overdrive') and bp.core.ready("Overdrive", 166) then
                 bp.queue.add("Overdrive", player)
@@ -35,7 +35,7 @@ local function load(bp, settings)
     function self:abilities()
         local pet = bp.__player.pet()
 
-        if bp.core.get('auto_job_abilities') and bp.actions.canAct() then
+        if bp.combat.get('auto_job_abilities') and bp.actions.canAct() then
             local player = bp.__player.get()
 
             if player and player.status == 1 then

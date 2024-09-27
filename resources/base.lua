@@ -1,72 +1,161 @@
 return {
-    ["auto_aftermath"]               = {enabled=false, level=3},
-    ["auto_range_weaponskill"]       = {enabled=false, tp=1000, name="Hot Shot"},
-    ["auto_melee_weaponskill"]       = {enabled=false, tp=1000, name="Combo"},
-    ["weaponskill_limiter"]          = {enabled=false, hpp=10, option=">"},
-    ["auto_enmity_generation"]       = {enabled=false, delay=2},
-    ["auto_food"]                    = {enabled=false, name=""},
-    ["allow_aoe_enmity_spells"]      = false,
-    ["auto_one_hours"]               = false,
-    ["auto_ranged_attacks"]          = false,
-    ["auto_job_abilities"]           = false,
-    ["auto_buffing"]                 = false,
-    ["auto_debuffing"]               = false,
-    ["tank_mode"]                    = false,
-    ["nuke_mode"]                    = false,
-    ["set_max_buff_limit"]           = 0,
 
     ["WAR"] = {
-        ["auto_sanguine_blade"]      = {enabled=false, hpp=45},
-        ["auto_moonlight"]           = {enabled=false, mpp=45},
-        ["auto_provoke"]             = false,
-        ["auto_berserk"]             = false,
-        ["auto_defender"]            = false,
-        ["auto_warcry"]              = false,
-        ["auto_aggressor"]           = false,
-        ["auto_retaliation"]         = false,
-        ["auto_warriors_charge"]     = false,
-        ["auto_tomahawk"]            = false,
-        ["auto_restraint"]           = false,
-        ["auto_blood_rage"]          = false,
-        ["auto_mighty_strikes"]      = false,
-        ["auto_brazen_rush"]         = false,
+
+        ['combat'] = {
+
+            ["auto_food"] = {enabled=false, name=""},
+            ["auto_enmity_generation"] = {enabled=false, delay=2},
+            ["allow_aoe_enmity_spells"] = false,
+            ["auto_one_hours"] = false,
+            ["auto_job_abilities"] = false,
+            ["auto_ranged_attacks"] = false,
+            ["auto_buffing"] = false,
+            ["auto_debuffing"] = false,
+            ["tank_mode"] = false,
+            ["nuke_mode"] = false,
+            ["set_max_buff_limit"] = 0,
+
+        },
+
+        ['weaponskills'] = {
+
+            ["auto_aftermath"] = {enabled=false, level=3},
+            ["auto_range_weaponskill"] = {enabled=false, tp=1000, name="Hot Shot"},
+            ["auto_melee_weaponskill"] = {enabled=false, tp=1000, name="Combo"},
+            ["weaponskill_limiter"] = {enabled=false, hpp=10, option=">"}, 
+            ["auto_sanguine_blade"] = {enabled=false, hpp=45},
+            ["auto_moonlight"] = {enabled=false, mpp=45},
+
+        },
+        
+        ['abilities'] = {
+
+            ["auto_provoke"] = false,
+            ["auto_berserk"] = false,
+            ["auto_defender"] = false,
+            ["auto_warcry"] = false,
+            ["auto_aggressor"] = false,
+            ["auto_retaliation"] = false,
+            ["auto_warriors_charge"] = false,
+            ["auto_tomahawk"] = false,
+            ["auto_restraint"] = false,
+            ["auto_blood_rage"] = false,
+            ["auto_mighty_strikes"] = false,
+            ["auto_brazen_rush"] = false,
+
+        },
+
+        ['spells'] = {
+
+        },
+        
     },
 
     ["MNK"] = {
-        ["auto_chakra"]              = {enabled=false, hpp=45},
-        ["auto_impetus"]             = false,
-        ["auto_footwork"]            = false,
-        ["auto_chi_blast"]           = false,
-        ["auto_dodge"]               = false,
-        ["auto_focus"]               = false,
-        ["auto_counterstance"]       = false,
-        ["auto_mantra"]              = false,
-        ["auto_formless_strikes"]    = false,
-        ["auto_perfect_counter"]     = false,
-        ["auto_hundred_fists"]       = false,
-        ["auto_inner_strength"]      = false,
+
+        ['combat'] = {
+
+            ["auto_food"] = {enabled=false, name=""},
+            ["auto_enmity_generation"] = {enabled=false, delay=2},
+            ["allow_aoe_enmity_spells"] = false,
+            ["auto_one_hours"] = false,
+            ["auto_job_abilities"] = false,
+            ["auto_ranged_attacks"] = false,
+            ["auto_buffing"] = false,
+            ["auto_debuffing"] = false,
+            ["tank_mode"] = false,
+            ["nuke_mode"] = false,
+            ["set_max_buff_limit"] = 0,
+
+        },
+
+        ['weaponskills'] = {
+
+            ["auto_aftermath"] = {enabled=false, level=3},
+            ["auto_melee_weaponskill"] = {enabled=false, tp=1000, name="Combo"},
+            ["weaponskill_limiter"] = {enabled=false, hpp=10, option=">"}, 
+
+        },
+        
+        ['abilities'] = {
+
+            ["auto_chakra"] = {enabled=false, hpp=45},
+            ["auto_impetus"] = false,
+            ["auto_footwork"] = false,
+            ["auto_chi_blast"] = false,
+            ["auto_dodge"] = false,
+            ["auto_focus"] = false,
+            ["auto_counterstance"] = false,
+            ["auto_mantra"] = false,
+            ["auto_formless_strikes"] = false,
+            ["auto_perfect_counter"] = false,
+            ["auto_hundred_fists"] = false,
+            ["auto_inner_strength"] = false,
+
+        },
+
+        ['spells'] = {
+
+        },
+
     },
 
     ["WHM"] = {
-        ["auto_benediction"]         = {enabled=false, mpp=35, targets=3, weight=1800},
-        ["auto_martyr"]              = {enabled=false, hpp=45, target=""},
-        ["auto_devotion"]            = {enabled=false, mpp=45, target=""},
-        ["auto_boost"]               = {enabled=false, name="Boost-STR"},
-        ["auto_moonlight"]           = {enabled=false, mpp=45},
-        ["auto_haste"]               = false,
-        ["auto_status"]              = false,
-        ["auto_divine_seal"]         = false,
-        ["auto_solace"]              = false,
-        ["auto_misery"]              = false,
-        ["auto_sacrosanctity"]       = false,
-        ["auto_sacrifice"]           = false,
-        ["auto_aquaveil"]            = false,
-        ["auto_blink"]               = false,
-        ["auto_stoneskin"]           = false,
-        ["auto_auspice"]             = false,
-        ["auto_reraise"]             = false,
-        ["auto_repose"]              = false,
-        ["auto_asylum"]              = false,
+
+        ['combat'] = {
+
+            ["auto_food"] = {enabled=false, name=""},
+            ["auto_enmity_generation"] = {enabled=false, delay=2},
+            ["allow_aoe_enmity_spells"] = false,
+            ["auto_one_hours"] = false,
+            ["auto_job_abilities"] = false,
+            ["auto_ranged_attacks"] = false,
+            ["auto_buffing"] = false,
+            ["auto_debuffing"] = false,
+            ["tank_mode"] = false,
+            ["nuke_mode"] = false,
+            ["set_max_buff_limit"] = 0,
+
+        },
+
+        ['weaponskills'] = {
+
+            ["auto_aftermath"] = {enabled=false, level=3},
+            ["auto_melee_weaponskill"] = {enabled=false, tp=1000, name="Combo"},
+            ["weaponskill_limiter"] = {enabled=false, hpp=10, option=">"},
+            ["auto_moonlight"] = {enabled=false, mpp=45}, 
+
+        },
+        
+        ['abilities'] = {
+
+            ["auto_benediction"] = {enabled=false, mpp=35, targets=3, weight=1800},
+            ["auto_martyr"] = {enabled=false, hpp=45, target=""},
+            ["auto_devotion"] = {enabled=false, mpp=45, target=""},
+            ["auto_divine_seal"] = false,
+            ["auto_solace"] = false,
+            ["auto_misery"] = false,
+            ["auto_sacrosanctity"] = false,
+            ["auto_sacrifice"] = false,        
+            ["auto_asylum"] = false,
+
+        },
+
+        ['spells'] = {
+
+            ["auto_boost"] = {enabled=false, name="Boost-STR"},
+            ["auto_status_fixes"] = false,
+            ["auto_haste"] = false,
+            ["auto_aquaveil"] = false,
+            ["auto_blink"] = false,
+            ["auto_stoneskin"] = false,
+            ["auto_auspice"] = false,
+            ["auto_reraise"] = false,
+            ["auto_repose"] = false,
+
+        },
+
     },
 
     ["BLM"] = {

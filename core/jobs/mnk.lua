@@ -1,7 +1,7 @@
-local function load(bp, settings)
+local function load(bp)
     local self = {}
 
-    if not bp or not settings then
+    if not bp then
         print(string.format('\\cs(%s)ERROR INITIALIZING JOB! PLEASE POST AN ISSUE ON GITHUB!\\cr', "20, 200, 125"))
         return false
 
@@ -11,7 +11,7 @@ local function load(bp, settings)
     function self:specials()
         local player = bp.__player.get()
 
-        if player and player.status == 1 and bp.core.get('auto_one_hours') and bp.actions.canAct() and bp.targets.get('player') then
+        if player and player.status == 1 and bp.combat.get('auto_one_hours') and bp.actions.canAct() and bp.targets.get('player') then
 
             -- HUNDRED FISTS.
             if bp.core.get('auto_hundred_fists') and bp.core.ready("Hundred Fists", 46) then
@@ -33,7 +33,7 @@ local function load(bp, settings)
 
     function self:abilities()
 
-        if bp.core.get('auto_job_abilities') and bp.actions.canAct() then
+        if bp.combat.get('auto_job_abilities') and bp.actions.canAct() then
             local player = bp.__player.get()
 
             if player and player.status == 1 then
@@ -55,7 +55,7 @@ local function load(bp, settings)
 
     function self:buff()
 
-        if bp.core.get('auto_buffing') then
+        if bp.combat.get('auto_buffing') then
             local player = bp.__player.get()
 
             if player and player.status == 1 then
@@ -106,7 +106,7 @@ local function load(bp, settings)
     function self:debuff()
 
         -- CHI BLAST.
-        if bp.core.get('auto_job_abilities') and bp.actions.canAct() and bp.core.get('auto_chi_blast') and bp.core.ready("Chi Blast") and bp.targets.get('player') then
+        if bp.combat.get('auto_job_abilities') and bp.actions.canAct() and bp.core.get('auto_chi_blast') and bp.core.ready("Chi Blast") and bp.targets.get('player') then
             bp.queue.add("Chi Blast", bp.targets.get('player'))
 
         end
