@@ -448,27 +448,21 @@ local function helper(bp, events)
 
         if S{'/jobability','/pet'}:contains(action.prefix) then
             o.timer('actions-protect'):update(1.25)
-            print('make: 1.25')
 
         elseif S{'/magic','/ninjutsu','/song'}:contains(action.prefix) then
             o.timer('actions-protect'):update(2.75)
-            print('make: 2.75')
 
         elseif S{'/weaponskill'}:contains(action.prefix) then
             o.timer('actions-protect'):update(1.25)
-            print('make: 1.25')
 
         elseif S{'/ra'}:contains(action.prefix) then
             o.timer('actions-protect'):update(2.00)
-            print('make: 2.00')
 
         elseif action.flags and action.flags:contains('Usable') then
             o.timer('actions-protect'):update(action.cast_delay or 2.50)
-            print('make: x.xx')
 
         else
             o.timer('actions-protect'):update(2.00)
-            print('make: 2.00')
 
         end
     
@@ -903,7 +897,6 @@ local function helper(bp, events)
     o.remove = function(action, target, index)
         local action = type(action) == 'table' and action or bp.__res.get(action)
 
-        print('removing...')
         if index and index == 1 then
 
             if queue[1] then

@@ -49,7 +49,7 @@ local function lib(bp)
                 callback(...)
             
             end
-            return o
+            return self
 
         end
 
