@@ -55,6 +55,7 @@ local function lib(bp)
 
         function settings:update()
             bp.socket.sendSettings({ [name]=data })
+            return self
 
         end
 
@@ -77,6 +78,34 @@ local function lib(bp)
             
             end
             return false
+
+        end
+
+        function settings:check(base)
+            local data = T(base):key_filter(function(key) return S{bp.__player.mjob(), bp.__player.sjob()}:contains(key) end)
+
+            for k, v in pairs(base) do
+                    
+                if type(v) == 'table' then
+                    
+                    for kk, vv in pairs(v) do
+                        
+                        if kk ~= '__mainonly' and data[kk] == nil then
+
+                            if (k == bp.__player.mjob() or (k == bp.__player.sjob() and not S(v.__mainonly):contains(kk))) then
+                                data[kk] = self:default(kk, vv)
+
+                            end
+
+                        end
+
+                    end
+
+                end
+
+            end
+            self:save()
+            return self
 
         end
 
@@ -113,6 +142,29 @@ local function lib(bp)
             end
             return final, match, T(keys):slice(index+1, #keys):concat(' ')
 
+        end
+
+        function settings:fromClient(commands)
+            local key, data, value = self:fetch(commands)
+
+            if data[key] ~= nil then
+        
+                if S{'true','false'}:contains(value) then
+                    data[key] = (value == 'true')
+                    self:save()
+        
+                elseif tonumber(value) then
+                    data[key] = tonumber(value)
+                    self:save()
+        
+                elseif type(value) == 'string' then
+                    data[key] = value
+                    self:save()
+        
+                end
+        
+            end
+            
         end
 
         -- Public Functions.

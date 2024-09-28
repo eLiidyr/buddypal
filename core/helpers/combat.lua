@@ -9,7 +9,6 @@ local function helper(bp, events)
             __mainonly ={''},
             auto_aftermath = {enabled=false, level=3},
             auto_range_weaponskill = {enabled=false, tp=1000, name="Hot Shot"},
-            auto_melee_weaponskill = {enabled=false, tp=1000, name="Combo"},
             weaponskill_limiter = {enabled=false, hpp=10, option=">"},
             auto_food = {enabled=false, name=""},
             auto_enmity_generation = {enabled=false, delay=2},
@@ -466,36 +465,8 @@ local function helper(bp, events)
     -- Public Variables.
 
     -- Private Methods.
-    local function updateSettings()
-        local data = T(base):key_filter(function(key) return S{bp.__player.mjob(), bp.__player.sjob()}:contains(key) end)
-
-        for k, v in pairs(base) do
-                
-            if type(v) == 'table' then
-                
-                for kk, vv in pairs(v) do
-                    
-                    if kk ~= '__mainonly' and settings[kk] == nil then
-
-                        if (k == bp.__player.mjob() or (k == bp.__player.sjob() and not S(v.__mainonly):contains(kk))) then
-                            settings[kk] = settings:default(kk, vv)
-
-                        end
-
-                    end
-
-                end
-
-            end
-
-        end
-        settings:save()
-
-    end
-
     local function onload()
-        updateSettings()
-        settings:update()
+        settings:check(base):update()
 
     end
 
@@ -709,25 +680,7 @@ local function helper(bp, events)
         if command and (string.match(command, 'combat/%a%a%a%a%a%a')) then
 
             if settings[commands[1]] ~= nil then
-                local key, data, value = settings:fetch(commands)
-
-                if data[key] ~= nil then
-
-                    if S{'true','false'}:contains(value) then
-                        data[key] = (value == 'true')
-                        settings:save()
-
-                    elseif tonumber(value) then
-                        data[key] = tonumber(value)
-                        settings:save()
-
-                    elseif type(value) == 'string' then
-                        data[key] = value
-                        settings:save()
-
-                    end
-
-                end
+                settings:fromClient(commands)
 
             else
 
