@@ -51,6 +51,7 @@ core.run        = windower.ffxi.run
 core.mob_array  = windower.ffxi.get_mob_array
 core.turn       = windower.ffxi.turn
 core.info       = windower.ffxi.get_info
+core.item       = windower.ffxi.get_item
 core.items      = windower.ffxi.get_items
 core.ja         = windower.ffxi.get_abilities
 core.spells     = windower.ffxi.get_spells
@@ -64,6 +65,7 @@ core.target     = windower.ffxi.get_mob_by_target
 core.party      = windower.ffxi.get_party
 core.keyitems   = windower.ffxi.get_key_items
 core.inject_o   = windower.packets.inject_outgoing
+core.baginfo    = windower.ffxi.get_bag_info
 
 -- Public Core Functions.
 core.enable = function()
