@@ -99,7 +99,6 @@ local function helper(bp, events)
             auto_blink = false,
             auto_stoneskin = false,
             auto_temper = false,
-            auto_flash = false,
             auto_foil = false,
             auto_refresh = false,
             auto_phalanx = false,
