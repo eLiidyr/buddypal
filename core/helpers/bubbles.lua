@@ -20,23 +20,22 @@ local function helper(bp, events)
     end
 
     local function updateRecast(id, original)
-        if not S{0x028}:contains(id) then return false end
+        if not S{0x028}:contains(id) then
+            return false
+        
+        end
+        
         local parsed = bp.packets.parse('incoming', original)
+        local id = parsed['Param']
 
-        if bp.core.get('bubbles') and bp.core.get('bubbles').list then
-            local bubbles = bp.core.get('bubbles').list
-            local id = parsed['Param']
+        if parsed and parsed['Category'] == 4 and bp.res.spells[id] then
+            local spell = bp.res.spells[id]
 
-            if parsed and parsed['Category'] == 4 and bp.res.spells[id] then
-                local spell = bp.res.spells[id]
+            if bp.buffs.get('auto_indicolure') and spell.en == bp.buffs.get('auto_indicolure').name then
+                recast.indicolure = false
 
-                if bubbles[1] and spell.en == bubbles[1] then
-                    recast.indicolure = false
-
-                elseif bubbles[2] and spell.en == bubbles[2] then
-                    recast.geocolure = false
-
-                end
+            elseif bp.buffs.get('auto_geocolure') and spell.en == bp.buffs.get('auto_geocolure').name then
+                recast.geocolure = false
 
             end
 
@@ -45,25 +44,34 @@ local function helper(bp, events)
     end
 
     local function outgoing(id, original)
-        if not S{0x01a}:contains(id) then return false end
-        local parsed = bp.packets.parse('outgoing', original)
-        local spell = (parsed and bp.res.spells[parsed['Param']]) and bp.res.spells[parsed['Param']] or false
+        if not S{0x01a}:contains(id) then
+            return false
         
-        if parsed and spell and spell.en:startswith("Geo-") then
-            local intended = bp.__target.get(parsed['Target'])
+        end
 
-            if S{'Self','Party'}:equals(spell.targets) and bp.__target.isEnemy(intended) then
-                parsed['Target'] = bp.__player.id()
-                parsed['Target Index'] = bp.__player.index()
-                return bp.packets.build(parsed)
-                
-            elseif S{'Enemy'}:equals(spell.targets) and not bp.__target.isEnemy(intended) then
-                local target = bp.__target.get(bp.targets.get('player')) -- UPDATE.
+        local parsed = bp.packets.parse('outgoing', original)
+        local id = parsed['Param']
+        
+        if parsed and bp.res.spells[id] then
+            local spell = bp.res.spells[id]
+            
+            if spell.en:startswith("Geo-") then
+                local intended = bp.__target.get(parsed['Target'])
 
-                if target then
-                    parsed['Target'] = target.id
-                    parsed['Target Index'] = target.index
+                if S{'Self','Party'}:equals(spell.targets) and bp.__target.isEnemy(intended) then
+                    parsed['Target'] = bp.__player.id()
+                    parsed['Target Index'] = bp.__player.index()
                     return bp.packets.build(parsed)
+                    
+                elseif S{'Enemy'}:equals(spell.targets) and not bp.__target.isEnemy(intended) then
+                    local target = bp.__target.get(bp.targets.get('player')) -- UPDATE.
+
+                    if target then
+                        parsed['Target'] = target.id
+                        parsed['Target Index'] = target.index
+                        return bp.packets.build(parsed)
+
+                    end
 
                 end
 
