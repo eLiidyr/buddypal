@@ -185,12 +185,11 @@ local function lib(bp)
 
     o.hasKeyItem = function(id)
         if not id then return false end
-        local fetchki = windower.ffxi.get_key_items
 
         if type(id) == 'table' then
             local list = S(id)
 
-            for ki in T(fetchki()):it() do
+            for ki in T(bp.keyitems()):it() do
 
                 if list:contains(ki) then
                     return true
@@ -201,7 +200,7 @@ local function lib(bp)
 
         else
             
-            for ki in T(fetchki()):it() do
+            for ki in T(bp.keyitems()):it() do
 
                 if ki == id then
                     return true
@@ -216,7 +215,7 @@ local function lib(bp)
     end
 
     o.getByIndex = function(bag, index)
-        local item = windower.ffxi.get_items(bag, index)
+        local item = bp.items(bag, index)
 
         if item then
             return index, item.count, item.id, item.status, bag, bp.res.items[item.id]
@@ -227,7 +226,7 @@ local function lib(bp)
 
     o.getExtdata = function(search)
 
-        for item, index in T(windower.ffxi.get_items(0)):it() do
+        for item, index in T(bp.items(0)):it() do
             
             if type(item) == 'table' and item.id and item.extdata and bp.res.items[item.id] and bp.res.items[item.id].en:lower():startswith(search:lower()) then
                 return bp.extdata.decode(item)
@@ -243,7 +242,7 @@ local function lib(bp)
 
         for bag in T(bags.equippable):it() do
 
-            for item, index in T(windower.ffxi.get_items(bag.id)):it() do
+            for item, index in T(bp.items(bag.id)):it() do
                 
                 if type(item) == 'table' and item.id and bp.res.items[item.id] and bp.res.items[item.id].en:lower():startswith(search:lower()) then
                     return bag.id, index, item.id, item.status
@@ -260,7 +259,7 @@ local function lib(bp)
     o.findByName = function(search, bag)
         local items = T{}
 
-        for item, index in T(windower.ffxi.get_items(bag or 0)):it() do
+        for item, index in T(bp.items(bag or 0)):it() do
 
             if type(search) == 'table' and type(item) == 'table' and item.id and bp.res.items[item.id] then
 
@@ -289,7 +288,7 @@ local function lib(bp)
     o.findByIndex = function(search, bag)
         local items = {}
         
-        for item, index in T(windower.ffxi.get_items(bag or 0)):it() do
+        for item, index in T(bp.items(bag or 0)):it() do
 
             if type(search) == 'table' and type(item) == 'table' and item.id and bp.res.items[item.id] then
 
@@ -320,7 +319,7 @@ local function lib(bp)
     o.findByID = function(search, bag)
         local items = {}
         
-        for item, index in T(windower.ffxi.get_items(bag or 0)):it() do
+        for item, index in T(bp.items(bag or 0)):it() do
 
             if type(search) == 'table' and type(item) == 'table' and item.id and bp.res.items[item.id] then
 
@@ -350,7 +349,7 @@ local function lib(bp)
     o.findUsable = function()
         local items = {}
         
-        for item, index in T(windower.ffxi.get_items(0)):it() do
+        for item, index in T(bp.items(0)):it() do
                 
             if type(item) == 'table' and item.id and item.status and item.status == 0 and bp.res.items[item.id] and bp.res.items[item.id].flags and bp.res.items[item.id].flags:contains('Usable') then
                 table.insert(items, {index=index, count=item.count, status=item.status, bag=0, res=bp.res.items[item.id]})
@@ -366,7 +365,7 @@ local function lib(bp)
         local all = bp.spells()
         local scrolls = {}
         
-        for item, index in T(windower.ffxi.get_items(0)):it() do
+        for item, index in T(bp.items(0)):it() do
                 
             if type(item) == 'table' and item.id and item.status and item.status == 0 and bp.res.items[item.id] and bp.res.items[item.id].flags then
                 local spell = bp.__res.get(bp.res.items[item.id].en)
@@ -386,7 +385,7 @@ local function lib(bp)
     o.findAttachments = function()
         local attachments = {}
         
-        for item, index in T(windower.ffxi.get_items(0)):it() do
+        for item, index in T(bp.items(0)):it() do
 
             if type(item) == 'table' and item.id and item.status and item.status == 0 and bp.res.items[item.id] and S(attachments):contains(bp.res.items[item.id].en) then
                 table.insert(attachments, {index=index, id=item.id, res=bp.res.items[item.id]})
@@ -410,7 +409,7 @@ local function lib(bp)
     end
 
     o.getAmount = function(search, bag)
-        return T(windower.ffxi.get_items(bag or 0)):filter(function(item) return type(item) == 'table' and bp.res.items[item.id] and bp.res.items[item.id].en:lower():startswith(search:lower()) and item end):length()
+        return T(bp.items(bag or 0)):filter(function(item) return type(item) == 'table' and bp.res.items[item.id] and bp.res.items[item.id].en:lower():startswith(search:lower()) and item end):length()
 
     end
 
@@ -422,7 +421,7 @@ local function lib(bp)
 
         else
 
-            for item, index in T(windower.ffxi.get_items(bag or 0)):it() do
+            for item, index in T(bp.items(bag or 0)):it() do
                 
                 if type(item) == 'table' and item.id and bp.res.items[item.id] and bp.res.items[item.id].en:lower():startswith(search:lower()) then
                     count = (count + item.count)
@@ -441,7 +440,7 @@ local function lib(bp)
 
         for bag in T(bags.storeable):it() do
 
-            for item, index in T(windower.ffxi.get_items(bag.id)):it() do
+            for item, index in T(bp.items(bag.id)):it() do
                 
                 if type(item) == 'table' and item.id and bp.res.items[item.id] and bp.res.items[item.id].en:lower():startswith(search:lower()) then
                     count = (count + item.count)
@@ -456,12 +455,12 @@ local function lib(bp)
     end
 
     o.hasSpace = function(bag)
-        return windower.ffxi.get_bag_info(bag or 0).count < windower.ffxi.get_bag_info(bag or 0).max and true or false
+        return bp.baginfo(bag or 0).count < bp.baginfo(bag or 0).max and true or false
 
     end
 
     o.getSpace = function(bag)
-        local bag = windower.ffxi.get_bag_info(bag or 0)
+        local bag = bp.baginfo(bag or 0)
 
         if bag.count < bag.max then
             return (bag.max - bag.count)
@@ -476,7 +475,7 @@ local function lib(bp)
 
         for bag in T(bp.res.bags):it() do
 
-            for item, index in T(windower.ffxi.get_items(bag.id)):it() do
+            for item, index in T(bp.items(bag.id)):it() do
 
                 if type(search) == 'table' and type(item) == 'table' and item.id and bp.res.items[item.id] and S(search):contains(bp.res.items[item.id].en) then
                     items[bp.res.items[item.id].en] = true
@@ -494,7 +493,7 @@ local function lib(bp)
 
         if type(search) == 'table' and T(search):isarray() then
 
-            for item, index in T(windower.ffxi.get_items(0)):it() do
+            for item, index in T(bp.items(0)):it() do
                 local res = bp.res.items[item.id]
                     
                 if type(item) == 'table' and item.id and res and (search:contains(item.en:lower()) or search:contains(item.enl:lower())) then
@@ -506,7 +505,7 @@ local function lib(bp)
 
         elseif type(search) == 'string' then
 
-            for item, index in T(windower.ffxi.get_items(0)):it() do
+            for item, index in T(bp.items(0)):it() do
                 local res = bp.res.items[item.id]
                     
                 if type(item) == 'table' and item.id and res and S{res.en:lower(), res.enl:lower()}:contains(search:lower()) then
@@ -530,7 +529,7 @@ local function lib(bp)
 
         for bag in T(bags.equippable):it() do
 
-            for item, index in T(windower.ffxi.get_items(bag.id)):it() do
+            for item, index in T(bp.items(bag.id)):it() do
                 
                 if type(item) == 'table' and item.id and bp.res.items[item.id] and bp.res.items[item.id].en:lower():startswith(search:lower()) then
                     return true
@@ -553,7 +552,7 @@ local function lib(bp)
                 local index, count, id, status, bag, res = o.findByName(name)
             
                 if index and status and bag and status == 0 and slots[slot] then
-                    windower.ffxi.set_equip(index, slots[slot], bag)
+                    bp.__equipment.equipset(index, slots[slot], bag)
                     
                 end
 
@@ -573,6 +572,7 @@ local function lib(bp)
                 local item = windower.ffxi.get_items(0, index)
 
                 if item and item.id and item.status and item.status == 0 and bp.res.items[item.id] and list:contains(bp.res.items[item.id].en) and not bp.res.items[item.id].flags:contains("No NPC Sale") then
+                    
                     table.insert(queue, function()
                         bp.packets.inject(bp.packets.new('outgoing', 0x084, {['Count']=item.count, ['Item']=item.id, ['Inventory Index']=index}))
                         bp.packets.inject(bp.packets.new('outgoing', 0x085))
