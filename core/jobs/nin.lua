@@ -89,6 +89,7 @@ local function load(bp)
                 end
 
                 if bp.actions.canCast() then
+                    --[[
 
                     -- UTSUSEMI.
                     if bp.buffs.get('auto_utsusemi') then
@@ -128,6 +129,7 @@ local function load(bp)
                         end
 
                     end
+                    ]]
 
                 end
 
@@ -157,6 +159,7 @@ local function load(bp)
                 end
 
                 if bp.actions.canCast() then
+                    --[[
 
                     -- UTSUSEMI.
                     if bp.buffs.get('auto_utsusemi') then
@@ -196,6 +199,7 @@ local function load(bp)
                         end
 
                     end
+                    ]]
 
                 end
 
