@@ -22,18 +22,18 @@ local function load(bp)
                 local target = bp.__target.get('t')
 
                 -- QUICK DRAW.
-                if bp.core.get('auto_quick_draw') and target then
-                    local quick = bp.core.get('auto_quick_draw')
+                if bp.abilities.get('auto_quick_draw') and target then
+                    local quickdraw = bp.abilities.get('auto_quick_draw')
                     
-                    if quick.enabled and bp.core.ready("Quick Draw") and bp.__inventory.getCount("Trump Card") > 0 then
-                        bp.queue.add(quick.name, target)
+                    if quickdraw.enabled and bp.core.ready("Quick Draw") and bp.__inventory.getCount("Trump Card") > 0 then
+                        bp.queue.add(quickdraw.name, target)
 
                     end
 
                 end
 
                 -- RANDOM DEAL.
-                if bp.core.get('auto_random_deal') and bp.core.ready("Random Deal") and target then
+                if bp.combat.get('auto_random_deal') and bp.core.ready("Random Deal") and target then
                     bp.queue.add("Random Deal", player)
 
                 end
@@ -42,18 +42,18 @@ local function load(bp)
                 local target = bp.targets.get('player')
 
                 -- QUICK DRAW.
-                if bp.core.get('auto_quick_draw') and target then
-                    local quick = bp.core.get('auto_quick_draw')
+                if bp.abilities.get('auto_quick_draw') and target then
+                    local quickdraw = bp.abilities.get('auto_quick_draw')
                     
-                    if quick.enabled and bp.core.ready("Quick Draw") and bp.__inventory.getCount("Trump Card") > 0 then
-                        bp.queue.add(quick.name, target)
+                    if quickdraw.enabled and bp.core.ready("Quick Draw") and bp.__inventory.getCount("Trump Card") > 0 then
+                        bp.queue.add(quickdraw.name, target)
 
                     end
 
                 end
 
                 -- RANDOM DEAL.
-                if bp.core.get('auto_random_deal') and bp.core.ready("Random Deal") and target then
+                if bp.abilities.get('auto_random_deal') and bp.core.ready("Random Deal") and target then
                     bp.queue.add("Random Deal", player)
 
                 end
@@ -77,14 +77,14 @@ local function load(bp)
                 if bp.actions.canAct() then
 
                     -- TRIPLE SHOT
-                    if bp.core.get('auto_triple_shot') and bp.core.ready("Triple Shot", 467) and target then
+                    if bp.abilities.get('auto_triple_shot') and bp.core.ready("Triple Shot", 467) and target then
                         bp.queue.add("Triple Shot", player)
 
                     end
 
                     -- ROLLS.
-                    if bp.core.get('auto_rolls') then
-                        local cor_rolls = bp.core.get('auto_rolls')
+                    if bp.buffs.get('auto_rolls') then
+                        local cor_rolls = bp.buffs.get('auto_rolls')
 
                         if bp.__buffs.active(309) and bp.core.ready("Fold") then
                             bp.queue.add("Fold", player)
@@ -93,7 +93,7 @@ local function load(bp)
 
                             if bp.core.ready("Double-Up") and bp.__rolls.isMidroll() then
                                 local rolling = bp.__rolls.getRolling()
-                                local doubleup = bp.core.get('auto_double_up')
+                                local doubleup = bp.buffs.get('auto_double_up')
 
                                 if rolling then
 
@@ -116,7 +116,7 @@ local function load(bp)
                                 if roll and bp.core.ready(roll) then
 
                                     -- CROOKED CARDS.
-                                    if bp.__rolls.active():length() == 0 and bp.core.get('auto_crooked_cards') and bp.core.ready("Crooked Cards", 601) then
+                                    if bp.__rolls.active():length() == 0 and bp.abilities.get('auto_crooked_cards') and bp.core.ready("Crooked Cards", 601) then
                                         bp.queue.add("Crooked Cards", player)
 
                                     end
@@ -138,14 +138,14 @@ local function load(bp)
                 if bp.actions.canAct() then
 
                     -- TRIPLE SHOT
-                    if bp.core.get('auto_triple_shot') and bp.core.ready("Triple Shot", 467) and target then
+                    if bp.abilities.get('auto_triple_shot') and bp.core.ready("Triple Shot", 467) and target then
                         bp.queue.add("Triple Shot", player)
 
                     end
 
                     -- ROLLS.
-                    if bp.core.get('auto_rolls') then
-                        local cor_rolls = bp.core.get('auto_rolls')
+                    if bp.buffs.get('auto_rolls') then
+                        local cor_rolls = bp.buffs.get('auto_rolls')
 
                         if bp.__buffs.active(309) and bp.core.ready("Fold") then
                             bp.queue.add("Fold", player)
@@ -154,7 +154,7 @@ local function load(bp)
                             
                             if bp.core.ready("Double-Up") and bp.__rolls.isMidroll() then
                                 local rolling = bp.__rolls.getRolling()
-                                local doubleup = bp.core.get('auto_double_up')
+                                local doubleup = bp.buffs.get('auto_double_up')
 
                                 if rolling then
 
@@ -177,7 +177,7 @@ local function load(bp)
                                 if roll and bp.core.ready(roll) then
 
                                     -- CROOKED CARDS.
-                                    if bp.__rolls.active():length() == 0 and bp.core.get('auto_crooked_cards') and bp.core.ready("Crooked Cards", 601) then
+                                    if bp.__rolls.active():length() == 0 and bp.abilities.get('auto_crooked_cards') and bp.core.ready("Crooked Cards", 601) then
                                         bp.queue.add("Crooked Cards", player)
 
                                     end
