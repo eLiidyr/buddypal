@@ -624,7 +624,7 @@ local function helper(bp, events)
         local action = type(action) == 'table' and action or bp.__res.get(action)
 
         if action and S{'/jobability','/pet'}:contains(action.prefix) then
-            local skills = bp.abilities().job_abilities
+            local skills = bp.ja().job_abilities
             local recast = bp.ja_recast()
 
             for skill in T(skills):it() do
@@ -670,7 +670,7 @@ local function helper(bp, events)
 
         elseif action and S{'/weaponskill'}:contains(action.prefix) then
 
-            for skill in T(bp.abilities().weapon_skills):it() do
+            for skill in T(bp.ja().weapon_skills):it() do
 
                 if skill == action.id then
                     return true
