@@ -100,7 +100,7 @@ local function helper(bp, events)
     end
     
     o.getMissing = function()
-        local rolls = bp.core.get('auto_rolls')
+        local rolls = bp.buffs.get('auto_rolls')
 
         if rolls then
             return T(S{rolls.roll_1, rolls.roll_2}:copy():diff(o.active()))
@@ -111,7 +111,7 @@ local function helper(bp, events)
     end
     
     o.get = function(n)
-        local rolls = bp.core.get('auto_rolls')
+        local rolls = bp.buffs.get('auto_rolls')
         
         if rolls then
 
@@ -136,7 +136,7 @@ local function helper(bp, events)
             local target    = bp.__target.get(parsed['Target 1 ID'])
             
             if parsed and actor and target and bp.__player.id() == actor.id and bp.__player.id() == target.id and parsed['Category'] == 6 then
-                local rolls = bp.core.get('auto_rolls')
+                local rolls = bp.buffs.get('auto_rolls')
 
                 do
                     current_roll = {name=bp.res.job_abilities[parsed['Param']].en, number=parsed['Target 1 Action 1 Param']}
@@ -145,7 +145,7 @@ local function helper(bp, events)
                 end
 
                 if rolls and parsed['Target 1 Action 1 Param'] and bp.res.job_abilities[parsed['Param']] and o.list:contains(bp.res.job_abilities[parsed['Param']].en) then
-                    local doubleup = bp.core.get('auto_double_up')
+                    local doubleup = bp.abilities.get('auto_double_up')
 
                     if current_roll.number >= (doubleup and doubleup.max or 7) and not bp.actions.isReady("Snake Eye") then
                         current_roll, midroll = nil, false
