@@ -136,7 +136,6 @@ local function load(bp)
                 local target = bp.targets.get('player')
 
                 if bp.actions.canAct() then
-                    print(bp.abilities.get('auto_triple_shot'))
 
                     -- TRIPLE SHOT
                     if bp.abilities.get('auto_triple_shot') and bp.core.ready("Triple Shot", 467) and target then

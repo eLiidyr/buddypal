@@ -12,7 +12,18 @@ local function load(bp)
         local player = bp.__player.get()
         local target = bp.targets.get('player')
 
-        if player and target and bp.combat.get('auto_one_hours') and bp.actions.canAct() then
+        -- MAGIC HAMMER.
+        if target and bp.combat.get('auto_magic_hammer') then
+            local spells = bp.__blu.getSpells()
+
+            if spells:contains("Magic Hammer") and bp.core.ready("Magic Hammer") and bp.__player.mpp() < 25 then
+                bp.queue.add("Magic Hammer", target)
+
+            end
+        
+        end
+
+        if player and target and bp.combat.get('auto_one_hours') and bp.combat.get('auto_job_abilities') and bp.actions.canAct() then
 
         end
 
@@ -38,28 +49,6 @@ local function load(bp)
 
                     -- DIFFUSION.
                     if diffusion and diffusion.enabled and bp.core.ready("Diffusion") then
-                        local spell = bp.__res.get(diffusion.name)
-                        local spells = bp.__blu.getSpells()
-
-                        if spell and target and bp.core.ready(spell.en, spell.status) and spells:contains(spell.en) then
-                            local unbridled = T{"Carcharian Verve","Mighty Guard","Pyric Bulwark","Harden Shell"}
-
-                            if unbridled:contains(spell.en) then
-
-                                if bp.core.get('auto_unbridled_learning') and bp.core.ready("Unbridled Learning", 485) then
-                                    bp.queue.add("Unbridled Learning", player)
-                                    bp.queue.add("Diffusion", player)
-                                    bp.queue.add(spell, player)
-
-                                end
-
-                            else
-                                bp.queue.add("Diffusion", player)
-                                bp.queue.add(spell, player)
-
-                            end
-
-                        end
 
                     end
 
@@ -73,28 +62,6 @@ local function load(bp)
 
                     -- DIFFUSION.
                     if diffusion and diffusion.enabled and bp.core.ready("Diffusion") then
-                        local spell = bp.__res.get(diffusion.name)
-                        local spells = bp.__blu.getSpells()
-
-                        if spell and target and bp.core.ready(spell.en, spell.status) and spells:contains(spell.en) then
-                            local unbridled = T{"Carcharian Verve","Mighty Guard","Pyric Bulwark","Harden Shell"}
-
-                            if unbridled:contains(spell.en) then
-
-                                if bp.core.get('auto_unbridled_learning') and bp.core.ready("Unbridled Learning", 485) then
-                                    bp.queue.add("Unbridled Learning", player)
-                                    bp.queue.add("Diffusion", player)
-                                    bp.queue.add(spell, player)
-
-                                end
-
-                            else
-                                bp.queue.add("Diffusion", player)
-                                bp.queue.add(spell, player)
-
-                            end
-
-                        end
 
                     end
 
@@ -109,38 +76,60 @@ local function load(bp)
     end
 
     function self:debuff()
-
-        if bp.debuffs.enabled() and bp.actions.canCast() then
-            bp.debuffs.cast()
-
-        end
-
         return self
 
     end
 
     function self:enmity()
-        local timer = bp.core.timer('enmity')
+        local enmity = bp.combat.get('auto_enmity_generation')
 
-        if bp.core.get('auto_enmity_generation') and bp.core.get('auto_enmity_generation').enabled and timer:ready() then
+        if enmity and enmity.enabled and bp.core.timer('enmity'):ready() then
             local player = bp.__player.get()
 
             if player and player.status == 1 then
                 local target = bp.__target.get('t')
 
+                if bp.actions.canCast() and target then
+
+                    if bp.__blu.hasHateSpells({"Blank Gaze"}) and bp.core.ready("Blank Gaze") then
+                        bp.queue.add("Blank Gaze", target)
+
+                    elseif bp.combat.get('allow_aoe_enmity_spells') and bp.__blu.hasHateSpells({"Geist Wall","Jettatura","Soporific","Sheep Song"}) then
+
+                        for spell in T{"Geist Wall","Jettatura","Soporific","Sheep Song"}:it() do
+    
+                            if bp.core.ready(spell) then
+                                bp.queue.add(spell, target)
+                                bp.core.timer('enmity'):update()
+                                break
+    
+                            end
+    
+                        end
+
+                    end
+
+                end
+
             elseif player and player.status == 0 then
                 local target = bp.targets.get('player')
 
-                if bp.__blu.hasHateSpells({"Blank Gaze"}) and bp.core.ready("Blank Gaze") then
-                    bp.queue.add("Blank Gaze", target)
+                if bp.actions.canCast() and target then
 
-                elseif bp.core.get('auto_enmity_generation').aoe and bp.__blu.hasHateSpells({"Geist Wall","Jettatura","Soporific","Sheep Song"}) then
+                    if bp.__blu.hasHateSpells({"Blank Gaze"}) and bp.core.ready("Blank Gaze") then
+                        bp.queue.add("Blank Gaze", target)
 
-                    for spell in T{"Geist Wall","Jettatura","Soporific","Sheep Song"}:it() do
+                    elseif bp.combat.get('allow_aoe_enmity_spells') and bp.__blu.hasHateSpells({"Geist Wall","Jettatura","Soporific","Sheep Song"}) then
 
-                        if bp.core.ready(spell) then
-                            bp.queue.add(spell, target)
-
+                        for spell in T{"Geist Wall","Jettatura","Soporific","Sheep Song"}:it() do
+    
+                            if bp.core.ready(spell) then
+                                bp.queue.add(spell, target)
+                                bp.core.timer('enmity'):update()
+                                break
+    
+                            end
+    
                         end
 
                     end
@@ -156,15 +145,6 @@ local function load(bp)
     end
 
     function self:nuke()
-        local target = bp.targets.get('player')
-        local spells = bp.__blu.getSpells()
-
-        -- MAGIC HAMMER.
-        if bp.core.get('auto_magic_hammer') and bp.core.get('auto_magic_hammer').enabled and spells:contains("Magic Hammer") and bp.core.ready("Magic Hammer") and bp.__player.mpp() < bp.core.get('auto_magic_hammer').mpp and target then
-            bp.queue.add("Magic Hammer", target)
-        
-        end
-
         return self
 
     end
