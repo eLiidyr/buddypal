@@ -132,6 +132,7 @@ local function helper(bp, events)
             auto_food = {enabled=false, name=""},
             auto_enmity_generation = {enabled=false, delay=2},
             allow_aoe_enmity_spells = false,
+            auto_flash = false,
             auto_one_hours = false,
             auto_job_abilities = false,
             auto_ranged_attacks = false,
@@ -142,7 +143,6 @@ local function helper(bp, events)
             set_max_buff_limit = 0,
             auto_sanguine_blade = {enabled=false, hpp=55},
             auto_moonlight = {enabled=false, mpp=45},
-            auto_flash = false,
         },
     
         DRK={
@@ -445,6 +445,7 @@ local function helper(bp, events)
             auto_food = {enabled=false, name=""},
             auto_enmity_generation = {enabled=false, delay=2},
             allow_aoe_enmity_spells = false,
+            auto_flash = false,
             auto_one_hours = false,
             auto_job_abilities = false,
             auto_ranged_attacks = false,
