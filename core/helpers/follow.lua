@@ -168,7 +168,7 @@ local function helper(bp, events)
 
                 if settings.enhanced_follow_speed then
                     local speed = bp.api.getPlayerSpeed(bp.__player.index())
-                    bp.orders.send('p*', string.format('/ follow new-coords %s', bp.__player.coords():append(speed * settings.follow_speed):concat("+")))
+                    bp.orders.send('p*', string.format('/ follow new-coords %s', bp.__player.coords():append((speed or 5.0) * settings.follow_speed):concat("+")))
                     bp.targets.setSpeed(speed)
 
                 else
