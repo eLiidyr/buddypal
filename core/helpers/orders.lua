@@ -121,7 +121,7 @@ local function helper(bp, events)
         local order = {player=false, others={}}
         local delay = 0
 
-        for name in bp.__party.getList():it() do
+        for name in bp.__party.getNames():it() do
             local target = bp.__target.get(name)
 
             if name == bp.__player.name() then
@@ -141,7 +141,7 @@ local function helper(bp, events)
         local order = {player=false, others={}}
         local delay = 0
 
-        for name in bp.__party.getList():it() do
+        for name in bp.__party.getNames():it() do
             local target = bp.__target.get(name)
 
             if name == bp.__player.name() then
@@ -163,7 +163,7 @@ local function helper(bp, events)
         local order = {player=false, others={}}
         local delay = 0
     
-        for name in bp.__party.getList():it() do
+        for name in bp.__party.getNames():it() do
             local target = bp.__target.get(name)
     
             if name ~= bp.__player.name() and bp.__distance.get(target) < 25 then
@@ -180,7 +180,7 @@ local function helper(bp, events)
         local order = {player=false, others={}}
         local delay = 0
     
-        for name in bp.__party.getList():it() do
+        for name in bp.__party.getNames():it() do
             local target = bp.__target.get(name)
 
             if name ~= bp.__player.name() and bp.__distance.get(target) < 25 then
@@ -198,7 +198,7 @@ local function helper(bp, events)
         local order = {player=false, others={}}
         local delay = 0
 
-        for name in bp.__party.getList():it() do
+        for name in bp.__party.getNames():it() do
 
             if name == bp.__player.name() then
                 order.player = string.format('wait %s; %s', delay, orders)
@@ -218,7 +218,7 @@ local function helper(bp, events)
         local order = {player=false, others={}}
         local delay = 0
     
-        for name in bp.__party.getList():it() do
+        for name in bp.__party.getNames():it() do
 
             if name == bp.__player.name() then
                 order.player = string.format('wait %s; %s', delay, orders)
@@ -240,7 +240,7 @@ local function helper(bp, events)
         local order = {player=false, others={}}
         local delay = 0
     
-        for name in bp.__party.getList():it() do
+        for name in bp.__party.getNames():it() do
     
             if name ~= bp.__player.name() then
                 table.insert(order.others, string.format('||%s wait %s; %s', name, delay, orders))
@@ -256,7 +256,7 @@ local function helper(bp, events)
         local order = {player=false, others={}}
         local delay = 0
     
-        for name in bp.__party.getList():it() do
+        for name in bp.__party.getNames():it() do
     
             if name ~= bp.__player.name() then
                 table.insert(order.others, string.format('||%s wait %s; %s', character.name, delay, orders))
@@ -273,7 +273,7 @@ local function helper(bp, events)
         local order = {player=false, others={}}
         local delay = 0
     
-        for name in bp.__party.getList():it() do
+        for name in bp.__party.getNames():it() do
     
             if name == bp.__player.name() then
                 order.player = string.format('wait %s; %s', delay, orders)
@@ -292,7 +292,7 @@ local function helper(bp, events)
         local order = {player=false, others={}}
         local delay = 0
     
-        for name in bp.__party.getList():it() do
+        for name in bp.__party.getNames():it() do
     
             if name == bp.__player.name() then
                 order.player = string.format('wait %s; %s', delay, orders)
@@ -313,7 +313,7 @@ local function helper(bp, events)
         local order = {player=false, others={}}
         local delay = 0
     
-        for name in bp.__party.getList():it() do
+        for name in bp.__party.getNames():it() do
     
             if name ~= bp.__player.name() and bp.__party.memberInZone(name) then
                 table.insert(order.others, string.format('||%s wait %s; %s', name, delay, orders))    
@@ -329,7 +329,7 @@ local function helper(bp, events)
         local order = {player=false, others={}}
         local delay = 0
     
-        for name in bp.__party.getList():it() do
+        for name in bp.__party.getNames():it() do
     
             if name ~= bp.__player.name() and bp.__party.memberInZone(name) then
                 table.insert(order.others, string.format('||%s wait %s; %s', name, delay, orders))
@@ -347,7 +347,7 @@ local function helper(bp, events)
         local order = {player=false, others={}}
         local delay = 0
         
-        for name in bp.__party.getList():it() do
+        for name in bp.__party.getNames():it() do
     
             if name == bp.__player.name() and bp.__player.mjob(true) == job then
                 order.player = string.format('wait %s; %s', delay, orders)
@@ -367,7 +367,7 @@ local function helper(bp, events)
         local order = {player=false, others={}}
         local delay = 0
     
-        for name in bp.__party.getList():it() do
+        for name in bp.__party.getNames():it() do
     
             if name == bp.__player.name() and bp.__player.mjob(true) == job then
                 order.player = string.format('wait %s; %s', delay, orders)
