@@ -49,7 +49,7 @@ local function helper(bp, events)
         --automation:medicine()
 
         -- Handle curing if available.
-        --automation:curing()
+        automation:curing()
 
         -- Handle status fixes.
         automation:statusfix()

@@ -610,6 +610,11 @@ local function helper(bp, events)
 
     end
 
+    o.get = function(index)
+        return queue[index]
+
+    end
+
     o.sort = function()
         return queue:sort(function(a, b) return (a and b and a.priority > b.priority) end)
 
