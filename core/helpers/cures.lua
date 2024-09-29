@@ -40,7 +40,13 @@ local function helper(bp, events)
 
         -- Filter the keys for spells if the character can cast that spell currently.
         for key in T(settings:get():keyset()):it() do
-            local name = ((function(s) for old, new in pairs(romans) do s = (s:gsub(old, new)) end return s end)(key)):gsub('_', ' '):capitalize()
+            local name = T(key:split('_'))
+
+            if name:length() > 1 then
+                name[name:length()] = ((function(s) for old, new in pairs(romans) do s = (s:gsub(old, new)) end return s end)(name[name:length()]))
+
+            end
+            name = name:concat(' '):capitalize()
             
             if bp.__res.get(name) and not bp.__player.hasSpell(bp.__res.get(name).id) then
                 settings[key] = nil
