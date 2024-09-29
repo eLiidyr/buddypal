@@ -35,225 +35,261 @@ local function lib(bp)
     }
 
     -- Private Variables.
-    local uuid  = 'G32JG'
-    local party = T{[1]=T{},[2]=T{},[3]=T{}}
-    local leads = T{}
-    local plmap = T{}
-    local count = T{}
-    local zones = S{}
-    local seqid = nil
 
     -- Public Variables.
 
     -- Private Methods.
-    local function update()
-        local num = tonumber
-        party = T{[1]=T{},[2]=T{},[3]=T{}}
-        plmap = T{}
-        zones = S{}
 
-        coroutine.schedule(function()
-            local myparty = T(bp.party())
+    -- Public Methods.
+    o.get = function(n)
+        local huge, floor = math.huge, math.floor
+        local data = {}
 
-            do -- Update static variables for party.
-                leads = T{alliance=myparty.alliance_leader, party=T{[1]=myparty.party1_leader, [2]=myparty.party2_leader, [3]=myparty.party3_leader}}
-                count = T{alliance=myparty.alliance_count or 0, party=T{[1]=myparty.party1_count, [2]=myparty.party2_count, [3]=myparty.party3_count}}
+        if n then
+            local party = bp.party()
 
-            end
+            if n == 1 then
 
-            for v, k in myparty:it() do
+                for i=0, 5 do
+                    local member = party[string.format('p%d', i)]
+                    local missing = (member and member.hp and member.hpp) and floor(member.hp * ((100 - member.hpp) / member.hpp)) or 0
 
-                if #k <= 3 then
-                    local category = k:sub(1, 1)
-                    local mindex = num(k:sub(2))
-
-                    if category == 'p' then
-                        party[1][v.name] = v
-                        plmap[v.name] = 1
-                        zones:add(v.zone)
-
-                    else
-
-                        if mindex > 15 then
-                            party[2][v.name] = v
-                            plmap[v.name] = 2
-                            zones:add(v.zone)
-
-                        elseif mindex > 5 then
-                            party[3][v.name] = v
-                            plmap[v.name] = 3
-                            zones:add(v.zone)
-
-                        end
+                    if member and missing then
+                        member.party = T{true, false, false}
+                        member.missing = (missing > -huge and missing < huge) and missing or 0
+                        table.insert(data, member)
 
                     end
-                
+
+                end
+
+            elseif n == 2 then
+
+                for i=10, 15 do
+                    local member = party[string.format('a%d', i)]
+                    local missing = (member and member.hp and member.hpp) and floor(member.hp * ((100 - member.hpp) / member.hpp)) or 0
+
+                    if member and missing then
+                        member.party = T{false, true, false}
+                        member.missing = (missing > -huge and missing < huge) and missing or 0
+                        table.insert(data, member)
+
+                    end
+
+                end
+
+            elseif n == 3 then
+
+                for i=20, 25 do
+                    local member = party[string.format('a%d', i)]
+                    local missing = (member and member.hp and member.hpp) and floor(member.hp * ((100 - member.hpp) / member.hpp)) or 0
+
+                    if member and missing then
+                        member.party = T{false, false, true}
+                        member.missing = (missing > -huge and missing < huge) and missing or 0
+                        table.insert(data, member)
+
+                    end
+
+                end
+            
+            end
+            return data
+
+        else
+
+            local party = bp.party()
+
+            for i=0, 5 do
+                local member = party[string.format('p%d', i)]
+                local missing = (member and member.hp and member.hpp) and floor(member.hp * ((100 - member.hpp) / member.hpp)) or 0
+
+                if member and missing then
+                    member.party = T{true, false, false}
+                    member.missing = (missing > -huge and missing < huge) and missing or 0
+                    table.insert(data, member)
+
                 end
 
             end
 
-        end, 0.40)
+            for i=10, 15 do
+                local member = party[string.format('a%d', i)]
+                local missing = (member and member.hp and member.hpp) and floor(member.hp * ((100 - member.hpp) / member.hpp)) or 0
 
-    end
+                if member and missing then
+                    member.party = T{false, true, false}
+                    member.missing = (missing > -huge and missing < huge) and missing or 0
+                    table.insert(data, member)
 
-    local function party_update(id, original)
-        if not S{0x0dd}:contains(id) then return false end
-        local parsed = bp.packets.parse('incoming', original)
+                end
 
-        -- If this is the same sequence id, do not update again.
-        if parsed._sequence == seqid then
-            return false
+            end
+
+            for i=20, 25 do
+                local member = party[string.format('a%d', i)]
+                local missing = (member and member.hp and member.hpp) and floor(member.hp * ((100 - member.hpp) / member.hpp)) or 0
+
+                if member and missing then
+                    member.party = T{false, false, true}
+                    member.missing = (missing > -huge and missing < huge) and missing or 0
+                    table.insert(data, member)
+
+                end
+
+            end
+            return data
 
         end
-        update()
-        seqid = parsed._sequence
 
     end
 
-    -- Public Methods.
-    o.get = function(n)
+    o.getNames = function(n)
 
-        if n and party[n] then
-            return party[n]:copy()
-
-        end
-        return party:copy()
-
-    end
-
-    o.getList = function(n)
-        local unpack = table.unpack
-
-        if n and S{1,2,3}:contains(n) and party[n] then
-            T(party[n]:keyset())
+        if n and S{1,2,3}:contains(n) and o.get(n) then
+            return T(T(o.get(n)):map(function(member) return member.name or nil end))
 
         else
 
-            return T(L(party[1]:keyset()):extend(L(party[2]:keyset())):extend(L(party[3]:keyset())))
+            return T(T(o.get()):map(function(member) return member.name or nil end))
 
         end
-
-    end
-
-    o.getIndex = function(name)
-        return plmap[name]
 
     end
 
     o.count = function(n)
 
-        if n and count.party[n] then
-            return count.party[n]
+        if n and o.get(n) then
+            return T(o.get(n)):length()
 
         end
-        return count.alliance
+        return T(o.get()):length()
+
 
     end
 
     o.inSameParty = function(a, b)
-        return (plmap[a] == plmap[b]) or false
+        local party = T(o.get())
+        
+        if a and b and party then
+            local membera = select(2, party:find(function(m) return m.name == a end))
+            local memberb = select(2, party:find(function(m) return m.name == b end))
+
+            if membera and memberb then
+                return membera.party:equals(memberb.party)
+
+            end
+
+        end
+        return false
 
     end
 
     o.inAlliance = function()
-        return (leads.alliance ~= nil)
+        return (o.getAllianceLeader() ~= nil)
 
     end
 
-    o.isMember = function(t, ally)
-        local sindex = plmap[bp.__player.name()]
-        local pindex = plmap[t]
-        
-        if party[pindex] and party[pindex][t] then
-
-            if not ally and sindex == pindex then
-                return true
-
-            elseif ally then
-                return true
-
-            end
+    o.isMember = function(name, check_alliance)
+        if not name then
+            return
 
         end
-        return false
+        
+        if check_alliance then
+            return T(o.getNames()):contains(name)
+
+        else
+            return T(o.getNames(1)):contains(name)
+
+        end
 
     end
 
     o.getAllianceLeader = function()
-        return leads.alliance
+        return bp.party().alliance_leader or nil
 
     end
 
     o.getPartyLeaders = function()
-        return leads.party
+        local party = bp.party()
+        return T{ party.party1_leader, party.party2_leader, party.party3_leader }
 
     end
 
     o.isAllianceLeader = function(id)
-        return leads.alliance and (leads.alliance == id)
+        local leader = o.getAllianceLeader()
+
+        if leader then
+            return (leader == id)
+        
+        end
+        return false
 
     end
 
     o.isPartyLeader = function(id)
-        return leads.party:contains(id)
+        return o.getPartyLeaders():contains(id)
 
     end
 
     o.getMember = function(name)
-        local pindex = plmap[name]
-
-        if pindex and party[pindex] then
-            return party[pindex][name]
-
-        end
-        return nil
+        return select(2, T(o.get()):find(function(m) return m.name == name end))
 
     end
 
-    o.memberInZone = function(pname)
-        local sname = bp.__player.name()
-        local sindex = plmap[sname]
-        local pindex = plmap[pname]
+    o.memberInZone = function(name)
+        local party = T(o.get())
+        
+        if name and party then
+            local member = select(2, party:find(function(m) return m.name == name end))
 
-        if sindex and pindex and party[sindex] and party[pindex] and party[sindex][sname] and party[pindex][pname] then
-            return (party[sindex][sname].zone == party[pindex][pname].zone)
+            if member and member.zone then
+                return member.zone == bp.__player.zone()
+
+            end
 
         end
         return false
 
     end
 
-    o.partyInZone = function()
-        return (zones:length() == 1)
+    o.partyInZone = function(alliance_check)
+
+        if alliance_check then
+            return (S(T(o.get()):map(function(m) return m.zone end)):length() == 1)
+
+        else
+            return (S(T(o.get(1)):map(function(m) return m.zone end)):length() == 1)
+
+        end
 
     end
 
-    o.inRange = function(distance, ally)
-        local distance = tonumber(distance) or 45
+    o.inRange = function(distance, check_alliance)
 
-        if ally then
-            local party = party[1]:extend(party[2]):extend(party[3])
+        if check_alliance then
 
-            for member in party:it() do
-                
+            for member in T(o.get()):it() do
+
                 if not member.mob then
                     return false
 
-                elseif member.mob and bp.__distance.get(member.mob.id) > distance then
+                elseif bp.__distance.get(member.mob.id) > (distance or 45) then
                     return false
 
                 end
-                
+
             end
 
         else
 
-            for member in party:it() do
-                
+            for member in T(o.get(1)):it() do
+
                 if not member.mob then
                     return false
 
-                elseif member.mob and bp.__distance.get(member.mob.id) > distance then
+                elseif bp.__distance.get(member.mob.id) > (distance or 45) then
                     return false
 
                 end
@@ -266,10 +302,6 @@ local function lib(bp)
     end
 
     -- Private Events.
-    bp.register('incoming chunk', party_update)
-
-    -- Build party when loaded.
-    update()
 
     return o
 
