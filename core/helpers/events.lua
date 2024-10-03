@@ -32,7 +32,6 @@ local function helper(bp, events)
         local events    = {}
         local person    = bp.__target.findNearby({'Rolandienne','Isakoth','Fhelm Jobeizat','Eternal Flame'})
         local perform   = false
-        local timer     = self.__class:timer('event-delay')
         if not person then return end
 
         local function error(p, l)
@@ -170,7 +169,7 @@ local function helper(bp, events)
         local events    = {}
         local person    = bp.__target.findNearby({'Urbiolaine','Igsli','Teldro-Kesdrodo','Yonolala','Nunaarl Bthtrogg'})
         local perform   = false
-        local timer     = self.__class:timer('event-delay')
+        local timer     = o.timer('event-delay')
         if not person then return end
 
         local function error(p, l)
