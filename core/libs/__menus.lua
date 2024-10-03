@@ -349,6 +349,17 @@ local function lib(bp)
     -- Private Events.
     bp.register('incoming chunk', update)
     bp.register('outgoing chunk', getOption)
+    bp.register('addon command', function(...)
+        local commands  = T{...}
+        local command   = commands[1] and table.remove(commands, 1):lower()
+
+        if command and command == 'menus' then
+            enabled = (enabled ~= true) and true or false
+            bp.toChat("Menus:", 170, tostring(enabled):upper(), 217)
+
+        end
+    
+    end)
 
     return o
 
