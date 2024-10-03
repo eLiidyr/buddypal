@@ -138,7 +138,7 @@ local function helper(bp, events)
                             local space = bp.__inventory.hasSpace()
 
                             if space and person and bp.__distance.get(person) < 7 then
-                                bp.__actions.perform(person, 'interact', 0)
+                                bp.actions.perform(person, 'interact', 0)
     
                             elseif not space and bag and status and status == 0 then
                                 timer:update(bp.__inventory.sellItems({"Acheron Shield"}) + 2)
@@ -251,7 +251,7 @@ local function helper(bp, events)
                             local space = bp.__inventory.hasSpace()
 
                             if space and person and bp.__distance.get(person) < 7 then
-                                bp.__actions.perform(person, 'interact', 0)
+                                bp.actions.perform(person, 'interact', 0)
     
                             elseif not space and bag and status and status == 0 then
                                 timer:update(bp.__inventory.sellItems({"Prize Powder"}) + 2)
