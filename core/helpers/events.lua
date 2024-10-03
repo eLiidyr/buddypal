@@ -31,6 +31,7 @@ local function helper(bp, events)
         if busy then return end
         local events    = {}
         local person    = bp.__target.findNearby({'Rolandienne','Isakoth','Fhelm Jobeizat','Eternal Flame'})
+        local timer     = o.timer('event-delay')
         local perform   = false
         if not person then return end
 
