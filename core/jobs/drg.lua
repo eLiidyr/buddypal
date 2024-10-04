@@ -13,14 +13,14 @@ local function load(bp)
         local target = bp.targets.get('player')
         local pet = bp.__player.pet()
 
-        if player and target and pet and bp.core.get('job-abilities') and bp.core.get('one-hours') and bp.actions.canAct() then
+        if player and target and pet and bp.combat.get('auto_one_hours') and bp.combat.get('auto_job_abilities') and bp.actions.canAct() then
 
-            if bp.core.get('spirit-surge') and bp.core.ready("Spirit Surge", 126) then
+            if bp.abilities.get('auto_spirit_surge') and bp.core.ready("Spirit Surge", 126) then
                 bp.queue.add("Spirit Surge", player)
 
             end
             
-            if bp.core.get('fly-high') and bp.core.ready("Fly High", 503) then
+            if bp.abilities.get('auto_fly_high') and bp.core.ready("Fly High", 503) then
                 bp.queue.add("Fly High", player)
 
             end
@@ -33,7 +33,7 @@ local function load(bp)
 
     function self:abilities()
 
-        if bp.core.get('job-abilities') and bp.actions.canAct() then
+        if bp.abilities.get('auto_job_abilities') and bp.actions.canAct() then
             local player = bp.__player.get()
             local pet = bp.__player.pet()
 
@@ -41,35 +41,35 @@ local function load(bp)
                 local target = bp.__target.get('t')
 
                 -- CALL WYVERN.
-                if not pet and bp.core.get('call-wyvern') and bp.core.ready("Call Wyvern") then
+                if not pet and bp.abilities.get('auto_call_wyvern') and bp.core.ready("Call Wyvern") then
                     bp.queue.add("Call Wyvern", player)
 
                 end
 
                 -- ANGON.
-                if bp.core.get('angon') and bp.core.ready("Angon") and bp.__inventory.canEquip("Angon") and target then
+                if bp.abilities.get('auto_angon') and bp.core.ready("Angon") and bp.__inventory.canEquip("Angon") and target then
                     bp.queue.add("Angon", target)
                 
                 end
 
                 -- JUMP.
-                if bp.core.get('jump') and bp.core.ready("Jump") and target then
+                if bp.abilities.get('auto_jump') and bp.core.ready("Jump") and target then
                     bp.queue.add("Jump", target)
 
                 -- HIGH JUMP.
-                elseif bp.core.get('high-jump') and bp.core.ready("High Jump") and target then
+                elseif bp.abilities.get('auto_high_jump') and bp.core.ready("High Jump") and target then
                     bp.queue.add("High Jump", target)
 
                 -- SUPER JUMP.
-                elseif bp.core.get('super-jump') and bp.core.ready("Super Jump") and target then
+                elseif bp.abilities.get('auto_super_jump') and bp.core.ready("Super Jump") and target then
                     bp.queue.add("Super Jump", target)
 
                 -- SPIRIT JUMP.
-                elseif bp.core.get('spirit-jump') and bp.core.ready("Spirit Jump") and target then
+                elseif bp.abilities.get('auto_spirit_jump') and bp.core.ready("Spirit Jump") and target then
                     bp.queue.add("Spirit Jump", target)
 
                 -- SOUL JUMP.
-                elseif bp.core.get('soul-jump') and bp.core.ready("Soul Jump") and target then
+                elseif bp.abilities.get('auto_soul_jump') and bp.core.ready("Soul Jump") and target then
                     bp.queue.add("Soul Jump", target)
 
                 end
@@ -77,25 +77,25 @@ local function load(bp)
                 if pet then
 
                     -- SMITING BREATH.
-                    if bp.core.get('smiting-breath') and bp.core.ready("Smiting Breath") and target then
+                    if bp.abilities.get('auto_smiting_breath') and bp.core.ready("Smiting Breath") and target then
 
-                        if bp.core.get('deep-breathing') and bp.core.ready("Deep Breathing") then
+                        if bp.abilities.get('auto_deep_breathing') and bp.core.ready("Deep Breathing") then
                             bp.queue.add("Deep Breathing", player)
 
                         end
                         bp.queue.add("Smiting Breath", target)
 
                     -- RESTORING BREATH.
-                    elseif bp.core.get('restoring-breath') and bp.core.ready("Restoring Breath") then
+                    elseif bp.abilities.get('auto_restoring_breath') and bp.core.ready("Restoring Breath") then
 
-                        if bp.core.get('deep-breathing') and bp.core.ready("Deep Breathing") then
+                        if bp.abilities.get('auto_deep_breathing') and bp.core.ready("Deep Breathing") then
                             bp.queue.add("Deep Breathing", player)
 
                         end
                         bp.queue.add("Restoring Breath", player)
 
                     -- STEADY WING.
-                    elseif bp.core.get('steady-wing') and bp.core.ready("Steady Wing") then
+                    elseif bp.abilities.get('auto_steady_wing') and bp.core.ready("Steady Wing") then
                         bp.queue.add("Steady Wing", player)
 
                     end
@@ -106,35 +106,35 @@ local function load(bp)
                 local target = bp.targets.get('player')
 
                 -- CALL WYVERN.
-                if not pet and bp.core.get('call-wyvern') and bp.core.ready("Call Wyvern") then
+                if not pet and bp.abilities.get('auto_call_wyvern') and bp.core.ready("Call Wyvern") then
                     bp.queue.add("Call Wyvern", player)
 
                 end
 
                 -- ANGON.
-                if bp.core.get('angon') and bp.core.ready("Angon") and bp.__inventory.canEquip("Angon") and target then
+                if bp.abilities.get('auto_angon') and bp.core.ready("Angon") and bp.__inventory.canEquip("Angon") and target then
                     bp.queue.add("Angon", target)
                 
                 end
 
                 -- JUMP.
-                if bp.core.get('jump') and bp.core.ready("Jump") and target then
+                if bp.abilities.get('auto_jump') and bp.core.ready("Jump") and target then
                     bp.queue.add("Jump", target)
 
                 -- HIGH JUMP.
-                elseif bp.core.get('high-jump') and bp.core.ready("High Jump") and target then
+                elseif bp.abilities.get('auto_high_jump') and bp.core.ready("High Jump") and target then
                     bp.queue.add("High Jump", target)
 
                 -- SUPER JUMP.
-                elseif bp.core.get('super-jump') and bp.core.ready("Super Jump") and target then
+                elseif bp.abilities.get('auto_super_jump') and bp.core.ready("Super Jump") and target then
                     bp.queue.add("Super Jump", target)
 
                 -- SPIRIT JUMP.
-                elseif bp.core.get('spirit-jump') and bp.core.ready("Spirit Jump") and target then
+                elseif bp.abilities.get('auto_spirit_jump') and bp.core.ready("Spirit Jump") and target then
                     bp.queue.add("Spirit Jump", target)
 
                 -- SOUL JUMP.
-                elseif bp.core.get('soul-jump') and bp.core.ready("Soul Jump") and target then
+                elseif bp.abilities.get('auto_soul_jump') and bp.core.ready("Soul Jump") and target then
                     bp.queue.add("Soul Jump", target)
 
                 end
@@ -142,25 +142,25 @@ local function load(bp)
                 if pet then
 
                     -- SMITING BREATH.
-                    if bp.core.get('smiting-breath') and bp.core.ready("Smiting Breath") and target then
+                    if bp.abilities.get('auto_smiting_breath') and bp.core.ready("Smiting Breath") and target then
 
-                        if bp.core.get('deep-breathing') and bp.core.ready("Deep Breathing") then
+                        if bp.abilities.get('auto_deep_breathing') and bp.core.ready("Deep Breathing") then
                             bp.queue.add("Deep Breathing", player)
 
                         end
                         bp.queue.add("Smiting Breath", target)
 
                     -- RESTORING BREATH.
-                    elseif bp.core.get('restoring-breath') and bp.core.ready("Restoring Breath") then
+                    elseif bp.abilities.get('auto_restoring_breath') and bp.core.ready("Restoring Breath") then
 
-                        if bp.core.get('deep-breathing') and bp.core.ready("Deep Breathing") then
+                        if bp.abilities.get('auto_deep_breathing') and bp.core.ready("Deep Breathing") then
                             bp.queue.add("Deep Breathing", player)
 
                         end
                         bp.queue.add("Restoring Breath", player)
 
                     -- STEADY WING.
-                    elseif bp.core.get('steady-wing') and bp.core.ready("Steady Wing") then
+                    elseif bp.abilities.get('auto_steady_wing') and bp.core.ready("Steady Wing") then
                         bp.queue.add("Steady Wing", player)
 
                     end
