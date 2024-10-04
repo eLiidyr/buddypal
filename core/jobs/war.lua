@@ -68,7 +68,7 @@ local function load(bp)
                         end
 
                     -- DEFENDER.
-                    elseif bp.abilities.get('defender') and bp.combat.get('auto_tank_mode') and bp.core.ready("Defender", 57) then
+                    elseif bp.abilities.get('auto_defender') and bp.combat.get('auto_tank_mode') and bp.core.ready("Defender", 57) then
                         bp.queue.add("Defender", player)
 
                         if bp.__buffs.active(56) then
@@ -77,19 +77,19 @@ local function load(bp)
                         end
 
                     -- AGGRESSOR.
-                    elseif bp.abilities.get('aggressor') and bp.core.ready("Aggressor", 58) then
+                    elseif bp.abilities.get('auto_aggressor') and bp.core.ready("Aggressor", 58) then
                         bp.queue.add("Aggressor", player)
 
                     -- WARCRY.
-                    elseif bp.abilities.get('warcry') and bp.core.ready("Warcry", {68,460}) then
+                    elseif bp.abilities.get('auto_warcry') and bp.core.ready("Warcry", {68,460}) then
                         bp.queue.add("Warcry", player)
 
                     -- RETALIATION.
-                    elseif bp.abilities.get('retaliation') and bp.core.ready("Retaliation", 405) then
+                    elseif bp.abilities.get('auto_retaliation') and bp.core.ready("Retaliation", 405) then
                         bp.queue.add("Retaliation", player)
 
                     -- RESTRAINT.
-                    elseif bp.abilities.get('restraint') and bp.core.ready("Restraint", 435) then
+                    elseif bp.abilities.get('auto_restraint') and bp.core.ready("Restraint", 435) then
                         bp.queue.add("Restraint", player)
 
                     -- BLOOD RAGE.
@@ -126,7 +126,7 @@ local function load(bp)
                 local target = bp.__target.get('t')
 
                 -- PROVOKE.
-                if bp.abilities.get('provoke') and bp.core.ready("Provoke") then
+                if bp.abilities.get('auto_provoke') and bp.core.ready("Provoke") then
                     bp.queue.add("Provoke", target)
                     bp.core.timer('enmity'):update()
 
@@ -136,7 +136,7 @@ local function load(bp)
                 local target = bp.targets.get('player')
 
                 -- PROVOKE.
-                if bp.abilities.get('provoke') and bp.core.ready("Provoke") then
+                if bp.abilities.get('auto_provoke') and bp.core.ready("Provoke") then
                     bp.queue.add("Provoke", target)
                     bp.core.timer('enmity'):update()
 
