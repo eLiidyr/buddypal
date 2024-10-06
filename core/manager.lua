@@ -111,20 +111,23 @@ function manager:new(core)
     end
 
     local function buildAliases()
-        local keybinds = T{'@b / toggle', '@f / follow initiate-follow', '@s / follow stop-following', '@a / assist set', '@t / target set', '@p / interact', '@, / bubbles geomancy-target', '@. / bubbles entrust-target', '@[ / ord p / on', '@] / ord p / off'}
+        local keybinds = T{'@b / toggle', '@f / follow initiate-follow', '@s / follow stop-following', '@a / assist set', '@t / target set', '@p / interact', '@, / bubbles geomancy-target', '@. / bubbles entrust-target', '@[ / ord p / on', '@] / ord p / off', '@/ / actions maintenance'}
         local aliases = T{
             ["wring"]       = "/ wring",
             ["dring"]       = "/ dring",
             ["hring"]       = "/ hring",
             ["mring"]       = "/ mring",
             ["cring"]       = "/ cring",
+            ["xpring"]      = "/ xpring",
             ["wrings"]      = "/ ord p / wring",
             ["drings"]      = "/ ord p / dring",
             ["hrings"]      = "/ ord p / hring",
             ["mrings"]      = "/ ord p / mring",
             ["crings"]      = "/ ord p / cring",
+            ["xprings"]     = "/ ord p / xpring",
             ["up"]          = "/ ord p / mounts",
-            ["down"]        = "/ ord p dismount"
+            ["down"]        = "/ ord p input /dismount",
+            ["gofast"]      = "/ ord cor / actions speed-boost; / ord brd / actions speed-boost",
         }
 
         for bind in keybinds:it() do
