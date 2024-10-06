@@ -12,16 +12,16 @@ local function load(bp)
         local player = bp.__player.get()
         local target = bp.targets.get('player')
 
-        if player and target and bp.core.get('one-hours') and bp.actions.canAct() then
+        if player and target and bp.combat.get('auto_one_hours') and bp.combat.get('auto_job_abilities') and bp.actions.canAct() then
 
             -- TRANCE.
-            if bp.core.get('trance') and bp.core.ready("Trance", 376) then
+            if bp.abilities.get('auto_trance') and bp.core.ready("Trance", 376) then
                 bp.queue.add("Trance", player)
 
             end
             
             -- GRAND PAS.
-            if bp.core.get('grand-pas') and bp.core.ready("Grand Pas", 507) then
+            if bp.abilities.get('auto_grand_pas') and bp.core.ready("Grand Pas", 507) then
                 bp.queue.add("Grand Pas", player)
 
             end
@@ -34,14 +34,14 @@ local function load(bp)
 
     function self:abilities()
 
-        if bp.core.get('job-abilities') and bp.actions.canAct() then
+        if bp.combat.get('auto_job_abilities') and bp.actions.canAct() then
             local player = bp.__player.get()
 
             if player and player.status == 1 then
                 local target = bp.__target.get('t')
 
                 -- NO FOOT RISE.
-                if bp.core.get('no foot rise') and bp.core.ready("No Foot Rise") then
+                if bp.abilities.get('auto_no_foot_rise') and bp.core.ready("No Foot Rise") then
                     local merits = bp.__player.merits()
 
                     if merits and (6 - bp.__buffs.getFinishingMoves()) <= merits.no_foot_rise then
@@ -52,13 +52,13 @@ local function load(bp)
                 end
 
                 -- STEPS.
-                if bp.core.get('steps') then
-                    local steps = bp.core.get('steps')
+                if bp.abilities.get('auto_steps') then
+                    local steps = bp.abilities.get('auto_steps')
                     
                     if steps.enabled and bp.core.ready(steps.name) then
 
                         -- PRESTO.
-                        if bp.core.get('presto') and bp.core.ready("Presto") and bp.__buffs.getFinishingMoves() == 0 then
+                        if bp.abilities.get('auto_presto') and bp.core.ready("Presto") and bp.__buffs.getFinishingMoves() == 0 then
                             bp.queue.add("Presto", player)
 
                         end
@@ -71,13 +71,13 @@ local function load(bp)
                 if (bp.__buffs.getFinishingMoves() > 0 or bp.__buffs.active(507)) then
 
                     -- VIOLENT FLOURISH.
-                    if bp.core.get('violent-flourish') and bp.core.ready("Violent Flourish") then
+                    if bp.abilities.get('auto_violent_flourish') and bp.core.ready("Violent Flourish") then
                         bp.queue.add("Violent Flourish", target)
 
                     end
 
                     -- REVERSE FLOURISH.
-                    if bp.core.get('reverse-flourish') and bp.core.ready("Reverse Flourish") then
+                    if bp.abilities.get('auto_reverse_flourish') and bp.core.ready("Reverse Flourish") then
                         bp.queue.add("Reverse Flourish", player)
 
                     end
@@ -88,7 +88,7 @@ local function load(bp)
                 local target = bp.targets.get('player')
 
                 -- NO FOOT RISE.
-                if bp.core.get('no foot rise') and bp.core.ready("No Foot Rise") then
+                if bp.abilities.get('auto_no_foot_rise') and bp.core.ready("No Foot Rise") then
                     local merits = bp.__player.merits()
 
                     if merits and (6 - bp.__buffs.getFinishingMoves()) <= merits.no_foot_rise then
@@ -99,13 +99,13 @@ local function load(bp)
                 end
 
                 -- STEPS.
-                if bp.core.get('steps') then
+                if bp.abilities.get('auto_steps') then
                     local steps = bp.core.get('steps')
                     
                     if steps.enabled and bp.core.ready(steps.name) then
 
                         -- PRESTO.
-                        if bp.core.get('presto') and bp.core.ready("Presto") and bp.__buffs.getFinishingMoves() == 0 then
+                        if bp.abilities.get('auto_presto') and bp.core.ready("Presto") and bp.__buffs.getFinishingMoves() == 0 then
                             bp.queue.add("Presto", player)
 
                         end
@@ -118,13 +118,13 @@ local function load(bp)
                 if (bp.__buffs.getFinishingMoves() > 0 or bp.__buffs.active(507)) then
 
                     -- VIOLENT FLOURISH.
-                    if bp.core.get('violent-flourish') and bp.core.ready("Violent Flourish") then
+                    if bp.abilities.get('auto_violent_flourish') and bp.core.ready("Violent Flourish") then
                         bp.queue.add("Violent Flourish", target)
 
                     end
 
                     -- REVERSE FLOURISH.
-                    if bp.core.get('reverse-flourish') and bp.core.ready("Reverse Flourish") then
+                    if bp.abilities.get('auto_reverse_flourish') and bp.core.ready("Reverse Flourish") then
                         bp.queue.add("Reverse Flourish", player)
 
                     end
@@ -147,17 +147,17 @@ local function load(bp)
             if player and player.status == 1 then
                 local target = bp.__target.get('t')
 
-                if bp.actions.canAct() then
+                if bp.actions.canAct() and bp.combat.get('auto_job_abilities') then
 
                     -- SABER DANCE.
-                    if bp.core.get('saber-dance') and bp.core.ready("Saber Dance", {410,411}) then
+                    if bp.abilities.get('auto_saber_dance') and bp.core.ready("Saber Dance", {410,411}) then
                         bp.queue.add("Saber Dance", player)
 
                     end
 
                     -- SAMBAS.
-                    if bp.core.get('sambas') then
-                        local sambas = bp.core.get('sambas')
+                    if bp.abilities.get('autosambas') then
+                        local sambas = bp.abilities.get('auto_sambas')
                         
                         if sambas.enabled and target and not bp.__buffs.active(411) then
 
@@ -171,23 +171,25 @@ local function load(bp)
                     end
 
                     if (bp.__buffs.getFinishingMoves() > 0 or bp.__buffs.active(507)) then
+                        local aws = bp.combat.get('auto_melee_weaponskill')
+                        local vitals = bp.__player.vitals()
 
-                        if bp.core.get('auto_melee_weaponskill') and bp.core.get('auto_melee_weaponskill').enabled and bp.core.vitals.tp >= bp.core.get('auto_melee_weaponskill').tp then
+                        if aws and vitals and aws.enabled and vitals.tp >= aws.tp then
 
                             -- CLIMACTIC FLOURISH.
-                            if bp.core.get('climactic-flourish') and bp.core.ready("Climactic Flourish", 443) then
+                            if bp.abilities.get('auto_climactic_flourish') and bp.core.ready("Climactic Flourish", 443) then
                                 bp.queue.add("Climactic Flourish", player)
 
                             end
 
                             -- STRIKING FLOURISH.
-                            if bp.core.get('striking-flourish') and bp.core.ready("Striking Flourish", 468) and (bp.__buffs.getFinishingMoves() > 1 or bp.__buffs.active(507)) then
+                            if bp.abilities.get('auto_striking_flourish') and bp.core.ready("Striking Flourish", 468) and (bp.__buffs.getFinishingMoves() > 1 or bp.__buffs.active(507)) then
                                 bp.queue.add("Striking Flourish", player)
 
                             end
 
                             -- TERNARY FLOURISH.
-                            if bp.core.get('ternary-flourish') and bp.core.ready("Ternary Flourish", 472) and (bp.__buffs.getFinishingMoves() > 2 or bp.__buffs.active(507)) then
+                            if bp.abilities.get('auto_ternary_flourish') and bp.core.ready("Ternary Flourish", 472) and (bp.__buffs.getFinishingMoves() > 2 or bp.__buffs.active(507)) then
                                 bp.queue.add("Ternary Flourish", player)
 
                             end
@@ -195,13 +197,13 @@ local function load(bp)
                         else
 
                             -- BUILDING FLOURISH.
-                            if bp.core.get('building-flourish') and bp.core.ready("Building Flourish", 375) then
+                            if bp.abilities.get('auto_building_flourish') and bp.core.ready("Building Flourish", 375) then
                                 bp.queue.add("Building Flourish", player)
 
                             end
 
                             -- WILD FLOURISH.
-                            if bp.core.get('wild-flourish') and bp.core.ready("Wild Flourish") and (bp.__buffs.getFinishingMoves() > 1 or bp.__buffs.active(507)) then
+                            if bp.abilities.get('auto_wild_flourish') and bp.core.ready("Wild Flourish") and (bp.__buffs.getFinishingMoves() > 1 or bp.__buffs.active(507)) then
                                 bp.queue.add("Wild Flourish", target)
 
                             end
@@ -209,24 +211,23 @@ local function load(bp)
                         end
 
                     end
-                    
 
                 end
 
             elseif player and player.status == 0 then
                 local target = bp.targets.get('player')
 
-                if bp.actions.canAct() then
+                if bp.actions.canAct() and bp.combat.get('auto_job_abilities') then
 
                     -- SABER DANCE.
-                    if bp.core.get('saber-dance') and bp.core.ready("Saber Dance", {410,411}) then
+                    if bp.abilities.get('auto_saber_dance') and bp.core.ready("Saber Dance", {410,411}) then
                         bp.queue.add("Saber Dance", player)
 
                     end
 
                     -- SAMBAS.
-                    if bp.core.get('sambas') then
-                        local sambas = bp.core.get('sambas')
+                    if bp.abilities.get('autosambas') then
+                        local sambas = bp.abilities.get('auto_sambas')
                         
                         if sambas.enabled and target and not bp.__buffs.active(411) then
 
@@ -240,23 +241,25 @@ local function load(bp)
                     end
 
                     if (bp.__buffs.getFinishingMoves() > 0 or bp.__buffs.active(507)) then
+                        local aws = bp.combat.get('auto_melee_weaponskill')
+                        local vitals = bp.__player.vitals()
 
-                        if bp.core.get('auto_melee_weaponskill') and bp.core.get('auto_melee_weaponskill').enabled and bp.core.vitals.tp >= bp.core.get('auto_melee_weaponskill').tp then
+                        if aws and vitals and aws.enabled and vitals.tp >= aws.tp then
 
                             -- CLIMACTIC FLOURISH.
-                            if bp.core.get('climactic-flourish') and bp.core.ready("Climactic Flourish", 443) then
+                            if bp.abilities.get('auto_climactic_flourish') and bp.core.ready("Climactic Flourish", 443) then
                                 bp.queue.add("Climactic Flourish", player)
 
                             end
 
                             -- STRIKING FLOURISH.
-                            if bp.core.get('striking-flourish') and bp.core.ready("Striking Flourish", 468) and (bp.__buffs.getFinishingMoves() > 1 or bp.__buffs.active(507)) then
+                            if bp.abilities.get('auto_striking_flourish') and bp.core.ready("Striking Flourish", 468) and (bp.__buffs.getFinishingMoves() > 1 or bp.__buffs.active(507)) then
                                 bp.queue.add("Striking Flourish", player)
 
                             end
 
                             -- TERNARY FLOURISH.
-                            if bp.core.get('ternary-flourish') and bp.core.ready("Ternary Flourish", 472) and (bp.__buffs.getFinishingMoves() > 2 or bp.__buffs.active(507)) then
+                            if bp.abilities.get('auto_ternary_flourish') and bp.core.ready("Ternary Flourish", 472) and (bp.__buffs.getFinishingMoves() > 2 or bp.__buffs.active(507)) then
                                 bp.queue.add("Ternary Flourish", player)
 
                             end
@@ -264,21 +267,20 @@ local function load(bp)
                         else
 
                             -- BUILDING FLOURISH.
-                            if bp.core.get('building-flourish') and bp.core.ready("Building Flourish", 375) then
+                            if bp.abilities.get('auto_building_flourish') and bp.core.ready("Building Flourish", 375) then
                                 bp.queue.add("Building Flourish", player)
 
                             end
 
                             -- WILD FLOURISH.
-                            if bp.core.get('wild-flourish') and bp.core.ready("Wild Flourish") and (bp.__buffs.getFinishingMoves() > 1 or bp.__buffs.active(507)) then
+                            if bp.abilities.get('auto_wild_flourish') and bp.core.ready("Wild Flourish") and (bp.__buffs.getFinishingMoves() > 1 or bp.__buffs.active(507)) then
                                 bp.queue.add("Wild Flourish", target)
 
                             end
 
                         end
 
-                    end
-                    
+                    end                   
 
                 end
 
@@ -296,16 +298,16 @@ local function load(bp)
     end
 
     function self:enmity()
-        local timer = bp.core.timer('enmity')
+        local enmity = bp.combat.get('auto_enmity_generation')
 
-        if bp.core.get('auto_enmity_generation') and bp.core.get('auto_enmity_generation').enabled and timer:ready() then
+        if enmity and enmity.enabled and bp.core.timer('enmity'):ready() then
             local player = bp.__player.get()
 
             if player and player.status == 1 then
-                local target = bp.__target.get('t')
+                local target = (player.status == 1) and bp.__target.get('t') or bp.targets.get('player')
 
                 -- FAN DANCE.
-                if bp.core.get('fan-dance') and bp.core.ready("Fan Dance", {410,411}) then
+                if bp.abilities.get('auto_fan_dance') and bp.core.ready("Fan Dance", {410,411}) then
                     bp.queue.add("Fan Dance", player)
                 
                 end
@@ -313,29 +315,9 @@ local function load(bp)
                 if (bp.__buffs.getFinishingMoves() > 0 or bp.__buffs.active(507)) then
 
                     -- ANIMATED FLOURISH.
-                    if bp.core.get('animated-flourish') and bp.core.ready("Animated Flourish") then
+                    if target and bp.abilities.get('auto_animated_flourish') and bp.core.ready("Animated Flourish") then
                         bp.queue.add("Animated Flourish", target)
-                        timer:update()
-
-                    end
-
-                end
-
-            elseif player and player.status == 0 then
-                local target = bp.targets.get('player')
-
-                -- FAN DANCE.
-                if bp.core.get('fan-dance') and bp.core.ready("Fan Dance", {410,411}) then
-                    bp.queue.add("Fan Dance", player)
-                
-                end
-
-                if (bp.__buffs.getFinishingMoves() > 0 or bp.__buffs.active(507)) then
-
-                    -- ANIMATED FLOURISH.
-                    if bp.core.get('animated-flourish') and bp.core.ready("Animated Flourish") then
-                        bp.queue.add("Animated Flourish", target)
-                        timer:update()
+                        bp.core.timer('enmity'):update()
 
                     end
 
