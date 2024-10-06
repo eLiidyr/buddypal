@@ -100,7 +100,7 @@ local function load(bp)
 
                 -- STEPS.
                 if bp.abilities.get('auto_steps') then
-                    local steps = bp.core.get('steps')
+                    local steps = bp.abilities.get('auto_steps')
                     
                     if steps.enabled and bp.core.ready(steps.name) then
 
