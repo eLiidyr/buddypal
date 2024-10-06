@@ -232,8 +232,15 @@ core.register('addon command', function(...)
             local delay = core.actions.castItem("Dim. Ring (Holla)", 13)
             core.toChat("Attempting to use:", 170, "Dimensional Ring (Holla)", 217, "in", 170, tostring(delay), 217, "seconds.", 170)
 
+        elseif command == 'xpring' then
+            local delay = core.actions.useExperienceRing()
+            core.toChat("Attempting to use:", 170, "Ech", 217, "in", 170, tostring(delay), 217, "seconds.", 170)
+
         elseif command == 'coords' then
             print(core.__player.position())
+
+        elseif command == 'gofast' then
+            bp.cmd('/ ord brd ma Chocobo Mazurka')
 
         end
 
