@@ -374,6 +374,243 @@ local function helper(bp, events)
 
     end
 
+    methods['attachments'] = function(commands)
+        if busy then return end
+        local events    = {}
+        local person    = bp.__target.findNearby({'Tateeya'})
+        local perform   = false
+        local timer     = o.timer('event-delay')
+        if not person then return end
+
+        local function error(p, l)
+            if p then bp.__menus.send(p, {bp.__menus.done}, 0) end
+            bp.toChat(l, 123)
+            unregister(events)
+            busy = false
+
+        end
+
+        -- Create loop event to interact target.
+        events.loop = bp.register('time change', function()
+            local timer = timer
+
+            if timer:ready() and bp.__player.status() == 0 and not perform then
+                local attachments = bp.__inventory.findAttachments()
+
+                if attachments and #attachments > 0 then
+                    local attachment = attachments[1]
+
+                    bp.interact.trade(person, {{attachment.index, 1}}, true, function(parsed, target)
+                        bp.toChat("Trading in attachment", 170, attachment.res.en, 217, "to", 170, person.name, 217)
+                        perform = true
+
+                        if parsed['Menu ID'] == 651 then
+                            
+                            bp.__menus.send(parsed, {{attachment.id, 0, 0, false}}, 0, function()
+                                perform = false
+                            
+                            end)
+
+                        end
+
+                    end)
+
+                else
+                    error(false, "You do not have any attachments in your inventory; event ended.")
+
+                end
+                timer:update()
+
+            end
+        
+        end)
+
+    end
+
+    methods['gobkeys'] = function(commands)
+        if busy then return end
+        local events    = {}
+        local person    = bp.__target.findNearby({'Habitox','Mystrix','Bountibox','Specilox','Arbitrix','Funtrox','Sweepstox','Priztrix','Wondrix','Rewardox','Winrix'})
+        local perform   = false
+        local timer     = o.timer('event-delay')
+        if not person then return end
+
+        local function error(p, l)
+            if p then bp.__menus.send(p, {bp.__menus.done}, 0) end
+            bp.toChat(l, 123)
+            unregister(events)
+            busy = false
+
+        end
+
+        -- Create loop event to interact target.
+        events.loop = bp.register('time change', function()
+            local timer = timer
+
+            if timer:ready() and bp.__player.status() == 0 and not perform then
+                if not bp.__inventory.hasSpace() then return error(false, "You do not have enough inventory space; event ended.") end
+                local found = bp.__inventory.findByName({"SP Gobbie","Dial Key #Ab","Dial Key #Anv"})
+
+                if found and #found > 0 then
+                    local index, count, id, status, bag, res = table.unpack(found[1])
+
+                    if index and status and status == 0 then
+
+                        bp.interact.trade(person, {{index, 1}}, true, function(parsed, target)
+                            bp.toChat("Trading", 170, res.en, 217, "to", 170, person.name, 217)
+                            perform = true
+
+                            if S{538,812,989,4010,5139,5145,6010,612,20065}:contains(parsed['Menu ID']) then
+                                
+                                bp.__menus.send(parsed, {{1, 0, 0, true}, {2, 0, 0, true}, {2, 0, 0, false}}, 0, function()
+                                    perform = false
+                                
+                                end)
+
+                            end
+
+                        end)
+
+                    else
+                        error(false, "You do not have any gobbie keys in your inventory; event ended.")
+
+                    end
+
+                else
+                    error(false, "You do not have any gobbie keys in your inventory; event ended.")
+
+                end
+                timer:update()
+
+            end
+        
+        end)
+
+    end
+
+    methods['ciphers'] = function(commands)
+        if busy then return end
+        local events    = {}
+        local person    = bp.__target.findNearby({"Gondebaud","Clarion Star","Wetata"})
+        local perform   = false
+        local timer     = o.timer('event-delay')
+        if not person then return end
+
+        local function error(p, l)
+            if p then bp.__menus.send(p, {bp.__menus.done}, 0) end
+            bp.toChat(l, 123)
+            unregister(events)
+            busy = false
+
+        end
+
+        -- Create loop event to interact target.
+        events.loop = bp.register('time change', function()
+            local timer = timer
+
+            if timer:ready() and bp.__player.status() == 0 and not perform then
+                if not bp.__inventory.hasSpace() then return error(false, "You do not have enough inventory space; event ended.") end
+                local index, count, id, status, bag, res = bp.__inventory.findByName("Cipher:", 0)
+
+                if index and status and status == 0 and bp.__ciphers.get(id) and bp.res.spells[bp.__ciphers.get(id)] then
+                    local spell = bp.res.spells[bp.__ciphers.get(id)]
+
+                    if spell and not bp.__player.hasSpell(spell.id) then
+
+                        bp.interact.trade(person, {{index, 1}}, true, function(parsed, target)
+                            bp.toChat("Trading", 170, res.en, 217, "to", 170, person.name, 217)
+                            perform = true
+
+                            if parsed['Menu ID'] == 437 then
+
+                                bp.__menus.send(parsed, {{bp.__ciphers.get(id), 0, 0, false}}, 0, function()
+                                    perform = false
+                                
+                                end)
+
+                            else
+                                bp.__menus.send(parsed, {bp.__menus.done()})
+                                perform = false
+
+                            end
+
+                        end)
+
+                    else
+                        error(false, string.format("You already know %s. Please remove from your inventory and try again; event ended.", res.en))
+
+                    end
+
+                else
+                    error(false, "You do not have any ciphers in your inventory; event ended.")
+
+                end
+                timer:update()
+
+            end
+        
+        end)
+
+    end
+
+    methods['millioncorn'] = function(commands)
+        if busy then return end
+        local events    = {}
+        local person    = bp.__target.findNearby({'Melyon'})
+        local perform   = false
+        local timer     = o.timer('event-delay')
+        if not person then return end
+
+        local function error(p, l)
+            if p then bp.__menus.send(p, {bp.__menus.done}, 0) end
+            bp.toChat(l, 123)
+            unregister(events)
+            busy = false
+
+        end
+
+        -- Create loop event to interact target.
+        events.loop = bp.register('time change', function()
+            local timer = timer
+
+            if timer:ready() and bp.__player.status() == 0 and not perform then
+                local index, count, id, status, bag, res = bp.__inventory.findByName("Millioncorn")
+
+                if index and status and status == 0 then
+                    if bp.__inventory.getCount("Millioncorn", 0) < 3 then return error(false, "You do not have enough Millioncorn; event ended.") end
+
+                    bp.interact.trade(person, {{index, 3}}, true, function(parsed, target)
+                        bp.toChat("Trading", 170, res.en, 217, "to", 170, person.name, 217)
+                        perform = true
+
+                        if parsed['Menu ID'] == 63 then
+                            
+                            bp.__menus.send(parsed, {{12, 0, 0, false}}, 0, function()
+                                perform = false
+                            
+                            end)
+
+                        else
+                            bp.__menus.send(parsed, {bp.__menus.done()}, 0, function()
+                                error(false, "Invalid menu detected; event ended.")
+                            
+                            end)
+
+                        end
+
+                    end)
+
+                else
+                    error(false, "You do not have enough Millioncorn; event ended.")
+
+                end
+
+            end
+        
+        end)
+
+    end
+
     -- Public Methods.
     o.doEvent = function(n, ...)
         local e = nil
