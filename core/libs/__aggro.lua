@@ -65,6 +65,11 @@ local function lib(bp)
         return aggro:length()
     
     end
+
+    o.getFirst = function()
+        return aggro:first()
+        
+    end
     
     o.getAggro = function()
         return aggro:copy()
