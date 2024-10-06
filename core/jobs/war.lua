@@ -31,10 +31,11 @@ local function load(bp)
     end
 
     function self:abilities()
+        local target = bp.targets.get('player')
 
         -- TOMAHAWK.
-        if bp.combat.get('auto_job_abilities') and bp.actions.canAct() and bp.abilities.get('auto_tomahawk') and bp.core.ready("Tomahawk") and bp.__inventory.canEquip("Throwing Tomahawk") and bp.targets.get('player') then
-            bp.queue.add("Tomahawk", bp.targets.get('player'))
+        if target and bp.combat.get('auto_job_abilities') and bp.actions.canAct() and bp.abilities.get('auto_tomahawk') and bp.core.ready("Tomahawk") and bp.__inventory.canEquip("Throwing Tomahawk") then
+            bp.queue.add("Tomahawk", target)
         
         end
         
