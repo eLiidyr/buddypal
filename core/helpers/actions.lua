@@ -9,6 +9,8 @@ local function helper(bp, events)
     local anchored      = T{set=false, midcast=false, position={x=0, y=0, z=0}}
     local position      = T{}
     local ismoving      = false
+    local maintenance   = false
+    local maintdata     = nil
     local lastdeath     = 0
     local lastperform   = 0
     local actions       = {
@@ -36,8 +38,7 @@ local function helper(bp, events)
 
     -- Private Methods.
     local function onload()
-        settings:save()
-        settings:update()
+        settings:save():update()
 
         -- Timer creation.
         o.timer('auto-distance-timer',  0.3)
@@ -130,8 +131,12 @@ local function helper(bp, events)
 
     end
 
-    local function ianchor(id, original)
-        if not S{0x028,0x029,0x053,0x05c}:contains(id) then return false end
+    local function ianchor(id, original, modified, injected, blocked)
+        if not S{0x00d,0x028,0x029,0x037,0x053,0x05c}:contains(id) then
+            return false
+        
+        end
+
         local parsed = bp.packets.parse('incoming', original)
         
         if id == 0x028 and o.isCastingLocked() then
@@ -167,6 +172,33 @@ local function helper(bp, events)
 
         elseif id == 0x05c then
             anchored.set, anchored.midcast = false, false
+
+        elseif id == 0x037 then
+            local parsed = bp.packets.parse('incoming', original)
+
+            if T{0,5,85}:contains(parsed['Status']) then
+                maintdata = parsed
+
+                if not injected and maintenance then
+                    parsed['Status'] = 31
+                    return bp.packets.build(parsed)
+
+                end
+
+            elseif not injected and maintenance and maintdata then
+                parsed['Status'] = 31
+                return bp.packets.build(parsed)
+            
+            end
+
+        elseif id == 0x00d then
+            local parsed = bp.packets.parse('incoming', original)
+
+            if not injected and maintenance and maintdata then
+                parsed['Status'] = 31
+                return bp.packets.build(parsed)
+            
+            end
 
         end
 
@@ -908,6 +940,31 @@ local function helper(bp, events)
                 
                 if type(item) == 'table' and item.id and bp.res.items[item.id] and S{"Dim. Ring (Holla)","Dim. Ring (Dem)","Dim. Ring (Mea)"}:contains(bp.res.items[item.id].en) then
                     ring = {index=index, id=item.id, status=item.status, bag=bag, res=bp.res.items[item.id]}
+                    break
+
+                end
+
+            end
+
+        end
+
+        if ring and ring.status and S{0,5}:contains(ring.status) then
+            return o.castItem(ring.res.en, 13)
+
+        end
+
+    end
+
+    o.useExperienceRing = function()
+        local ring = false
+
+        for bag in bp.__inventory.equippable():it() do
+
+            for item, index in T(bp.items(bag.id)):it() do
+                
+                if type(item) == 'table' and item.id and bp.res.items[item.id] and S{"Empress Band","Emperor Band","Resolution Ring","Chariot Band","Kupofried's Ring","Allied Ring","Caliber Ring","Echad Ring"}:contains(bp.res.items[item.id].en) then
+                    ring = {index=index, id=item.id, status=item.status, bag=bag, res=bp.res.items[item.id]}
+                    break
 
                 end
 
@@ -935,25 +992,7 @@ local function helper(bp, events)
         if command and command == 'actions' then
 
             if settings[commands[1]] ~= nil then
-                local key, data, value = settings:fetch(commands)
-
-                if data[key] ~= nil then
-
-                    if S{'true','false'}:contains(value) then
-                        data[key] = (value == 'true')
-                        settings:save()
-
-                    elseif tonumber(value) then
-                        data[key] = tonumber(value)
-                        settings:save()
-
-                    elseif type(value) == 'string' then
-                        data[key] = value
-                        settings:save()
-
-                    end
-
-                end
+                settings:fromClient(commands)
 
             else
 
@@ -973,6 +1012,41 @@ local function helper(bp, events)
     
                     elseif command == '__switch' and commands[1] then
                         bp.__actions.switchTarget(commands[1])
+
+                    elseif command == 'maintenance' then
+
+                        if maintdata then
+                            maintenance = (maintenance ~= true)
+                            bp.toChat("Maintenance Mode:", 170, tostring(maintenance):upper(), 217)
+
+                            if maintenance then
+                                local copy = T(maintdata):copy()
+                                copy['Status'] = 31
+                                bp.packets.inject(copy)
+
+                            else
+                                bp.packets.inject(maintdata)
+
+                            end
+
+                        else
+                            maintenance = false
+                            bp.toChat("Maintenance Mode:", 170, 'Failed, unable to duplicate player data at this time', 217)
+
+                        end
+
+                    elseif command == 'speed-boost' then
+                        
+                        if bp.__player.mjob() == 'COR' then
+                            bp.cmd("ja Bolter's Roll <me>")
+
+                        elseif bp.__player.mjob() == 'BRD' then
+                            bp.cmd("ja Chocobo Mazurka <me>")
+
+                        end
+
+                    elseif command == 'stewpot' then
+                        o.buyItem(41, 1)
                         
                     end
 
