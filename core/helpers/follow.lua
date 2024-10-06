@@ -15,9 +15,9 @@ local function helper(bp, events)
         settings.follow_speed           = settings:default('follow_speed',          1.50)   -- Set the enhanced follow speed value.
         settings.follow_distance        = settings:default('follow_distance',       2)      -- Minimum distance before it will attempt to walk towards it's target.
         settings.minimum_zone_range     = settings:default('minimum_zone_range',    7)      -- Minimum range a player must be to trigger an injected zoneline.
-        settings.follow_zone_delay      = settings:default('follow_zone_delay',     7)      -- Minimum delay after zoning before triggering auto-follow.
+        settings.follow_zone_delay      = settings:default('follow_zone_delay',     15)     -- Minimum delay after zoning before triggering auto-follow.
         settings.continuous_following   = settings:default('continuous_following',  true)   -- Continue to follow even after status changes, and zoning.
-        settings.enhanced_follow_speed  = settings:default('enhanced_following',    true)   -- Makes followers have enhanced speed regardless of their base speed.
+        settings.enhanced_follow_speed  = settings:default('enhanced_follow_speed', true)   -- Makes followers have enhanced speed regardless of their base speed.
 
     end
 
@@ -25,10 +25,11 @@ local function helper(bp, events)
 
     -- Private Methods.
     local function onload()
-        o.timer('prerender', 0.5)
+        settings:save():update()
+
+        -- Create timers.
+        o.timer('prerender', 0.25)
         o.timer('timeout', 1)
-        settings:save()
-        bp.socket.sendSettings({['follow']=settings:get()})
 
     end
 
@@ -68,13 +69,15 @@ local function helper(bp, events)
     local function updateFollowing(commands)
         if not follow_target then
             return
+        
         end
 
         local target = bp.__target.get(follow_target)
         local coords = commands:concat(""):split("+")
         local pspeed = tonumber(coords[4]) or bp.api.getPlayerSpeed(bp.__player.index()) or 5
+        local distance = (settings.follow_distance > 1) and settings.follow_distance or 1
 
-        if target and bp.__distance.get(target) > settings.follow_distance then
+        if target and coords and bp.__distance.get({x=coords[1], y=coords[2], z=coords[3]}) > 0.75 then
             bp.actions.move(coords[1], coords[2], coords[3])
 
             do
@@ -95,30 +98,19 @@ local function helper(bp, events)
     end
 
     local function zonePlayer(commands)
-        local data = commands:concat(" "):split("+")
-        local zone = bp.__player.zone()
+        local data = commands:concat(""):split('+')
 
-        if #data > 0 and history.zone and history.coords and history.zone == zone then
-            local coords = {x=history.coords[1], y=history.coords[2], z=history.coords[3]}
+        if data and data:length() == 2 then
+            local coords = bp.parse(data[1])
+            local zone = tonumber(data[2])
 
-            if bp.__distance.get(coords) <= settings.minimum_zone_range then
-                local inject = {}
-
-                for i=1, #data do
-                    local split = data[i]:split(":")
-
-                    if #split > 0 and split[1] and split[2] and split[1] ~= "" and split[2] ~= "" then
-                        inject[split[1]] = split[2]
-
-                    end
-
-                end
-                bp.packets.inject(bp.packets.new('outgoing', 0x05e, inject))
+            if not bp.__player.isZoning() and zone and coords and coords.x and coords.y and coords.z and bp.__player.zone() == zone and bp.__distance.get(coords) < 7 then
+                bp.actions.move(coords.x, coords.y, coords.z)
 
                 do
-                    history.zone      = bp.__player.zone()
-                    history.coords    = coords
-                    history.target    = follow_target
+                    history.zone    = bp.__player.zone()
+                    history.coords  = coords
+                    history.target  = follow_target
 
                 end
 
@@ -129,30 +121,22 @@ local function helper(bp, events)
     end
 
     local function handleZonelines(id, original)
-        if (not S{0x05E}:contains(id) or not follow_target) then
+        if not S{0x05e}:contains(id) then
             return false
+        
         end
 
-        local parsed = bp.packets.parse('outgoing', original)
-        
-        if parsed then
+        if follow_target and follow_target == bp.__player.id() then
+            
+            coroutine.schedule(function()
 
-            if follow_target and follow_target == bp.__player.id() then
-                local update;
-
-                for k, v in pairs({['Zone Line']=parsed['Zone Line'], ['MH Door Menu']=parsed['MH Door Menu'], ['Type']=parsed['Type']}) do
-                    update = string.format("%s%s:%s+", update or "", k, v)
+                if not bp.__player.isZoning() then
+                    bp.orders.send('p*', string.format('/ follow set-following %s', bp.__player.id()))
 
                 end
-                bp.orders.send('p*', string.format('/ follow new-zone %s', update))
-
-                -- Send a new request after zoning.
-                coroutine.schedule(function()
-                    bp.orders.send('p*', string.format('/ follow set-following %s', bp.__player.id()))
-                
-                end, settings.follow_zone_delay)
-
-            end
+            
+            end, settings.follow_zone_delay + 2)
+            bp.orders.send('p*', string.format('/ follow new-zone %s', string.format("%s+%s", bp.stringify(bp.__player.position()), bp.__player.zone())))
 
         end
 
@@ -178,7 +162,7 @@ local function helper(bp, events)
 
             else
 
-                if settings.enhanced_follow_speed and follow_speed and follow_speed > bp.api.getPlayerSpeed(bp.__player.index()) then
+                if settings.enhanced_follow_speed and follow_speed and bp.api.getPlayerSpeed(bp.__player.index()) and follow_speed > bp.api.getPlayerSpeed(bp.__player.index()) then
                     bp.api.setPlayerSpeed(bp.__player.index(), follow_speed)
         
                 end
@@ -215,47 +199,43 @@ local function helper(bp, events)
     -- Public Methods.
 
     -- Private Events.
+    o.events('unload', cancelFollow)
     o.events('prerender', handleFollowing)
     o.events('status change', handleStatus)
     o.events('outgoing chunk', handleZonelines)
     o.events('addon command', function(...)
         local commands  = T{...}
-        local command   = table.remove(commands, 1)
+        local command   = commands[1] and table.remove(commands, 1):lower()
 
-        if command and command:lower() == 'follow' then
-            local command = commands[1] and table.remove(commands, 1):lower() or false
-            
-            if command then
+        if command and command == 'follow' then
 
-                if command == 'set-following' and #commands > 0 then
-                    setFollow(commands)
+            if settings[commands[1]] ~= nil then
+                settings:fromClient(commands)
 
-                elseif command == 'stop-following' then
-                    cancelFollow(true)
+            else
 
-                elseif command == 'new-coords' and #commands > 0 then
-                    updateFollowing(commands)
+                local command = commands[1] and table.remove(commands, 1):lower()
 
-                elseif command == 'new-zone' and #commands > 0 then
-                    zonePlayer(commands)
+                if command then
 
-                elseif command == 'follow_distance' and commands[1] and tonumber(commands[1]) then
-                    settings.follow_distance = tonumber(commands[1])
+                    if command == 'set-following' and #commands > 0 then
+                        setFollow(commands)
 
-                elseif command == 'minimum_zone_range' and commands[1] and tonumber(commands[1]) then
-                    settings.minimum_zone_range = tonumber(commands[1])
+                    elseif command == 'stop-following' then
+                        cancelFollow(true)
 
-                elseif command == 'follow_zone_delay' and commands[1] and tonumber(commands[1]) then
-                    settings.follow_zone_delay = tonumber(commands[1])
+                    elseif command == 'new-coords' and #commands > 0 then
+                        updateFollowing(commands)
 
-                elseif command == 'continuous_following' then
-                    settings.continuous_following = (commands[1] and T{'!','#'}:contains(commands[1])) and (commands[1] == '!')
+                    elseif command == 'new-zone' and #commands > 0 then
+                        zonePlayer(commands)
 
-                elseif command == 'initiate-follow' then
-                    request()
+                    elseif command == 'initiate-follow' then
+                        request()
+                        
+                    end
 
                 end
-                settings:save()
 
             end
 
