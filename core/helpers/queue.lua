@@ -765,7 +765,7 @@ local function helper(bp, events)
 
                                 end
 
-                            elseif S{'Samba','Waltz'}:contains(action.type) and action.tp_cost <= bp.__player.tp() then
+                            elseif S{'Samba','Step','Waltz'}:contains(action.type) and action.tp_cost <= bp.__player.tp() then
                                 
                                 if bp.actions.isReady(action.en) and (distance - target.model_size) < range then
                                     push(action, target, priority)
