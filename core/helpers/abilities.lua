@@ -6,7 +6,7 @@ local function helper(bp, events)
     local base = {
 
         WAR={
-            __mainonly              ={''},
+            __mainonly              ={'auto_mighty_strikes','auto_brazen_rush','auto_retaliation','auto_tomahawk','auto_restraint','auto_blood_rage'},
             auto_provoke            =false,
             auto_berserk            =false,
             auto_defender           =false,
@@ -243,7 +243,7 @@ local function helper(bp, events)
         DNC={
             __mainonly              ={''},
             auto_sambas             ={enabled=false, name="Haste Samba"},
-            auto_steps              ={enabled=false, name="Quickstep"},
+            auto_steps              ={enabled=false, name="Quickstep", delay=30},
             auto_animated_flourish  =false,
             auto_violent_flourish   =false,
             auto_reverse_flourish   =false,

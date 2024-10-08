@@ -40,30 +40,13 @@ local function load(bp)
 
         if bp.combat.get('auto_buffing') and bp.actions.canCast() then
             local player = bp.__player.get()
+            local target = bp.targets.getCombatTarget()
 
-            if player and player.status == 1 then
-                local target = bp.__target.get('t')
+            if bp.actions.canAct() then
+                local diffusion = bp.core.get('auto_diffusion')
 
-                if bp.actions.canAct() then
-                    local diffusion = bp.core.get('auto_diffusion')
-
-                    -- DIFFUSION.
-                    if diffusion and diffusion.enabled and bp.core.ready("Diffusion") then
-
-                    end
-
-                end
-
-            elseif player and player.status == 0 then
-                local target = bp.targets.get('player')
-
-                if bp.actions.canAct() then
-                    local diffusion = bp.core.get('auto_diffusion')
-
-                    -- DIFFUSION.
-                    if diffusion and diffusion.enabled and bp.core.ready("Diffusion") then
-
-                    end
+                -- DIFFUSION.
+                if diffusion and diffusion.enabled and bp.core.ready("Diffusion") then
 
                 end
 
@@ -85,51 +68,22 @@ local function load(bp)
 
         if enmity and enmity.enabled and bp.core.timer('enmity'):ready() then
             local player = bp.__player.get()
+            local target = bp.targets.getCombatTarget()
 
-            if player and player.status == 1 then
-                local target = bp.__target.get('t')
+            if bp.actions.canCast() and target then
 
-                if bp.actions.canCast() and target then
+                if bp.__blu.hasHateSpells({"Blank Gaze"}) and bp.core.ready("Blank Gaze") then
+                    bp.queue.add("Blank Gaze", target)
 
-                    if bp.__blu.hasHateSpells({"Blank Gaze"}) and bp.core.ready("Blank Gaze") then
-                        bp.queue.add("Blank Gaze", target)
+                elseif bp.combat.get('allow_aoe_enmity_spells') and bp.__blu.hasHateSpells({"Geist Wall","Jettatura","Soporific","Sheep Song"}) then
 
-                    elseif bp.combat.get('allow_aoe_enmity_spells') and bp.__blu.hasHateSpells({"Geist Wall","Jettatura","Soporific","Sheep Song"}) then
+                    for spell in T{"Geist Wall","Jettatura","Soporific","Sheep Song"}:it() do
 
-                        for spell in T{"Geist Wall","Jettatura","Soporific","Sheep Song"}:it() do
-    
-                            if bp.core.ready(spell) then
-                                bp.queue.add(spell, target)
-                                bp.core.timer('enmity'):update()
-                                break
-    
-                            end
-    
-                        end
+                        if bp.core.ready(spell) then
+                            bp.queue.add(spell, target)
+                            bp.core.timer('enmity'):update()
+                            break
 
-                    end
-
-                end
-
-            elseif player and player.status == 0 then
-                local target = bp.targets.get('player')
-
-                if bp.actions.canCast() and target then
-
-                    if bp.__blu.hasHateSpells({"Blank Gaze"}) and bp.core.ready("Blank Gaze") then
-                        bp.queue.add("Blank Gaze", target)
-
-                    elseif bp.combat.get('allow_aoe_enmity_spells') and bp.__blu.hasHateSpells({"Geist Wall","Jettatura","Soporific","Sheep Song"}) then
-
-                        for spell in T{"Geist Wall","Jettatura","Soporific","Sheep Song"}:it() do
-    
-                            if bp.core.ready(spell) then
-                                bp.queue.add(spell, target)
-                                bp.core.timer('enmity'):update()
-                                break
-    
-                            end
-    
                         end
 
                     end

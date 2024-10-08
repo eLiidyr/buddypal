@@ -9,18 +9,18 @@ local function load(bp)
 
     -- Public Methods.
     function self:specials()
+        local target = bp.targets.getCombatTarget()
         local player = bp.__player.get()
-        local target = bp.targets.get('player')
 
         if player and target and bp.combat.get('auto_one_hours') and bp.combat.get('auto_job_abilities') and bp.actions.canAct() then
             local target = bp.targets.get('player')
 
-            if bp.abilities.get('auto_manafont') and bp.core.ready("Manafont", 47) and target then
+            if bp.abilities.get('auto_manafont') and bp.core.ready("Manafont", 47) then
                 bp.queue.add("Manafont", player)
 
             end
             
-            if bp.abilities.get('auto_subtle_sorcery') and bp.core.ready("Subtle Sorcery", 490) and target then
+            if bp.abilities.get('auto_subtle_sorcery') and bp.core.ready("Subtle Sorcery", 490) then
                 bp.queue.add("Subtle Sorcery", player)
 
             end

@@ -6,7 +6,7 @@ local function helper(bp, events)
     local base = {
 
         WAR={
-            __mainonly ={''},
+            __mainonly ={'auto_one_hours'},
             auto_aftermath = {enabled=false, level=3},
             auto_range_weaponskill = {enabled=false, tp=1000, name="Hot Shot"},
             weaponskill_limiter = {enabled=false, hpp=10, option=">"},
@@ -25,7 +25,7 @@ local function helper(bp, events)
         },
     
         MNK={
-            __mainonly ={''},
+            __mainonly ={'auto_one_hours'},
             auto_aftermath = {enabled=false, level=3},
             auto_melee_weaponskill = {enabled=false, tp=1000, name="Combo"},
             weaponskill_limiter = {enabled=false, hpp=10, option=">"},
@@ -40,7 +40,7 @@ local function helper(bp, events)
         },
     
         WHM={
-            __mainonly ={''},
+            __mainonly ={'auto_one_hours'},
             auto_aftermath = {enabled=false, level=3},
             auto_melee_weaponskill = {enabled=false, tp=1000, name="Combo"},
             weaponskill_limiter = {enabled=false, hpp=10, option=">"},
@@ -57,7 +57,7 @@ local function helper(bp, events)
         },
     
         BLM={
-            __mainonly ={''},
+            __mainonly ={'auto_one_hours'},
             auto_aftermath = {enabled=false, level=3},
             auto_range_weaponskill = {enabled=false, tp=1000, name="Hot Shot"},
             auto_melee_weaponskill = {enabled=false, tp=1000, name="Combo"},
@@ -81,7 +81,7 @@ local function helper(bp, events)
         },
     
         RDM={
-            __mainonly ={''},
+            __mainonly ={'auto_one_hours'},
             auto_aftermath = {enabled=false, level=3},
             auto_range_weaponskill = {enabled=false, tp=1000, name="Hot Shot"},
             auto_melee_weaponskill = {enabled=false, tp=1000, name="Combo"},
@@ -103,7 +103,7 @@ local function helper(bp, events)
         },
     
         THF={
-            __mainonly ={''},
+            __mainonly ={'auto_one_hours'},
             auto_aftermath = {enabled=false, level=3},
             auto_range_weaponskill = {enabled=false, tp=1000, name="Hot Shot"},
             auto_melee_weaponskill = {enabled=false, tp=1000, name="Combo"},
@@ -124,7 +124,7 @@ local function helper(bp, events)
         },
     
         PLD={
-            __mainonly ={''},
+            __mainonly ={'auto_one_hours'},
             auto_aftermath = {enabled=false, level=3},
             auto_range_weaponskill = {enabled=false, tp=1000, name="Hot Shot"},
             auto_melee_weaponskill = {enabled=false, tp=1000, name="Combo"},
@@ -146,7 +146,7 @@ local function helper(bp, events)
         },
     
         DRK={
-            __mainonly ={''},
+            __mainonly ={'auto_one_hours'},
             auto_aftermath = {enabled=false, level=3},
             auto_range_weaponskill = {enabled=false, tp=1000, name="Hot Shot"},
             auto_melee_weaponskill = {enabled=false, tp=1000, name="Combo"},
@@ -169,7 +169,7 @@ local function helper(bp, events)
         },
     
         BST={
-            __mainonly ={''},
+            __mainonly ={'auto_one_hours'},
             auto_aftermath = {enabled=false, level=3},
             auto_range_weaponskill = {enabled=false, tp=1000, name="Hot Shot"},
             auto_melee_weaponskill = {enabled=false, tp=1000, name="Combo"},
@@ -188,7 +188,7 @@ local function helper(bp, events)
         },
 
         BRD={
-            __mainonly ={''},
+            __mainonly ={'auto_one_hours'},
             auto_aftermath = {enabled=false, level=3},
             auto_range_weaponskill = {enabled=false, tp=1000, name="Hot Shot"},
             auto_melee_weaponskill = {enabled=false, tp=1000, name="Combo"},
@@ -210,7 +210,7 @@ local function helper(bp, events)
         },
     
         RNG={
-            __mainonly ={''},
+            __mainonly ={'auto_one_hours'},
             auto_aftermath = {enabled=false, level=3},
             auto_range_weaponskill = {enabled=false, tp=1000, name="Hot Shot"},
             auto_melee_weaponskill = {enabled=false, tp=1000, name="Combo"},
@@ -229,7 +229,7 @@ local function helper(bp, events)
         },
     
         SMN={
-            __mainonly ={''},
+            __mainonly ={'auto_one_hours'},
             auto_aftermath = {enabled=false, level=3},
             auto_range_weaponskill = {enabled=false, tp=1000, name="Hot Shot"},
             auto_melee_weaponskill = {enabled=false, tp=1000, name="Combo"},
@@ -249,7 +249,7 @@ local function helper(bp, events)
         },
     
         SAM={
-            __mainonly ={''},
+            __mainonly ={'auto_one_hours'},
             auto_aftermath = {enabled=false, level=3},
             auto_range_weaponskill = {enabled=false, tp=1000, name="Hot Shot"},
             auto_melee_weaponskill = {enabled=false, tp=1000, name="Combo"},
@@ -269,7 +269,7 @@ local function helper(bp, events)
         },
     
         NIN={
-            __mainonly ={''},
+            __mainonly ={'auto_one_hours'},
             auto_aftermath = {enabled=false, level=3},
             auto_range_weaponskill = {enabled=false, tp=1000, name="Hot Shot"},
             auto_melee_weaponskill = {enabled=false, tp=1000, name="Combo"},
@@ -288,7 +288,7 @@ local function helper(bp, events)
         },
     
         DRG={
-            __mainonly ={''},
+            __mainonly ={'auto_one_hours'},
             auto_aftermath = {enabled=false, level=3},
             auto_range_weaponskill = {enabled=false, tp=1000, name="Hot Shot"},
             auto_melee_weaponskill = {enabled=false, tp=1000, name="Combo"},
@@ -307,7 +307,7 @@ local function helper(bp, events)
         },
     
         BLU={
-            __mainonly ={''},
+            __mainonly ={'auto_one_hours'},
             auto_aftermath = {enabled=false, level=3},
             auto_range_weaponskill = {enabled=false, tp=1000, name="Hot Shot"},
             auto_melee_weaponskill = {enabled=false, tp=1000, name="Combo"},
@@ -330,7 +330,7 @@ local function helper(bp, events)
         },
     
         COR={
-            __mainonly ={''},
+            __mainonly ={'auto_one_hours'},
             auto_aftermath = {enabled=false, level=3},
             auto_range_weaponskill = {enabled=false, tp=1000, name="Hot Shot"},
             auto_melee_weaponskill = {enabled=false, tp=1000, name="Combo"},
@@ -349,7 +349,7 @@ local function helper(bp, events)
         },
     
         PUP={
-            __mainonly ={''},
+            __mainonly ={'auto_one_hours'},
             auto_aftermath = {enabled=false, level=3},
             auto_range_weaponskill = {enabled=false, tp=1000, name="Hot Shot"},
             auto_melee_weaponskill = {enabled=false, tp=1000, name="Combo"},
@@ -372,7 +372,7 @@ local function helper(bp, events)
         },
     
         DNC={
-            __mainonly ={''},
+            __mainonly ={'auto_one_hours'},
             auto_aftermath = {enabled=false, level=3},
             auto_range_weaponskill = {enabled=false, tp=1000, name="Hot Shot"},
             auto_melee_weaponskill = {enabled=false, tp=1000, name="Combo"},
@@ -391,7 +391,7 @@ local function helper(bp, events)
         },
     
         SCH={
-            __mainonly ={''},
+            __mainonly ={'auto_one_hours'},
             auto_aftermath = {enabled=false, level=3},
             auto_range_weaponskill = {enabled=false, tp=1000, name="Hot Shot"},
             auto_melee_weaponskill = {enabled=false, tp=1000, name="Combo"},
@@ -415,7 +415,7 @@ local function helper(bp, events)
         },
     
         GEO={
-            __mainonly ={''},
+            __mainonly ={'auto_one_hours'},
             auto_aftermath = {enabled=false, level=3},
             auto_range_weaponskill = {enabled=false, tp=1000, name="Hot Shot"},
             auto_melee_weaponskill = {enabled=false, tp=1000, name="Combo"},
@@ -437,14 +437,13 @@ local function helper(bp, events)
         },
     
         RUN={
-            __mainonly ={''},
+            __mainonly ={'auto_one_hours'},
             auto_aftermath = {enabled=false, level=3},
             auto_range_weaponskill = {enabled=false, tp=1000, name="Hot Shot"},
             auto_melee_weaponskill = {enabled=false, tp=1000, name="Combo"},
             weaponskill_limiter = {enabled=false, hpp=10, option=">"},
             auto_food = {enabled=false, name=""},
             auto_enmity_generation = {enabled=false, delay=2},
-            allow_aoe_enmity_spells = false,
             auto_flash = false,
             auto_one_hours = false,
             auto_job_abilities = false,

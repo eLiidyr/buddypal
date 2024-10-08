@@ -7,6 +7,14 @@ local function load(bp)
 
     end
 
+    local step_delay = nil
+
+    -- Create a step timer.
+    if bp.abilities.get('auto_steps') then
+        step_delay = bp.core.newTimer('steps-delay', bp.abilities.get('auto_steps').delay or 30)
+
+    end
+
     -- Public Methods.
     function self:specials()
         local player = bp.__player.get()
@@ -41,18 +49,13 @@ local function load(bp)
                 local target = bp.__target.get('t')
 
                 -- NO FOOT RISE.
-                if bp.abilities.get('auto_no_foot_rise') and bp.core.ready("No Foot Rise") then
-                    local merits = bp.__player.merits()
-
-                    if merits and (6 - bp.__buffs.getFinishingMoves()) <= merits.no_foot_rise then
-                        bp.queue.add("No Foot Rise", player)
-
-                    end
+                if bp.abilities.get('auto_no_foot_rise') and bp.core.ready("No Foot Rise") and bp.__buffs.getFinishingMoves() < 5 then
+                    bp.queue.add("No Foot Rise", player)
 
                 end
 
                 -- STEPS.
-                if bp.abilities.get('auto_steps') then
+                if bp.abilities.get('auto_steps') and step_delay:ready() then
                     local steps = bp.abilities.get('auto_steps')
                     
                     if steps.enabled and bp.core.ready(steps.name) then
@@ -63,6 +66,7 @@ local function load(bp)
 
                         end
                         bp.queue.add(steps.name, target)
+                        step_delay:update()
 
                     end
 
@@ -88,18 +92,13 @@ local function load(bp)
                 local target = bp.targets.get('player')
 
                 -- NO FOOT RISE.
-                if bp.abilities.get('auto_no_foot_rise') and bp.core.ready("No Foot Rise") then
-                    local merits = bp.__player.merits()
-
-                    if merits and (6 - bp.__buffs.getFinishingMoves()) <= merits.no_foot_rise then
-                        bp.queue.add("No Foot Rise", player)
-
-                    end
+                if bp.abilities.get('auto_no_foot_rise') and bp.core.ready("No Foot Rise") and bp.__buffs.getFinishingMoves() < 5 then
+                    bp.queue.add("No Foot Rise", player)
 
                 end
 
                 -- STEPS.
-                if bp.abilities.get('auto_steps') then
+                if bp.abilities.get('auto_steps') and step_delay:ready() then
                     local steps = bp.abilities.get('auto_steps')
                     
                     if steps.enabled and bp.core.ready(steps.name) then
@@ -110,6 +109,7 @@ local function load(bp)
 
                         end
                         bp.queue.add(steps.name, target)
+                        step_delay:update()
 
                     end
 
@@ -156,7 +156,7 @@ local function load(bp)
                     end
 
                     -- SAMBAS.
-                    if bp.abilities.get('autosambas') then
+                    if bp.abilities.get('auto_sambas') then
                         local sambas = bp.abilities.get('auto_sambas')
                         
                         if sambas.enabled and target and not bp.__buffs.active(411) then
@@ -226,7 +226,7 @@ local function load(bp)
                     end
 
                     -- SAMBAS.
-                    if bp.abilities.get('autosambas') then
+                    if bp.abilities.get('auto_sambas') then
                         local sambas = bp.abilities.get('auto_sambas')
                         
                         if sambas.enabled and target and not bp.__buffs.active(411) then

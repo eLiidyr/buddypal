@@ -121,20 +121,10 @@ local function load(bp)
         local enmity = bp.combat.get('auto_enmity_generation')
 
         if enmity and enmity.enabled and bp.core.timer('enmity'):ready() then
+            local target = bp.targets.getCombatTarget()
             local player = bp.__player.get()
 
-            if player and player.status == 1 then
-                local target = bp.__target.get('t')
-
-                -- PROVOKE.
-                if bp.abilities.get('auto_provoke') and bp.core.ready("Provoke") then
-                    bp.queue.add("Provoke", target)
-                    bp.core.timer('enmity'):update()
-
-                end
-
-            elseif player and player.status == 0 then
-                local target = bp.targets.get('player')
+            if player and target then
 
                 -- PROVOKE.
                 if bp.abilities.get('auto_provoke') and bp.core.ready("Provoke") then
