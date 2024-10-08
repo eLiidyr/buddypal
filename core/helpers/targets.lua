@@ -143,9 +143,14 @@ local function helper(bp, events)
         return targets[f] and bp.__target.get(targets[f]) or false
     
     end
+
+    o.getCombatTarget = function()
+        return (bp.__player.status() == 1) and bp.__player.target('t') or o.get('player')
+
+    end
     
     o.set = function(target, sharing)
-        local target = bp.__target.get(target) or bp.__target.get('t')
+        local target = bp.__target.get(target)
 
         if target and target.index ~= bp.__player.index() and not bp.__party.isMember(target.name) then
             
