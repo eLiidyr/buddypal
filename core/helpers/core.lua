@@ -84,7 +84,7 @@ local function helper(bp, events)
     local function master_loop()
         local loop = o.timer('master-loop')
 
-        if bp.enabled and loop:ready() and bp.__player.get() and not bp.zoning.isInJail() and not bp.zoning.isInTown() then
+        if bp.enabled and loop:ready() and bp.__player.get() and S{0,1}:contains(bp.__player.status()) and not bp.zoning.isInJail() and not bp.zoning.isInTown() then
             automate()
             loop:update()
 
@@ -194,6 +194,16 @@ local function helper(bp, events)
 
         end
         return false
+
+    end
+
+    o.newTimer = function(name, delay)
+        return o.timer(name, delay)
+
+    end
+
+    o.getTimer = function(name)
+        return o.timer(name)
 
     end
 
