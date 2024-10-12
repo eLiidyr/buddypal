@@ -154,33 +154,28 @@ local function helper(bp, events)
     o.events('incoming chunk', combat)
     o.events('addon command', function(...)
         local commands  = T{...}
-        local command   = table.remove(commands, 1)
+        local command   = commands[1] and table.remove(commands, 1):lower()
 
-        if command and command:lower() == 'assist' then
-            local command = commands[1] and table.remove(commands, 1):lower() or false
+        if command and command == 'assist' then
 
-            if command then
+            if settings[commands[1]] ~= nil then
+                settings:fromClient(commands)
 
-                if ('engage_when_assisting'):startswith(command) and #commands > 0 then
-                    settings.engage_when_assisting = (commands[1] and T{'!','#'}:contains(commands[1])) and (commands[1] == '!')
+            else
 
-                elseif ('set'):startswith(command) then
-                    o.setAssisting(commands[1])
+                local command = commands[1] and table.remove(commands, 1):lower()
 
-                elseif ('clear'):startswith(command) then
-                    o.clear()
+                if command then
 
-                elseif ('minimum_enemy_range'):startswith(command) and commands[1] and tonumber(commands[1]) then
-                    settings.minimum_enemy_range = tonumber(commands[1])
+                    if command == 'set' then
+                        o.setAssisting(commands[1])
+    
+                    elseif command == 'clear' then
+                        o.clear()
 
-                elseif ('minimum_engage_range'):startswith(command) and commands[1] and tonumber(commands[1]) then
-                    settings.minimum_engage_range = tonumber(commands[1])
-
-                elseif ('disengage_range'):startswith(command) and commands[1] and tonumber(commands[1]) then
-                    settings.disengage_range = tonumber(commands[1])
+                    end
 
                 end
-                settings:save()
 
             end
 
