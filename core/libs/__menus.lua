@@ -174,6 +174,21 @@ local function lib(bp)
                         parsed['Menu Parameters'] = table.concat(updated, '')
                         return bp.packets.build(parsed)
 
+                    -- Nomad Moogle.
+                    elseif target.name == 'Nomad Moogle' and bp.__player.zone() == 243 then
+
+                        if parsed['Menu ID'] == 10161 then -- Limit Break: 85
+                            o.send(parsed, {{21, 0, 0, true}, {21, 0, 0, true}, {21, 0, 0, true}, {21, 0, 0, true}, {21, 0, 0, true}, {254, 0, 0, true}, {254, 0, 0, false}}, 5, function()
+                                bp.toChat("Skipping:", 170, "Limit Break", 217)
+                            
+                            end)
+                            return true
+
+                        else
+                            return bp.packets.build(parsed)
+
+                        end
+
                     end
 
                 end
