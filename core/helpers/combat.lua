@@ -466,7 +466,7 @@ local function helper(bp, events)
 
     -- Private Methods.
     local function onload()
-        settings:check(base):update()
+        settings:filter(base):update()
 
     end
 

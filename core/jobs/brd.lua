@@ -21,21 +21,6 @@ local function load(bp)
     function self:buff()
 
         if bp.combat.get('auto_buffing') then
-            local player = bp.__player.get()
-
-            if player and player.status == 1 then
-                local target = bp.__target.get('t')
-
-            elseif player and player.status == 0 then
-                local target = bp.targets.get('player')
-
-                -- HANDLE SONGS.
-                if bp.actions.canCast() then
-                    bp.songs.handleLoops()
-                
-                end
-
-            end
 
         end
 
@@ -44,12 +29,6 @@ local function load(bp)
     end
 
     function self:debuff()
-
-        if bp.debuffs.enabled() and bp.actions.canCast() then
-            bp.debuffs.cast()
-
-        end
-
         return self
 
     end
@@ -60,21 +39,6 @@ local function load(bp)
     end
 
     function self:nuke()
-        local target = bp.targets.get('player')
-
-        if bp.core.get('nuke-mode') and target and bp.core.nukes:length() > 0 and bp.actions.canCast() then
-
-            for spell in bp.core.nukes:it() do
-
-                if bp.core.isReady(spell) and not bp.core.inQueue(spell) then
-                    bp.queue.add(spell, target)
-
-                end
-
-            end
-
-        end
-
         return self
 
     end

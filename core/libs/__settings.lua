@@ -81,7 +81,7 @@ local function lib(bp)
 
         end
 
-        function settings:check(base)
+        function settings:filter(base)
             local data = T(base):key_filter(function(key) return S{bp.__player.mjob(), bp.__player.sjob()}:contains(key) end)
 
             for k, v in pairs(base) do

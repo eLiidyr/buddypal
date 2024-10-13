@@ -118,6 +118,16 @@ local function helper(bp, events)
             auto_blood_weapon       =false,
             auto_soul_enslavement   =false,
         },
+
+        BRD={
+            __mainonly              ={'auto_marcato','auto_tenuto','auto_nightingale','auto_troubadour','auto_soul_voice','auto_clarion_call'},
+            auto_marcato            ={enabled=true, type="March"},
+            auto_tenuto             ={},
+            auto_nightingale        =false,
+            auto_troubadour         =false,
+            auto_soul_voice         =false,
+            auto_clarion_call       =false,
+        },
     
         BST={
             __mainonly              ={''},
@@ -180,7 +190,7 @@ local function helper(bp, events)
         },
     
         NIN={
-            __mainonly              ={''},
+            __mainonly              ={'auto_yonin','auto_innin','auto_sange','auto_futae','auto_issekigan','auto_mikage'},
             auto_yonin              =false,
             auto_innin              =false,
             auto_sange              =false,
@@ -313,7 +323,7 @@ local function helper(bp, events)
 
     -- Private Methods.
     local function onload()
-        settings:check(base):update()
+        settings:filter(base):update()
 
     end
 

@@ -1042,7 +1042,10 @@ local function helper(bp, events)
     end
 
     o.hasType = function(t)
-        if not t then return true end
+        if not t then
+            return true
+        
+        end
 
         for act in queue:it() do
 

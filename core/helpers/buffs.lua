@@ -2,7 +2,8 @@ local function helper(bp, events)
     local o = {events=events}
 
     -- Private Variables.
-    local settings = bp.__settings.new(string.format("buffs/%s%s", bp.__player.mjob(true), bp.__player.sjob(true)))
+    local settings      = bp.__settings.new(string.format("buffs/%s%s", bp.__player.mjob(true), bp.__player.sjob(true)))
+    local current_buffs = T{}
     local base = {
 
         WAR={},    
@@ -51,7 +52,7 @@ local function helper(bp, events)
         BST={},
         BRD={
             __mainonly = {},
-            song_loops = {},
+            auto_singing = {enabled=false, delay=120, max_songs=3, dummies="Paeon"},
         },
         RNG={},
         SMN={},
@@ -119,8 +120,54 @@ local function helper(bp, events)
     -- Public Variables.
 
     -- Private Methods.
-    local function onload()
-        settings:check(base):update()
+    local function update_party()
+        local members = bp.__party.getNames()
+
+        for name in members:it() do
+            current_buffs[name] = {}
+
+        end
+        
+        -- Filter Old Names.
+        current_buffs:keyset():filter(function(key)
+            
+            if not members:contains(key) then
+                current_buffs[key] = nil
+
+            end
+        
+        end)
+
+    end
+
+    local function onload(mjob, sjob)
+
+        if mjob and sjob then
+            bp.__settings.new(string.format("buffs/%s%s", mjob, sjob))
+
+        else
+            settings:filter(base):update()
+            update_party()
+
+        end
+
+    end
+
+    local function job_change(mid, _, sid, _)
+        onload(bp.res.jobs[mid] and bp.res.jobs[mid].ens:lower(), bp.res.jobs[sid] and bp.res.jobs[sid].ens:lower() or 'unk')
+
+    end
+
+    local function handle_incoming(id, original)
+        if not S{0x0c8}:contains(id) then
+            return false
+
+        end
+
+        if id == 0x0c8 then
+            coroutine.schedule(update_party, 0.25)
+
+        end
 
     end
 
@@ -131,6 +178,7 @@ local function helper(bp, events)
     end
 
     -- Private Events.
+    o.events('incoming chunk', handle_incoming)
     o.events('addon command', function(...)
         local commands  = T{...}
         local command   = commands[1] and table.remove(commands, 1):lower()
@@ -145,6 +193,19 @@ local function helper(bp, events)
                 local command = commands[1] and table.remove(commands, 1):lower()
 
             end
+
+        elseif command == 'loop' then
+            local command = commands[1] and table.remove(commands, 1):lower()
+
+            if command == 'clear_loops' and bp.__songs.getLoops():length() > 0 then
+                bp.__songs.clearLoops()
+
+            elseif #commands > 0 then
+
+            end
+
+        elseif command == 'sing' then
+            bp.__songs.sing_manually(commands)
 
         end
 
