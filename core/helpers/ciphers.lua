@@ -123,7 +123,7 @@ local function helper(bp, events)
                     local cipher = o.get(id)
 
                     if cipher then
-                    
+                        
                         bp.interact.trade(target, {{index, count}}, true, function(parsed, target)
 
                             if parsed['Menu ID'] == 437 then

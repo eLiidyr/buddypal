@@ -3,7 +3,8 @@ local function helper(bp, events)
 
     -- Private Variables.
     local socket            = bp.api.createSocket('127.0.0.1', 30000)
-    local incoming_allowed  = S{0x020,0x050,0x056,0x063,0x0DD,0x113,0x118,0x0AA}
+    local incoming_allowed  = S{0x020,0x050,0x056,0x063,0x06f,0x0dd,0x113,0x118,0x0aa}
+    local outgoing_allowed  = S{0x096}
 
     -- Public Variables.
 
@@ -52,6 +53,15 @@ local function helper(bp, events)
             return false
         end
         sendIncoming(nil, original)
+
+    end
+
+    local function handleOutgoing(id, original)
+        if not outgoing_allowed:contains(id) then
+            return false
+
+        end
+        sendOutgoing(nil, original)
 
     end
 
@@ -112,8 +122,9 @@ local function helper(bp, events)
 
     -- Private Events.
     o.events('prerender', receiveData)
-    o.events('incoming', handleIncoming)
     o.events('job change', job_change)
+    o.events('incoming', handleIncoming)
+    o.events('outgoing', handleOutgoing)
 
     -- Class Specific Events.
     o.onLoad = onload

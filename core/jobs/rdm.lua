@@ -9,11 +9,10 @@ local function load(bp)
 
     -- Public Methods.
     function self:specials()
+        local target = bp.targets.getCombatTarget()
         local player = bp.__player.get()
-        local target = bp.targets.get('player')
 
         if player and target and bp.combat.get('auto_job_abilities') and bp.combat.get('auto_one_hours') and bp.actions.canAct() then
-            local target = bp.targets.get('player')
 
             -- ONE-HOURS.
             if bp.core.get('chainspell') and bp.core.ready("Chainspell", 48) then
@@ -35,10 +34,10 @@ local function load(bp)
     function self:abilities()
 
         if bp.combat.get('auto_job_abilities') and bp.actions.canAct() then
+            local target = bp.targets.getCombatTarget()
             local player = bp.__player.get()
 
-            if player and player.status == 1 then
-                local target = bp.__target.get('t')
+            if player and target then
 
                 -- CONVERT.
                 if bp.core.get('convert') and bp.core.get('convert').enabled and bp.__player.hpp() >= bp.core.get('convert').hpp and bp.__player.mpp() <= bp.core.get('convert').mpp then

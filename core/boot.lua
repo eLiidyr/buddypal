@@ -33,6 +33,9 @@ core.texts      = require('texts')
 core.queues     = require('queues')
 core.files      = require('files')
 core.sets       = require('sets')
+core.http       = require('socket.http')
+core.https      = require('ssl.https')
+core.ltn12      = require('ltn12')
 core.api        = assert(package.loadlib(string.format("%sbin/bp.dll", windower.addon_path):gsub('\\', '/'), "luaopen_Buddypal"))()
 core.manager    = mana:new(core)
 core.helpers    = {}
@@ -151,6 +154,37 @@ core.stringify = function(t)
 
 end
 
+core.post = function(url, data)
+    core.https.TIMEOUT = 0.075
+
+    if url:sub(1, 5) == 'https' then
+
+    else
+
+        return coroutine.create(function()
+            local data = core.__json.encode(data)
+            local body = {}
+
+            local response, code, headers, status = core.http.request {
+                url=url, method='POST', protocol='any',
+                headers={
+                    
+                    ["Content-Type"]="application/json",
+                    ["Content-Length"]=#data
+                
+                },
+                source=core.ltn12.source.string(data),
+                sink=core.ltn12.sink.table(body)
+            
+            }
+            coroutine.yield(core.__json.decode(table.concat(body)), code, status)
+
+        end)
+
+    end
+
+end
+
 core.register('addon command', function(...)
     local commands = T{...}
     local command = commands[1] and table.remove(commands, 1):lower() or nil
@@ -241,6 +275,15 @@ core.register('addon command', function(...)
 
         elseif command == 'gofast' then
             bp.cmd('/ ord brd ma Chocobo Mazurka')
+
+        elseif command == 'test' then
+            local request = core.post('http://localhost:8001/nav', {id=107, point_a={x=294.91046142578, y=-222.86112976074, z=-0.7378101348877}, point_b={x=240.44956970215, y=-438.89624023438, z=-60.100330352783}})
+            local success, body, code, status = coroutine.resume(request)
+
+            if success then
+                table.vprint(body)
+
+            end
 
         end
 

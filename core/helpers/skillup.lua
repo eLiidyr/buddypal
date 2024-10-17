@@ -38,13 +38,12 @@ local function helper(bp, events)
             o.timer('duration'):update()
 
         end
-        settings:save()
+        settings:save():update()
 
         do -- Convert Spells list.
             current_spells = S(settings.spells)
 
         end
-        bp.socket.sendSettings({['skillup']=settings:get()})
 
     end
 
@@ -150,51 +149,20 @@ local function helper(bp, events)
     -- Private Events.
     o.events('addon command', function(...)
         local commands  = T{...}
-        local command   = table.remove(commands, 1)
+        local command   = commands[1] and table.remove(commands, 1):lower()
 
-        if command and command:lower() == 'skillup' then
-            local command = commands[1] and table.remove(commands, 1):lower() or false
-            local num = tonumber
+        if command and (string.match(command, 'abilities/%a%a%a%a%a%a')) then
 
-            if command then
+            if settings[commands[1]] ~= nil then
+                settings:fromClient(commands)
 
-                if command == 'skillup_duration' and commands[1] then
-                    settings.skillup_duration = num(commands[1]) and num(commands[1]) or settings.skillup_duration
+            else
 
-                elseif command == 'skillup_cooldown' and commands[1] then
-                    settings.skillup_cooldown = num(commands[1]) and num(commands[1]) or settings.skillup_cooldown
+                local command = commands[1] and table.remove(commands, 1):lower()
 
-                elseif command == 'randomize_timers' then
-                    settings.randomize_timers = (commands[1] and T{'!','#'}:contains(commands[1])) and (commands[1] == '!')
-
-                elseif command == 'skillup_enabled' then
-                    settings.skillup_enabled = (commands[1] and T{'!','#'}:contains(commands[1])) and (commands[1] == '!')
-
-                    if not settings.skillup_enabled then
-                        current_spells:empty()
-
-                    end
-
-                elseif command == 'food' and #commands > 0 then
-
-                elseif command == '+' and #commands > 0 then
-                    local spell = bp.res.spells[num(commands[1])]
-
-                    if spell then
-                        current_spells:add(spell.en)
-
-                    end
-
-                elseif command == '-' and #commands > 0 then
-                    local spell = bp.res.spells[num(commands[1])]
-
-                    if spell then
-                        current_spells:remove(spell.en)
-
-                    end
+                if command then
 
                 end
-                settings:save()
 
             end
 
