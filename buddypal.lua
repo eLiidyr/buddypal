@@ -1,6 +1,6 @@
 _addon.name     = 'BuddyPal'
 _addon.author   = 'eLiidyr'
-_addon.version  = '0.20260321.085835'
+_addon.version  = '0.20260321.134935'
 _addon.commands = {'buddypal', 'bp'}
 
 require('logger')
