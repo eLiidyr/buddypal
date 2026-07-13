@@ -12,7 +12,7 @@
 _addon         = _addon or {}
 _addon.name     = 'bpx'
 _addon.author   = 'eLiidyr'
-_addon.version  = '0.20260708'
+_addon.version  = '0.20260713'
 _addon.command  = 'bpx'
 _addon.commands = {'bpx', 'bp'}
 
@@ -133,7 +133,6 @@ end)
 
 if bundle.on_command then
     windower.register_event('addon command', function(cmd, ...)
-        windower.add_to_chat(207, '[BPX-DBG] cmd received: ' .. tostring(cmd))
         local ok, err = pcall(bundle.on_command, cmd, ...)
         if not ok then
             windower.add_to_chat(167, '[BPX] command error: ' .. tostring(err))
