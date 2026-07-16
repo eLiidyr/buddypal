@@ -37,43 +37,34 @@ local bpx = loader()
 
 -- â”€â”€ Auth + Bundle Load â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
--- bpx.init() in DEV mode: does Winsock + game-pointer scan + WS connect only.
--- Bundle loading is done HERE in bpx.lua so the chunk runs in Windower's
--- per-addon sandbox where windower.* and other proxies behave correctly.
--- In RELEASE mode the C side still loads the bundle from server bytecode.
-local ok, init_warn = bpx.init()
+-- bpx.init() does DPAPI auth + server bundle fetch in both DEV and RELEASE
+-- builds (BPX_DEV_MODE only changes the compile-time default server URL — see
+-- config.h.in). It returns the fetched bundle as Lua SOURCE text (both channels;
+-- prod is obfuscated + luamin-minified, dev is readable). It must be compiled
+-- HERE via Windower's own loadstring: the DLL and Windower are separate Lua 5.1
+-- builds with incompatible bytecode, so a chunk the DLL compiles mis-executes
+-- under Windower's VM. Windower runs only its own bytecode format (it rejects
+-- the foreign luac51/DLL format — "bad code in precompiled chunk" — but accepts
+-- native string.dump output); native bytecode can only be made inside Windower,
+-- so shipping source and letting Windower's loadstring compile it is the path.
+local ok, source_or_err, init_warn = bpx.init()
 if not ok then
-    error('[bpx] Initialisation failed: ' .. tostring(init_warn))
+    error('[bpx] Initialisation failed: ' .. tostring(source_or_err))
     return
 end
 if init_warn then
     windower.add_to_chat(167, '[BPX] WARNING: ' .. tostring(init_warn))
 end
 
--- RELEASE: bpx.init() fetched the bundle bytecode from the server (channel
--- selected via %APPDATA%\Buddypal\bundle_channel) and left the factory
--- function in the DLL's registry ref — retrieve it via bpx.get_bundle().
--- DEV: nothing is in the registry yet; load the bundle from disk in this
--- sandbox instead. Try bundle.luac first then fall back to bundle.lua —
--- dev ships source because our luac51.exe produces bytecode that Windower's
--- custom Lua 5.1 VM rejects with "bad code in precompiled chunk".
-local factory = bpx.get_bundle and bpx.get_bundle()
-if type(factory) ~= 'function' then
-    local chunk, bundle_err
-    for _, fname in ipairs({ 'bundle.luac', 'bundle.lua' }) do
-        chunk, bundle_err = loadfile(_addon.path .. fname)
-        if chunk then break end
-    end
-    if not chunk then
-        error('[bpx] Cannot load bundle.luac/bundle.lua: ' .. tostring(bundle_err))
-        return
-    end
-    local exec_ok
-    exec_ok, factory = pcall(chunk)
-    if not exec_ok then
-        error('[bpx] Bundle chunk failed: ' .. tostring(factory))
-        return
-    end
+local chunk, bundle_err = loadstring(source_or_err, 'bpx_bundle')
+if not chunk then
+    error('[bpx] Cannot load bundle: ' .. tostring(bundle_err))
+    return
+end
+local exec_ok, factory = pcall(chunk)
+if not exec_ok then
+    error('[bpx] Bundle chunk failed: ' .. tostring(factory))
+    return
 end
 if type(factory) ~= 'function' then
     error('[bpx] Bundle must return a factory function (got ' .. type(factory) .. ').')
@@ -82,7 +73,7 @@ end
 
 -- Invoke the factory with all injected dependencies. The factory body runs
 -- here in bpx.lua's sandbox, so its captured upvalues for windower/bpx/etc
--- are always the correct proxies regardless of where the chunk was loaded.
+-- are always the correct proxies.
 local ok_factory, bundle = pcall(factory, {
     windower = windower,
     bpx      = bpx,
