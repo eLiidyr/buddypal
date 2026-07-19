@@ -12,7 +12,7 @@
 _addon         = _addon or {}
 _addon.name     = 'bpx'
 _addon.author   = 'eLiidyr'
-_addon.version  = '0.20260715'
+_addon.version  = '0.20260718'
 _addon.command  = 'bpx'
 _addon.commands = {'bpx', 'bp'}
 
